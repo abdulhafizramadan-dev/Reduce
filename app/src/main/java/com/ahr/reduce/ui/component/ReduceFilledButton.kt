@@ -36,7 +36,7 @@ fun ReduceFilledButton(
 fun PreviewReduceFilledButton() {
     ReduceTheme {
         ReduceFilledButton(
-            title = R.string.regiter,
+            title = R.string.register,
             onButtonClicked = { },
             modifier = Modifier
                 .fillMaxWidth()

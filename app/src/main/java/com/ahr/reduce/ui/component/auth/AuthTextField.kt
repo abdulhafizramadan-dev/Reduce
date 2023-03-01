@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material3.Icon
@@ -14,6 +15,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ahr.reduce.R
@@ -25,15 +27,16 @@ fun AuthTextField(
     @StringRes label: Int,
     text: String,
     onTextChanged: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
 ) {
-    Column {
-        AuthTextFieldLabel(text = label)
+    Column(modifier = modifier) {
+        AuthTextFieldLabel(text = label, modifier = Modifier.fillMaxWidth())
         Spacer(modifier = Modifier.height(3.dp))
         OutlinedTextField(
             value = text,
             onValueChange = onTextChanged,
-            modifier = modifier,
+            modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.extraLarge,
             trailingIcon = {
                 if (text.isNotEmpty()) {
@@ -45,7 +48,9 @@ fun AuthTextField(
                         )
                     }
                 }
-            }
+            },
+            singleLine = true,
+            keyboardOptions = keyboardOptions
         )
     }
 }
