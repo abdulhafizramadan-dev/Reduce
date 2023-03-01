@@ -3,4 +3,6 @@
     <string name="register_title">Create Your Acount</string>
     <string name="register_subtitle">Create an account to get started</string>
     <string name="label_first_name">First Name</string>
+    <string name="clear_text_field">Clear text field!</string>
+    <string name="label_password">Password</string>
 </resources>
