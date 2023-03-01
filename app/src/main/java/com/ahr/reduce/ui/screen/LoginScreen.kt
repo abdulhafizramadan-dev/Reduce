@@ -25,17 +25,14 @@ import com.ahr.reduce.ui.theme.Gray20
 import com.ahr.reduce.ui.theme.ReduceTheme
 
 @Composable
-fun RegisterScreen(
+fun LoginScreen(
     modifier: Modifier = Modifier
 ) {
 
     val scrollState = rememberScrollState()
 
-    var firstName by remember { mutableStateOf("") }
-    var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
 
     Column(modifier = modifier
         .fillMaxSize()
@@ -44,32 +41,16 @@ fun RegisterScreen(
     ) {
 
         AuthTitle(
-            text = R.string.register_title,
+            text = R.string.login_title,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 72.dp)
         )
         AuthSubtitle(
-            text = R.string.register_subtitle,
+            text = R.string.login_subtitle,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 2.dp)
-        )
-        AuthTextField(
-            label = R.string.label_first_name,
-            text = firstName,
-            onTextChanged = { firstName = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 62.dp)
-        )
-        AuthTextField(
-            label = R.string.label_last_name,
-            text = lastName,
-            onTextChanged = { lastName = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 3.dp)
         )
         AuthTextField(
             label = R.string.label_email,
@@ -77,7 +58,7 @@ fun RegisterScreen(
             onTextChanged = { email = it },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 3.dp)
+                .padding(top = 62.dp)
         )
         AuthTextFieldPassword(
             label = R.string.label_password,
@@ -85,22 +66,21 @@ fun RegisterScreen(
             onTextChanged = { password = it },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 3.dp)
-        )
-        AuthTextFieldPassword(
-            label = R.string.label_confirm_password,
-            text = confirmPassword,
-            onTextChanged = { confirmPassword = it },
-            modifier = Modifier
-                .fillMaxWidth()
                 .padding(top = 3.dp),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
         )
 
-        Spacer(modifier = Modifier.weight(1f))
+        ReduceTextButton(
+            title = R.string.forgot_password,
+            onButtonClicked = { },
+            modifier = Modifier
+                .padding(all = 4.dp)
+                .clip(MaterialTheme.shapes.extraSmall)
+                .align(Alignment.End)
+        )
 
         ReduceFilledButton(
-            title = R.string.register,
+            title = R.string.login,
             onButtonClicked = { },
             modifier = Modifier
                 .fillMaxWidth()
@@ -110,17 +90,17 @@ fun RegisterScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 12.dp, bottom = 28.dp),
+                .padding(top = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                text = stringResource(R.string.already_have_an_account),
+                text = stringResource(R.string.dont_have_account),
                 style = MaterialTheme.typography.bodySmall,
                 color = Gray20
             )
             ReduceTextButton(
-                title = R.string.login,
+                title = R.string.register,
                 onButtonClicked = { },
                 modifier = Modifier
                     .padding(all = 4.dp)
@@ -132,8 +112,8 @@ fun RegisterScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewRegisterScreen() {
+fun PreviewLoginScreen() {
     ReduceTheme {
-        RegisterScreen()
+        LoginScreen()
     }
 }
