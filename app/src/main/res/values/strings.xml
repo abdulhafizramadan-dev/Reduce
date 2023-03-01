@@ -5,4 +5,6 @@
     <string name="label_first_name">First Name</string>
     <string name="clear_text_field">Clear text field!</string>
     <string name="label_password">Password</string>
+    <string name="regiter">Register</string>
+    <string name="forgot_password">Forgot Password?</string>
 </resources>
