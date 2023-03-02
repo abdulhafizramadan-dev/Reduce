@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -33,7 +32,7 @@ fun HomeScreen(
 
     LazyVerticalGrid(
         columns = GridCells.Adaptive(152.dp),
-        contentPadding= PaddingValues(horizontal = 16.dp),
+        contentPadding= PaddingValues(horizontal = 16.dp, vertical = 24.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp),
         horizontalArrangement = Arrangement.spacedBy(24.dp),
         modifier = modifier.fillMaxSize(),
@@ -41,8 +40,7 @@ fun HomeScreen(
         item(span = { GridItemSpan(maxLineSpan) }) {
             ReduceSearchOutlinedTextField(
                 query = searchQuery,
-                onQueryChanged = { searchQuery = it },
-                modifier = Modifier.padding(top = 24.dp)
+                onQueryChanged = { searchQuery = it }
             )
         }
 
