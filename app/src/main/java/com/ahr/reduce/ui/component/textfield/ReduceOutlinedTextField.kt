@@ -30,10 +30,11 @@ fun ReduceOutlinedTextField(
     modifier: Modifier = Modifier,
     readOnly: Boolean = false,
     singleLine: Boolean = true,
+    clearIcon: Boolean = true,
     leadingIcon: @Composable (() -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
 
-) {
+    ) {
     Column(modifier = modifier) {
         AuthTextFieldLabel(text = label, modifier = Modifier.fillMaxWidth())
         Spacer(modifier = Modifier.height(3.dp))
@@ -44,7 +45,7 @@ fun ReduceOutlinedTextField(
             shape = MaterialTheme.shapes.extraLarge,
             leadingIcon = leadingIcon,
             trailingIcon = {
-                if (text.isNotEmpty() && singleLine) {
+                if (text.isNotEmpty() && clearIcon) {
                     IconButton(onClick = { onTextChanged("") }) {
                         Icon(
                             imageVector = Icons.Outlined.Cancel,
