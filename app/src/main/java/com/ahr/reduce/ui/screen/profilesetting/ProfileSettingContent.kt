@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.ahr.reduce.R
 import com.ahr.reduce.ui.component.button.ReduceFilledButton
 import com.ahr.reduce.ui.component.dropdown.ReduceExposedDropDownMenuBox
-import com.ahr.reduce.ui.component.textfield.ReduceTextField
+import com.ahr.reduce.ui.component.textfield.ReduceOutlinedTextField
 import com.ahr.reduce.ui.theme.ReduceTheme
 import com.ahr.reduce.util.FormAuthTextField
 import com.ahr.reduce.util.Gender
@@ -89,7 +89,7 @@ fun ProfileSettingContent(
         Spacer(modifier = Modifier.padding(top = 22.dp))
 
         formProfiles.forEach { form ->
-            ReduceTextField(
+            ReduceOutlinedTextField(
                 label = form.label,
                 text = form.text,
                 onTextChanged = form.onTextChanged,

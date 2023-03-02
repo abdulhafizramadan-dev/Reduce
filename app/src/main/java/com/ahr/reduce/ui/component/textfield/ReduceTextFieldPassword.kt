@@ -26,7 +26,7 @@ import com.ahr.reduce.ui.theme.Gray90
 import com.ahr.reduce.ui.theme.ReduceTheme
 
 @Composable
-fun ReduceTextFieldPassword(
+fun ReduceOutlinedTextFieldPassword(
     @StringRes label: Int,
     text: String,
     onTextChanged: (String) -> Unit,
@@ -69,9 +69,9 @@ fun ReduceTextFieldPassword(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewReduceTextFieldPassword() {
+fun PreviewReduceOutlinedTextFieldPassword() {
     ReduceTheme {
-        ReduceTextFieldPassword(
+        ReduceOutlinedTextFieldPassword(
             label = R.string.label_password,
             text = "Password",
             onTextChanged = {},

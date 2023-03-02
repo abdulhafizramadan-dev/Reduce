@@ -18,8 +18,8 @@ import com.ahr.reduce.R
 import com.ahr.reduce.ui.component.button.ReduceFilledButton
 import com.ahr.reduce.ui.component.button.ReduceTextButton
 import com.ahr.reduce.ui.component.textfield.AuthSubtitle
-import com.ahr.reduce.ui.component.textfield.ReduceTextField
-import com.ahr.reduce.ui.component.textfield.ReduceTextFieldPassword
+import com.ahr.reduce.ui.component.textfield.ReduceOutlinedTextField
+import com.ahr.reduce.ui.component.textfield.ReduceOutlinedTextFieldPassword
 import com.ahr.reduce.ui.component.textfield.AuthTitle
 import com.ahr.reduce.ui.theme.Gray20
 import com.ahr.reduce.ui.theme.ReduceTheme
@@ -52,7 +52,7 @@ fun LoginScreen(
                 .fillMaxWidth()
                 .padding(top = 2.dp)
         )
-        ReduceTextField(
+        ReduceOutlinedTextField(
             label = R.string.label_email,
             text = email,
             onTextChanged = { email = it },
@@ -60,7 +60,7 @@ fun LoginScreen(
                 .fillMaxWidth()
                 .padding(top = 62.dp)
         )
-        ReduceTextFieldPassword(
+        ReduceOutlinedTextFieldPassword(
             label = R.string.label_password,
             text = password,
             onTextChanged = { password = it },

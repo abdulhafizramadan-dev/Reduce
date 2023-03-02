@@ -18,8 +18,8 @@ import com.ahr.reduce.R
 import com.ahr.reduce.ui.component.button.ReduceFilledButton
 import com.ahr.reduce.ui.component.button.ReduceTextButton
 import com.ahr.reduce.ui.component.textfield.AuthSubtitle
-import com.ahr.reduce.ui.component.textfield.ReduceTextField
-import com.ahr.reduce.ui.component.textfield.ReduceTextFieldPassword
+import com.ahr.reduce.ui.component.textfield.ReduceOutlinedTextField
+import com.ahr.reduce.ui.component.textfield.ReduceOutlinedTextFieldPassword
 import com.ahr.reduce.ui.component.textfield.AuthTitle
 import com.ahr.reduce.ui.theme.Gray20
 import com.ahr.reduce.ui.theme.ReduceTheme
@@ -55,7 +55,7 @@ fun RegisterScreen(
                 .fillMaxWidth()
                 .padding(top = 2.dp)
         )
-        ReduceTextField(
+        ReduceOutlinedTextField(
             label = R.string.label_first_name,
             text = firstName,
             onTextChanged = { firstName = it },
@@ -63,7 +63,7 @@ fun RegisterScreen(
                 .fillMaxWidth()
                 .padding(top = 62.dp)
         )
-        ReduceTextField(
+        ReduceOutlinedTextField(
             label = R.string.label_last_name,
             text = lastName,
             onTextChanged = { lastName = it },
@@ -71,7 +71,7 @@ fun RegisterScreen(
                 .fillMaxWidth()
                 .padding(top = 3.dp)
         )
-        ReduceTextField(
+        ReduceOutlinedTextField(
             label = R.string.label_email,
             text = email,
             onTextChanged = { email = it },
@@ -79,7 +79,7 @@ fun RegisterScreen(
                 .fillMaxWidth()
                 .padding(top = 3.dp)
         )
-        ReduceTextFieldPassword(
+        ReduceOutlinedTextFieldPassword(
             label = R.string.label_password,
             text = password,
             onTextChanged = { password = it },
@@ -87,7 +87,7 @@ fun RegisterScreen(
                 .fillMaxWidth()
                 .padding(top = 3.dp)
         )
-        ReduceTextFieldPassword(
+        ReduceOutlinedTextFieldPassword(
             label = R.string.label_confirm_password,
             text = confirmPassword,
             onTextChanged = { confirmPassword = it },

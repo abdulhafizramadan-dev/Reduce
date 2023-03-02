@@ -23,12 +23,14 @@ import com.ahr.reduce.ui.theme.Gray90
 import com.ahr.reduce.ui.theme.ReduceTheme
 
 @Composable
-fun ReduceTextField(
+fun ReduceOutlinedTextField(
     @StringRes label: Int,
     text: String,
     onTextChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
     readOnly: Boolean = false,
+    singleLine: Boolean = true,
+    leadingIcon: @Composable (() -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
 
 ) {
@@ -40,8 +42,9 @@ fun ReduceTextField(
             onValueChange = onTextChanged,
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.extraLarge,
+            leadingIcon = leadingIcon,
             trailingIcon = {
-                if (text.isNotEmpty()) {
+                if (text.isNotEmpty() && singleLine) {
                     IconButton(onClick = { onTextChanged("") }) {
                         Icon(
                             imageVector = Icons.Outlined.Cancel,
@@ -51,7 +54,7 @@ fun ReduceTextField(
                     }
                 }
             },
-            singleLine = true,
+            singleLine = singleLine,
             readOnly = readOnly,
             keyboardOptions = keyboardOptions
         )
@@ -60,9 +63,9 @@ fun ReduceTextField(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewReduceTextField() {
+fun PreviewReduceOutlinedTextField() {
     ReduceTheme {
-        ReduceTextField(
+        ReduceOutlinedTextField(
             label = R.string.label_first_name,
             text = "Abdul",
             onTextChanged = {},
