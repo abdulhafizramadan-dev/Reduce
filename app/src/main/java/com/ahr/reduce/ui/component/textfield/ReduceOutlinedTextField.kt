@@ -31,6 +31,7 @@ fun ReduceOutlinedTextField(
     readOnly: Boolean = false,
     singleLine: Boolean = true,
     leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
     ) {
     Column(modifier = modifier) {
@@ -43,7 +44,7 @@ fun ReduceOutlinedTextField(
             shape = MaterialTheme.shapes.extraLarge,
             leadingIcon = leadingIcon,
             trailingIcon = {
-                if (text.isNotEmpty()) {
+                if (text.isNotEmpty() && trailingIcon == null) {
                     IconButton(onClick = { onTextChanged("") }) {
                         Icon(
                             imageVector = Icons.Outlined.Cancel,
@@ -52,6 +53,7 @@ fun ReduceOutlinedTextField(
                         )
                     }
                 }
+                trailingIcon?.invoke()
             },
             singleLine = singleLine,
             readOnly = readOnly,
