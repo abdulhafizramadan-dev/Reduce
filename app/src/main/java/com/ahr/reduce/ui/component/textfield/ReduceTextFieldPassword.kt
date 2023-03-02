@@ -1,4 +1,4 @@
-package com.ahr.reduce.ui.component.auth
+package com.ahr.reduce.ui.component.textfield
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
@@ -26,7 +26,7 @@ import com.ahr.reduce.ui.theme.Gray90
 import com.ahr.reduce.ui.theme.ReduceTheme
 
 @Composable
-fun AuthTextFieldPassword(
+fun ReduceTextFieldPassword(
     @StringRes label: Int,
     text: String,
     onTextChanged: (String) -> Unit,
@@ -69,9 +69,9 @@ fun AuthTextFieldPassword(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewAuthTextFieldPassword() {
+fun PreviewReduceTextFieldPassword() {
     ReduceTheme {
-        AuthTextFieldPassword(
+        ReduceTextFieldPassword(
             label = R.string.label_password,
             text = "Password",
             onTextChanged = {},

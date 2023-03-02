@@ -15,12 +15,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ahr.reduce.R
-import com.ahr.reduce.ui.component.ReduceFilledButton
-import com.ahr.reduce.ui.component.ReduceTextButton
-import com.ahr.reduce.ui.component.auth.AuthSubtitle
-import com.ahr.reduce.ui.component.auth.AuthTextField
-import com.ahr.reduce.ui.component.auth.AuthTextFieldPassword
-import com.ahr.reduce.ui.component.auth.AuthTitle
+import com.ahr.reduce.ui.component.button.ReduceFilledButton
+import com.ahr.reduce.ui.component.button.ReduceTextButton
+import com.ahr.reduce.ui.component.textfield.AuthSubtitle
+import com.ahr.reduce.ui.component.textfield.ReduceTextField
+import com.ahr.reduce.ui.component.textfield.ReduceTextFieldPassword
+import com.ahr.reduce.ui.component.textfield.AuthTitle
 import com.ahr.reduce.ui.theme.Gray20
 import com.ahr.reduce.ui.theme.ReduceTheme
 
@@ -52,7 +52,7 @@ fun LoginScreen(
                 .fillMaxWidth()
                 .padding(top = 2.dp)
         )
-        AuthTextField(
+        ReduceTextField(
             label = R.string.label_email,
             text = email,
             onTextChanged = { email = it },
@@ -60,7 +60,7 @@ fun LoginScreen(
                 .fillMaxWidth()
                 .padding(top = 62.dp)
         )
-        AuthTextFieldPassword(
+        ReduceTextFieldPassword(
             label = R.string.label_password,
             text = password,
             onTextChanged = { password = it },

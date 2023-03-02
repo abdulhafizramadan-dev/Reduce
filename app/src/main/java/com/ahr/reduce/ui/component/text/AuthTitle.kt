@@ -1,43 +1,43 @@
-package com.ahr.reduce.ui.component
+package com.ahr.reduce.ui.component.textfield
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.ahr.reduce.R
 import com.ahr.reduce.ui.theme.ReduceTheme
 
 @Composable
-fun ReduceFilledButton(
-    @StringRes title: Int,
-    onButtonClicked: () -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
+fun AuthTitle(
+    @StringRes text: Int,
+    modifier: Modifier = Modifier
 ) {
-    FilledTonalButton(
-        onClick = onButtonClicked,
-        enabled = enabled,
+    Text(
+        text = stringResource(id = text),
+        style = MaterialTheme.typography.titleMedium.copy(
+            fontWeight = FontWeight.SemiBold,
+            lineHeight = 24.sp
+        ),
+        textAlign = TextAlign.Center,
         modifier = modifier
-            .height(50.dp),
-    ) {
-        Text(text = stringResource(id = title))
-    }
+    )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-fun PreviewReduceFilledButton() {
+fun PreviewAuthTitle() {
     ReduceTheme {
-        ReduceFilledButton(
-            title = R.string.register,
-            onButtonClicked = { },
+        AuthTitle(
+            text = R.string.register_title,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)

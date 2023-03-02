@@ -1,4 +1,4 @@
-package com.ahr.reduce.ui.component
+package com.ahr.reduce.ui.component.button
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable

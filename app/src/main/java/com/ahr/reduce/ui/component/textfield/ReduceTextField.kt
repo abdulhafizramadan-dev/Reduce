@@ -1,4 +1,4 @@
-package com.ahr.reduce.ui.component.auth
+package com.ahr.reduce.ui.component.textfield
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
@@ -23,12 +23,14 @@ import com.ahr.reduce.ui.theme.Gray90
 import com.ahr.reduce.ui.theme.ReduceTheme
 
 @Composable
-fun AuthTextField(
+fun ReduceTextField(
     @StringRes label: Int,
     text: String,
     onTextChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
+    readOnly: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+
 ) {
     Column(modifier = modifier) {
         AuthTextFieldLabel(text = label, modifier = Modifier.fillMaxWidth())
@@ -50,6 +52,7 @@ fun AuthTextField(
                 }
             },
             singleLine = true,
+            readOnly = readOnly,
             keyboardOptions = keyboardOptions
         )
     }
@@ -57,9 +60,9 @@ fun AuthTextField(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewAuthTextField() {
+fun PreviewReduceTextField() {
     ReduceTheme {
-        AuthTextField(
+        ReduceTextField(
             label = R.string.label_first_name,
             text = "Abdul",
             onTextChanged = {},
