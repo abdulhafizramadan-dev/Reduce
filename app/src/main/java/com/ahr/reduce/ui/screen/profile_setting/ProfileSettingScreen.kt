@@ -1,10 +1,12 @@
-package com.ahr.reduce.ui.screen.profilesetting
+package com.ahr.reduce.ui.screen.profile_setting
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.ahr.reduce.R
+import com.ahr.reduce.ui.component.topappbar.DetailTopAppBar
 import com.ahr.reduce.ui.theme.ReduceTheme
 import com.ahr.reduce.util.Gender
 
@@ -15,7 +17,10 @@ fun ProfileSettingScreen(
 ) {
     Scaffold(
         topBar = {
-            ProfileSettingTopAppBar(onNavigationClicked = { })
+            DetailTopAppBar(
+                title = R.string.profile_settings,
+                onNavigationClicked = { }
+            )
         },
         modifier = modifier
     ) { paddingValues ->

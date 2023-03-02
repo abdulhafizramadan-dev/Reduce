@@ -1,4 +1,4 @@
-package com.ahr.reduce.ui.screen.profilesetting
+package com.ahr.reduce.ui.screen.profile_setting
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
