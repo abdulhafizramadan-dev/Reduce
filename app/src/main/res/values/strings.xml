@@ -31,4 +31,5 @@
     <string name="detail_address">Detail Address</string>
     <string name="search_placeholder">Type search…</string>
     <string name="sent_to">Sent to </string>
+    <string name="welcome">Selamat Datang!</string>
 </resources>
