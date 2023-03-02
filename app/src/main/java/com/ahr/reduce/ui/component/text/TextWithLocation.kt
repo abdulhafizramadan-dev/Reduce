@@ -42,7 +42,8 @@ fun TextWithLocation(
             painter = painterResource(id = R.drawable.ic_location),
             contentDescription = null,
             tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier
+                .size(24.dp)
         )
         Text(
             text = annotatedString,
@@ -50,7 +51,7 @@ fun TextWithLocation(
                 fontWeight = FontWeight.Normal,
                 lineHeight = 24.sp,
                 color = MaterialTheme.colorScheme.onBackground
-            )
+            ),
         )
     }
 }
