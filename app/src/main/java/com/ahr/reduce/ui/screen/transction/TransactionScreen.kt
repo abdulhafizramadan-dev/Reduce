@@ -32,8 +32,8 @@ fun TransactionScreen(
     val tabsList = listOf(
         "Diproses",
         "Dikirim",
+        "Dibatalkan",
         "Selesai",
-        "Dibatalkan"
     )
 
     Scaffold(
@@ -43,7 +43,8 @@ fun TransactionScreen(
                 onSearchQueryChanged = { searchQuery = it },
                 pagerState = pagerState,
                 tabsList = tabsList,
-                scope = scope
+                scope = scope,
+                modifier = Modifier.fillMaxWidth()
             )
         },
         modifier = modifier
@@ -85,7 +86,8 @@ fun TransactionTopAppBar(
         TransactionTabBar(
             pagerState = pagerState,
             scope = scope,
-            tabsList = tabsList
+            tabsList = tabsList,
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
@@ -103,12 +105,18 @@ fun TransactionTabBar(
         selectedTabIndex = pagerState.currentPage,
         containerColor = MaterialTheme.colorScheme.background,
         contentColor = MaterialTheme.colorScheme.onBackground,
-        edgePadding = 0.dp
+        edgePadding = 16.dp
     ) {
         tabsList.forEachIndexed { index, tab ->
+            val isSelected = pagerState.currentPage == index
             Tab(
-                selected = pagerState.currentPage == index,
-                text = { Text(text = tab) },
+                selected = isSelected,
+                text = {
+                   val color = if (isSelected)
+                       MaterialTheme.colorScheme.primary
+                   else MaterialTheme.colorScheme.onBackground
+                   Text(text = tab, color = color)
+                },
                 onClick = {
                     scope.launch {
                         pagerState.animateScrollToPage(index)
