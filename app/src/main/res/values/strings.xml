@@ -37,4 +37,13 @@
     <string name="add_to_cart">Tambah Keranjang</string>
     <string name="order_count_format">Pesan untuk ukuran %s pcs</string>
     <string name="label_order_count">Berapa banyak yang kamu mau?</string>
+    <string name="checkout">Checkout</string>
+    <string name="sender_address">Alamat Pengirim</string>
+    <string name="note">Catatan:</string>
+    <string name="schedule_picker">Pilih Jadwal Pengiriman</string>
+    <string name="subtotal">Subtotal</string>
+    <string name="shipping_cost">Ongkos Kirim</string>
+    <string name="summary_payment">Ringkasan Pembayaran</string>
+    <string name="edit">Ubah</string>
+    <string name="next">Lanjut</string>
 </resources>

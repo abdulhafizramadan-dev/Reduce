@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,7 +31,8 @@ fun ProductItem(
     name: String,
     photo: Int,
     onProductClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    smallItem: Boolean = false,
 ) {
     OutlinedCard(
         shape = MaterialTheme.shapes.medium,
@@ -40,19 +42,24 @@ fun ProductItem(
         ),
         modifier = modifier
     ) {
+        val paddingStart = if (smallItem) 16 else 20
+        val paddingTop = if (smallItem) 6 else 10
+        val paddingEnd = if (smallItem) 16 else 20
+        val paddingBottom = if (smallItem) 12 else 24
         Column(
             modifier = Modifier.padding(
-                start = 20.dp,
-                top = 10.dp,
-                end = 20.dp,
-                bottom = 25.dp
+                start = paddingStart.dp,
+                top = paddingTop.dp,
+                end = paddingEnd.dp,
+                bottom = paddingBottom.dp
             )
         ) {
+            val imageHeight = if (smallItem) 90 else 144
             Image(
                 painter = painterResource(id = photo),
                 contentDescription = null,
                 modifier = Modifier
-                    .height(114.dp)
+                    .height(imageHeight.dp)
                     .fillMaxWidth()
             )
             Divider(
@@ -69,17 +76,22 @@ fun ProductItem(
                     ),
                     textAlign = TextAlign.Center
                 ),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             Spacer(modifier = Modifier.height(4.dp))
+            val productNameTextStyle = if (smallItem) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodySmall
             Text(
                 text = name,
-                style = MaterialTheme.typography.bodyMedium.copy(
+                style = productNameTextStyle.copy(
                     lineHeight = 21.sp,
                     fontWeight = FontWeight.SemiBold
                 ),
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }
