@@ -30,13 +30,14 @@ fun ReduceOutlinedTextField(
     modifier: Modifier = Modifier,
     readOnly: Boolean = false,
     singleLine: Boolean = true,
+    largeGapLabel: Boolean = false,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
     ) {
     Column(modifier = modifier) {
         AuthTextFieldLabel(text = label, modifier = Modifier.fillMaxWidth())
-        Spacer(modifier = Modifier.height(3.dp))
+        Spacer(modifier = Modifier.height(if (largeGapLabel) 13.dp else 3.dp))
         OutlinedTextField(
             value = text,
             onValueChange = onTextChanged,

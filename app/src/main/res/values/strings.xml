@@ -33,4 +33,8 @@
     <string name="sent_to">Sent to </string>
     <string name="welcome">Selamat Datang!</string>
     <string name="to_cart_screen">To cart screen</string>
+    <string name="detail_product">Product Detail</string>
+    <string name="add_to_cart">Tambah Keranjang</string>
+    <string name="order_count_format">Pesan untuk ukuran %s pcs</string>
+    <string name="label_order_count">Berapa banyak yang kamu mau?</string>
 </resources>
