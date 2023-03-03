@@ -19,7 +19,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ahr.reduce.ui.component.product.ProductItem
-import com.ahr.reduce.ui.component.textfield.ReduceSearchOutlinedTextField
 import com.ahr.reduce.ui.data.products
 import com.ahr.reduce.ui.theme.ReduceTheme
 
@@ -38,9 +37,11 @@ fun HomeScreen(
         modifier = modifier.fillMaxSize(),
     ) {
         item(span = { GridItemSpan(maxLineSpan) }) {
-            ReduceSearchOutlinedTextField(
-                query = searchQuery,
-                onQueryChanged = { searchQuery = it }
+            HomeTopAppBar(
+                searchQuery = searchQuery,
+                onSearchQueryChanged = { searchQuery = it },
+                onCartClicked = { },
+                modifier = Modifier.fillMaxWidth()
             )
         }
 
