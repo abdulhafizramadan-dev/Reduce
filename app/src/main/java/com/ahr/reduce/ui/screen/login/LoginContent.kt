@@ -36,6 +36,7 @@ fun LoginContent(
     onEmailChanged: (String) -> Unit,
     password: String,
     onPasswordChanged: (String) -> Unit,
+    onForgotPassword: () -> Unit,
     onLoginClicked: () -> Unit,
     onRegisterClicked: () -> Unit,
     modifier: Modifier = Modifier
@@ -53,7 +54,8 @@ fun LoginContent(
             email = email,
             onEmailChanged = onEmailChanged,
             password = password,
-            onPasswordChanged = onPasswordChanged
+            onPasswordChanged = onPasswordChanged,
+            onForgotPassword = onForgotPassword
         )
         LoginFooter(
             onLoginClicked = onLoginClicked,
@@ -96,6 +98,7 @@ fun LoginForm(
     onEmailChanged: (String) -> Unit,
     password: String,
     onPasswordChanged: (String) -> Unit,
+    onForgotPassword: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -119,7 +122,7 @@ fun LoginForm(
 
         ReduceTextButton(
             title = R.string.forgot_password,
-            onButtonClicked = { },
+            onButtonClicked = onForgotPassword,
             modifier = Modifier
                 .padding(all = 4.dp)
                 .clip(MaterialTheme.shapes.extraSmall)
@@ -135,32 +138,35 @@ fun LoginFooter(
     modifier: Modifier = Modifier
 ) {
 
-    ReduceFilledButton(
-        title = R.string.login,
-        onButtonClicked = onLoginClicked,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp)
-    )
+    Column(modifier = modifier) {
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = stringResource(R.string.dont_have_account),
-            style = MaterialTheme.typography.bodySmall,
-            color = Gray20
-        )
-        ReduceTextButton(
-            title = R.string.register,
-            onButtonClicked = onRegisterClicked,
+        ReduceFilledButton(
+            title = R.string.login,
+            onButtonClicked = onLoginClicked,
             modifier = Modifier
-                .padding(all = 4.dp)
-                .clip(MaterialTheme.shapes.extraSmall)
+                .fillMaxWidth()
+                .padding(top = 16.dp)
         )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = stringResource(R.string.dont_have_account),
+                style = MaterialTheme.typography.bodySmall,
+                color = Gray20
+            )
+            ReduceTextButton(
+                title = R.string.register,
+                onButtonClicked = onRegisterClicked,
+                modifier = Modifier
+                    .padding(all = 4.dp)
+                    .clip(MaterialTheme.shapes.extraSmall)
+            )
+        }
     }
 }

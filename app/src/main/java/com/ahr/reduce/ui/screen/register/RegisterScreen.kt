@@ -1,6 +1,5 @@
-package com.ahr.reduce.ui.screen.login
+package com.ahr.reduce.ui.screen.register
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,29 +10,38 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.ahr.reduce.ui.theme.ReduceTheme
 
 @Composable
-fun LoginScreen(
+fun RegisterScreen(
     modifier: Modifier = Modifier
 ) {
 
+    var firstName by remember { mutableStateOf("") }
+    var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
 
-    LoginContent(
+    RegisterContent(
+        firstName = firstName,
+        onFirstNameChanged = { firstName = it },
+        lastName = lastName,
+        onLastNameChanged = { lastName = it },
         email = email,
         onEmailChanged = { email = it },
         password = password,
         onPasswordChanged = { password = it },
-        onForgotPassword = { },
-        onLoginClicked = { },
+        confirmPassword = confirmPassword,
+        onConfirmPasswordChanged = { confirmPassword = it },
         onRegisterClicked = { },
+        onLoginClicked = { },
         modifier = modifier
     )
+
 }
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewLoginScreen() {
+fun PreviewRegisterScreen() {
     ReduceTheme {
-        LoginScreen(modifier = Modifier.fillMaxSize())
+        RegisterScreen()
     }
 }
