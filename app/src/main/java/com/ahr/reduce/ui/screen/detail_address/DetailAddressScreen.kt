@@ -21,20 +21,27 @@ fun DetailAddressScreen(
         modifier = modifier
     ) { paddingValues ->
 
-        val location by remember { mutableStateOf("Suka Bakti, Kec. Curug, KabupatenTanggerang, Banten") }
-        var completeAddress by remember { mutableStateOf("") }
-        var subdistrict by remember { mutableStateOf("") }
-        var noteToCourier by remember { mutableStateOf("") }
+        var streetName by remember { mutableStateOf("Jl. Mawar Blok A12 No.99") }
+        var ward by remember { mutableStateOf("Cinta") }
+        var regency by remember { mutableStateOf("Curug") }
+        var province by remember { mutableStateOf("Tangerang") }
+        var subdistrict by remember { mutableStateOf("Jawa Barat") }
+        var completeAddress by remember { mutableStateOf("Jl.Mawar Blok A12 No.99, Kel. Cinta, Kec. Curug, Kabupaten Tangerang, Jawa Barat 1189") }
 
         DetailAddressContent(
-            location = location,
+            streetName = streetName,
+            onStreetNameChanged = { streetName = it },
+            ward = ward,
+            onWardChanged = { ward = it },
+            subDistrict = subdistrict,
+            onSubDistrictChanged = { subdistrict = it },
+            regency = regency,
+            onRegencyChanged = { regency = it },
+            province = province,
+            onProvinceChanged = { province = it },
             completeAddress = completeAddress,
             onCompleteAddressChanged = { completeAddress = it },
-            subdistrict = subdistrict,
-            onSubdistrictChanged = { subdistrict = it },
-            noteToCourier = noteToCourier,
-            onNoteToCourierChanged = { noteToCourier = it },
-            onSaveClicked = {},
+            onSaveClicked = { },
             modifier = Modifier.padding(paddingValues)
         )
     }
