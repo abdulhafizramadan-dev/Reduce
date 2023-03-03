@@ -2,8 +2,10 @@ package com.ahr.reduce.ui.screen.transction
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -29,8 +31,9 @@ fun TransactionScreen(
     var searchQuery by remember { mutableStateOf("") }
     val tabsList = listOf(
         "Diproses",
-        "Menunggu Pembayaran (0)",
-        "Selesai"
+        "Dikirim",
+        "Selesai",
+        "Dibatalkan"
     )
 
     Scaffold(
@@ -78,6 +81,7 @@ fun TransactionTopAppBar(
                 .padding(top = 24.dp)
                 .padding(horizontal = 16.dp)
         )
+        Spacer(modifier = Modifier.height(4.dp))
         TransactionTabBar(
             pagerState = pagerState,
             scope = scope,

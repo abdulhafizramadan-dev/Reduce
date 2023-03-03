@@ -46,4 +46,6 @@
     <string name="summary_payment">Ringkasan Pembayaran</string>
     <string name="edit">Ubah</string>
     <string name="next">Lanjut</string>
+    <string name="empty_transaction_title">Kok sepi sih?</string>
+    <string name="empty_transaction_description">Mulai belanja sekarang  untuk mengurangi sampah di sekitarmu bersama Reduce!</string>
 </resources>
