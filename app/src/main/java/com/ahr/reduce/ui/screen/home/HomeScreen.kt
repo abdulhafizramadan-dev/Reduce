@@ -61,7 +61,8 @@ fun HomeScreen(
                 type = product.type,
                 name = product.name,
                 photo = product.photo,
-                onProductClicked = { }
+                onProductClicked = { },
+                smallItem = false
             )
         }
     }

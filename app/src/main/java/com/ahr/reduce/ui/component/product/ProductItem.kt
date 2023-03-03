@@ -81,7 +81,7 @@ fun ProductItem(
                 overflow = TextOverflow.Ellipsis
             )
             Spacer(modifier = Modifier.height(4.dp))
-            val productNameTextStyle = if (smallItem) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodySmall
+            val productNameTextStyle = if (smallItem) MaterialTheme.typography.bodySmall else MaterialTheme.typography.bodyLarge
             Text(
                 text = name,
                 style = productNameTextStyle.copy(

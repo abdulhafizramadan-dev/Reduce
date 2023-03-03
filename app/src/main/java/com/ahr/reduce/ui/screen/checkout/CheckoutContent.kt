@@ -134,7 +134,7 @@ fun CheckoutButton(
                 ambientColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.25f)
             )
             .padding(horizontal = 16.dp, vertical = 16.dp)
-            .padding(bottom = 16.dp),
+            .padding(bottom = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f)) {
