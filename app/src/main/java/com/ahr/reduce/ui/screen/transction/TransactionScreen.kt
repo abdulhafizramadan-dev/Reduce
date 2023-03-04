@@ -1,12 +1,7 @@
 package com.ahr.reduce.ui.screen.transction
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -15,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ahr.reduce.data.products
 import com.ahr.reduce.ui.component.textfield.ReduceSearchOutlinedTextField
 import com.ahr.reduce.ui.theme.ReduceTheme
 import kotlinx.coroutines.CoroutineScope
@@ -56,11 +52,22 @@ fun TransactionScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-        ) {
-            TransactionContent(
-                transactions = emptyList(),
-                modifier = Modifier.fillMaxSize()
-            )
+        ) { pageIndex ->
+            when (pageIndex) {
+                0 -> {
+                    TransactionContent(
+                        transactions = listOf(products[0]),
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+                else -> {
+                    TransactionContent(
+                        transactions = emptyList(),
+                        modifier = Modifier.fillMaxSize()
+                    )
+
+                }
+            }
         }
     }
 }
@@ -113,10 +120,10 @@ fun TransactionTabBar(
             Tab(
                 selected = isSelected,
                 text = {
-                   val color = if (isSelected)
-                       MaterialTheme.colorScheme.primary
-                   else MaterialTheme.colorScheme.onBackground
-                   Text(text = tab, color = color)
+                    val color = if (isSelected)
+                        MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.onBackground
+                    Text(text = tab, color = color)
                 },
                 onClick = {
                     scope.launch {
