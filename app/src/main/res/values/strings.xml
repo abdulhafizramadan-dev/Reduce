@@ -58,4 +58,8 @@
     <string name="menu_profile">Profile</string>
     <string name="filter">Filter</string>
     <string name="sort">Sort</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="about_reduce">Tentang Reduce</string>
+    <string name="exit">Keluar</string>
+    <string name="option">Opsi</string>
 </resources>
