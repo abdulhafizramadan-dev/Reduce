@@ -19,4 +19,4 @@ val products = listOf(
     Product(5, "Detergen", "Rinso Matic ", "Rp. 15.000 / pcs",R.drawable.rinso_matic_profes),
     Product(6, "Sabun mandi", "Dettol Bodywash", "Rp. 15.000 / pcs",R.drawable.dettol_bodywash),
     Product(7, "Sabun cuci tangan", "Dettol Handwash", "Rp. 15.000 / pcs",R.drawable.dettol_handwash),
-).shuffled()
+)

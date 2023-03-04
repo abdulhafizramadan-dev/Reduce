@@ -7,6 +7,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.ahr.reduce.navigation.destination.addressDetailComposable
+import com.ahr.reduce.navigation.destination.checkoutComposable
+import com.ahr.reduce.navigation.destination.detailComposable
 import com.ahr.reduce.navigation.destination.profileSettingsComposable
 import com.ahr.reduce.ui.screen.MainScreen
 
@@ -40,6 +42,14 @@ fun ReduceNavigation(
         addressDetailComposable(
             onNavigateUpClicked = { navController.navigateUp() },
             onSaveClicked = navigator.toHomeScreen
+        )
+        detailComposable(
+            onNavigateUpClicked = { navController.navigateUp() },
+            navigateToCheckoutScreen = navigator.toCheckoutScreen
+        )
+        checkoutComposable(
+            onNavigateUpClicked = { navController.navigateUp() },
+            navigateToHomeScreen = navigator.toHomeScreen
         )
     }
 }

@@ -18,9 +18,7 @@ fun MainNavigation(
     ) {
         homeComposable(
             modifier = modifier,
-            navigateToDetailScreen = {
-                navigator.toLoginScreen()
-            }
+            navigateToDetailScreen = navigator.toDetailProductScreen
         )
         marketComposable(
             modifier = modifier,

@@ -118,7 +118,7 @@ fun DetailProductOrder(
 ) {
 
     val filterOrders = listOf("Atur Sesukamu", "1 Pcs")
-    var selectedFilterOrder by  remember { mutableStateOf(filterOrders[1]) }
+    var selectedFilterOrder by  remember { mutableStateOf(filterOrders[0]) }
 
     Column(modifier = modifier.padding(16.dp)) {
         Text(
@@ -176,7 +176,7 @@ fun DetailProductButtonCart(
             ),
     ) {
         ReduceFilledButton(
-            title = R.string.add_to_cart,
+            title = R.string.order_now,
             onButtonClicked = onCartClicked,
             modifier = Modifier
                 .padding(horizontal = 16.dp)

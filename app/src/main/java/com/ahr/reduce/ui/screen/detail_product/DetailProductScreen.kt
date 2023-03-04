@@ -14,7 +14,10 @@ import com.ahr.reduce.ui.theme.ReduceTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailProductScreen(
-    modifier: Modifier = Modifier
+    productId: Int = 0,
+    modifier: Modifier = Modifier,
+    onNavigateUpClicked: () -> Unit,
+    navigateToCheckoutScreen: () -> Unit
 ) {
 
     var orderCount by remember { mutableStateOf(1) }
@@ -23,14 +26,14 @@ fun DetailProductScreen(
         topBar = {
             DetailTopAppBar(
                 title = R.string.detail_product,
-                onNavigationClicked = { }
+                onNavigationClicked = onNavigateUpClicked
             )
         },
         modifier = modifier
     ) { paddingValues ->
         DetailProductContent(
             product = products[0],
-            onCartClicked = { },
+            onCartClicked = navigateToCheckoutScreen,
             modifier = Modifier.padding(paddingValues),
             orderCount = orderCount,
             onOrderCountChanged = { orderCount = it }
@@ -42,6 +45,10 @@ fun DetailProductScreen(
 @Composable
 fun PreviewDetailScreen() {
     ReduceTheme {
-        DetailProductScreen()
+        DetailProductScreen(
+            productId = 0,
+            onNavigateUpClicked = {},
+            navigateToCheckoutScreen = {}
+        )
     }
 }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,11 +19,17 @@ import com.ahr.reduce.R
 import com.ahr.reduce.data.Product
 import com.ahr.reduce.data.products
 import com.ahr.reduce.ui.component.button.ReduceFilledButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun CheckoutContent(
     address: String,
-    modifier: Modifier = Modifier
+    onCheckoutClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+    snackbarHostState: SnackbarHostState,
+    scope: CoroutineScope
 ) {
 
     val scrollState = rememberScrollState()
@@ -36,7 +43,7 @@ fun CheckoutContent(
             CheckoutHeader(address = address)
             Divider(modifier = Modifier.padding(top = 12.dp))
             CheckProductList(
-                products = products.slice(1..2),
+                products = listOf(products[0]),
                 modifier = Modifier.padding(top = 16.dp)
             )
             Divider()
@@ -46,7 +53,12 @@ fun CheckoutContent(
             )
         }
 
-        CheckoutButton(total = "Rp. 15.000", onButtonClicked = {})
+        CheckoutButton(
+            total = "Rp. 15.000",
+            onButtonClicked = onCheckoutClicked,
+            snackbarHostState = snackbarHostState,
+            scope = scope
+        )
     }
 }
 
@@ -125,7 +137,9 @@ fun CheckoutLabelAndPrice(
 fun CheckoutButton(
     total: String,
     onButtonClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    snackbarHostState: SnackbarHostState,
+    scope: CoroutineScope
 ) {
     Row(
         modifier = modifier
@@ -156,7 +170,15 @@ fun CheckoutButton(
         }
         ReduceFilledButton(
             title = R.string.next,
-            onButtonClicked = onButtonClicked
+            onButtonClicked = {
+                scope.launch {
+                    snackbarHostState.showSnackbar(
+                        "Pesanan berhasil dibuat!"
+                    )
+                    delay(100)
+                    onButtonClicked()
+                }
+            }
         )
     }
 }
