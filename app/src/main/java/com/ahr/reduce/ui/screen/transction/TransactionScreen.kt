@@ -23,7 +23,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun TransactionScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToDetailTransactionScreen: (Int) -> Unit
 ) {
 
     val pagerState = rememberPagerState()
@@ -132,7 +133,8 @@ fun TransactionTabBar(
 fun PreviewTransactionScreen() {
     ReduceTheme {
         TransactionScreen(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            navigateToDetailTransactionScreen = {}
         )
     }
 }

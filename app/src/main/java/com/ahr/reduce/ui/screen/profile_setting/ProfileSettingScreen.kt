@@ -13,13 +13,15 @@ import com.ahr.reduce.util.Gender
 @ExperimentalMaterial3Api
 @Composable
 fun ProfileSettingScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigateUpClicked: () -> Unit,
+    onSaveClicked: () -> Unit
 ) {
     Scaffold(
         topBar = {
             DetailTopAppBar(
                 title = R.string.profile_settings,
-                onNavigationClicked = { }
+                onNavigationClicked = onNavigateUpClicked
             )
         },
         modifier = modifier
@@ -45,7 +47,7 @@ fun ProfileSettingScreen(
             onBirthDateChanged = { birthDate = it },
             gender = gender,
             onGenderChanged = { gender = it },
-            onSaveClicked = {},
+            onSaveClicked = onSaveClicked,
             modifier = Modifier.padding(paddingValues)
         )
     }
@@ -56,6 +58,9 @@ fun ProfileSettingScreen(
 @Composable
 fun PreviewProfileScreen() {
     ReduceTheme {
-        ProfileSettingScreen()
+        ProfileSettingScreen(
+            onNavigateUpClicked = {},
+            onSaveClicked = {}
+        )
     }
 }

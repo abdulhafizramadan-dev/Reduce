@@ -12,11 +12,13 @@ import com.ahr.reduce.ui.theme.ReduceTheme
 @ExperimentalMaterial3Api
 @Composable
 fun DetailAddressScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigateUpClicked: () -> Unit,
+    onSaveClicked: () -> Unit
 ) {
     Scaffold(
         topBar = {
-            DetailTopAppBar(title = R.string.detail_address, onNavigationClicked = { })
+            DetailTopAppBar(title = R.string.detail_address, onNavigationClicked = onNavigateUpClicked)
         },
         modifier = modifier
     ) { paddingValues ->
@@ -41,7 +43,7 @@ fun DetailAddressScreen(
             onProvinceChanged = { province = it },
             completeAddress = completeAddress,
             onCompleteAddressChanged = { completeAddress = it },
-            onSaveClicked = { },
+            onSaveClicked = onSaveClicked,
             modifier = Modifier.padding(paddingValues)
         )
     }
@@ -52,6 +54,9 @@ fun DetailAddressScreen(
 @Composable
 fun PreviewDetailAddressScreen() {
     ReduceTheme {
-        DetailAddressScreen()
+        DetailAddressScreen(
+            onNavigateUpClicked = {},
+            onSaveClicked = {}
+        )
     }
 }

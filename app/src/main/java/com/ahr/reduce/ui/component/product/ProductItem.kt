@@ -27,16 +27,17 @@ import com.ahr.reduce.ui.theme.ReduceTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductItem(
+    id: Int,
     type: String,
     name: String,
     photo: Int,
-    onProductClicked: () -> Unit,
+    onProductClicked: (Int) -> Unit,
     modifier: Modifier = Modifier,
     smallItem: Boolean = false,
 ) {
     OutlinedCard(
         shape = MaterialTheme.shapes.medium,
-        onClick = onProductClicked,
+        onClick = { onProductClicked(id) },
         colors = CardDefaults.outlinedCardColors(
             containerColor = MaterialTheme.colorScheme.background
         ),
@@ -102,6 +103,7 @@ fun ProductItem(
 fun PreviewProductItem() {
     ReduceTheme {
         ProductItem(
+            id = 1,
             type = "Minyak Goreng",
             name = "Bimoli",
             photo = R.drawable.bimoli,

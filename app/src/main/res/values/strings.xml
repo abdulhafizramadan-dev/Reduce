@@ -52,4 +52,8 @@
     <string name="label_ward">Kelurahan</string>
     <string name="label_regency">Kabupaten</string>
     <string name="label_province">Provinsi</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_market">Market</string>
+    <string name="menu_transaction">Transaction</string>
+    <string name="menu_profile">Profile</string>
 </resources>

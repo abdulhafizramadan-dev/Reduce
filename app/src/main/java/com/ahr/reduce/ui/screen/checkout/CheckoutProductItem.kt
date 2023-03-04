@@ -25,6 +25,7 @@ fun CheckoutProductItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         ProductItem(
+            id = product.id,
             type = product.type,
             name = product.name,
             photo = product.photo,

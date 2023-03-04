@@ -12,7 +12,9 @@ import com.ahr.reduce.ui.theme.ReduceTheme
 
 @Composable
 fun LoginScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToHomeScreen: () -> Unit,
+    navigateToRegisterScreen: () -> Unit
 ) {
 
     var email by remember { mutableStateOf("") }
@@ -24,8 +26,8 @@ fun LoginScreen(
         password = password,
         onPasswordChanged = { password = it },
         onForgotPassword = { },
-        onLoginClicked = { },
-        onRegisterClicked = { },
+        onLoginClicked = navigateToHomeScreen,
+        onRegisterClicked = navigateToRegisterScreen,
         modifier = modifier
     )
 }
@@ -34,6 +36,10 @@ fun LoginScreen(
 @Composable
 fun PreviewLoginScreen() {
     ReduceTheme {
-        LoginScreen(modifier = Modifier.fillMaxSize())
+        LoginScreen(
+            modifier = Modifier.fillMaxSize(),
+            navigateToHomeScreen = {},
+            navigateToRegisterScreen = {}
+        )
     }
 }

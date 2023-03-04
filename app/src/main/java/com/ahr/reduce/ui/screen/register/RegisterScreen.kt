@@ -11,7 +11,9 @@ import com.ahr.reduce.ui.theme.ReduceTheme
 
 @Composable
 fun RegisterScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToProfileSettingsScreen: () -> Unit,
+    navigateToLoginScreen: () -> Unit
 ) {
 
     var firstName by remember { mutableStateOf("") }
@@ -31,8 +33,8 @@ fun RegisterScreen(
         onPasswordChanged = { password = it },
         confirmPassword = confirmPassword,
         onConfirmPasswordChanged = { confirmPassword = it },
-        onRegisterClicked = { },
-        onLoginClicked = { },
+        onRegisterClicked = navigateToProfileSettingsScreen,
+        onLoginClicked = navigateToLoginScreen,
         modifier = modifier
     )
 
@@ -42,6 +44,9 @@ fun RegisterScreen(
 @Composable
 fun PreviewRegisterScreen() {
     ReduceTheme {
-        RegisterScreen()
+        RegisterScreen(
+            navigateToProfileSettingsScreen = {},
+            navigateToLoginScreen = {}
+        )
     }
 }

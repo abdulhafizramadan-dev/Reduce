@@ -25,6 +25,7 @@ import com.ahr.reduce.ui.theme.ReduceTheme
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
+    navigateToDetailScreen: (Int) -> Unit,
 ) {
 
     var searchQuery by remember { mutableStateOf("") }
@@ -58,10 +59,11 @@ fun HomeScreen(
             key = { it.id }
         ) { product ->
             ProductItem(
+                id = product.id,
                 type = product.type,
                 name = product.name,
                 photo = product.photo,
-                onProductClicked = { },
+                onProductClicked = navigateToDetailScreen,
                 smallItem = false
             )
         }
@@ -74,6 +76,6 @@ fun HomeScreen(
 @Composable
 fun PreviewHomeScreen() {
     ReduceTheme {
-        HomeScreen()
+        HomeScreen(navigateToDetailScreen = {})
     }
 }
