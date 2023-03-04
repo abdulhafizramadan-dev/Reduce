@@ -1,18 +1,20 @@
 package com.ahr.reduce.navigation.destination
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.ahr.reduce.navigation.Screen
+import com.ahr.reduce.ui.screen.market.MarketScreen
 
 fun NavGraphBuilder.marketComposable(
     navigateToDetailScreen: (Int) -> Unit,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     composable(route = Screen.MARKET.route) {
-//        HomeScreen(
-//            navigateToDetailScreen = navigateToDetailScreen,
-//            modifier = Modifier.fillMaxSize()
-//        )
+        MarketScreen(
+            navigateToDetailScreen = navigateToDetailScreen,
+            modifier = modifier.fillMaxSize()
+        )
     }
 }

@@ -56,4 +56,6 @@
     <string name="menu_market">Market</string>
     <string name="menu_transaction">Transaction</string>
     <string name="menu_profile">Profile</string>
+    <string name="filter">Filter</string>
+    <string name="sort">Sort</string>
 </resources>
