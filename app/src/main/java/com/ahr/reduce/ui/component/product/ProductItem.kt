@@ -46,7 +46,7 @@ fun ProductItem(
         val paddingStart = if (smallItem) 16 else 20
         val paddingTop = if (smallItem) 6 else 10
         val paddingEnd = if (smallItem) 16 else 20
-        val paddingBottom = if (smallItem) 12 else 24
+        val paddingBottom = if (smallItem) 12 else 20
         Column(
             modifier = Modifier.padding(
                 start = paddingStart.dp,
@@ -55,7 +55,7 @@ fun ProductItem(
                 bottom = paddingBottom.dp
             )
         ) {
-            val imageHeight = if (smallItem) 90 else 144
+            val imageHeight = if (smallItem) 90 else 124
             Image(
                 painter = painterResource(id = photo),
                 contentDescription = null,
