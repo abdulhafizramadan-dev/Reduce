@@ -29,14 +29,14 @@ fun HomeBanner(
     Box(
         modifier = modifier
             .background(MaterialTheme.colorScheme.primary)
-            .padding(bottom = 8.dp)
-            .padding(horizontal = 36.dp)
+            .padding(bottom = 8.dp, top = 8.dp)
+            .padding(horizontal = 24.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.banner_beranda),
             contentDescription = null,
             modifier = Modifier
-                .size(143.dp)
+                .size(150.dp)
                 .align(Alignment.BottomEnd),
         )
         Column(
