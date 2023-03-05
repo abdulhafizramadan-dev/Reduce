@@ -30,7 +30,7 @@ fun MainNavigation(
         )
         profileComposable(
             modifier = modifier,
-            onLogoutClicked = {}
+            onLogoutClicked = navigator.toLoginScreen
         )
     }
 }

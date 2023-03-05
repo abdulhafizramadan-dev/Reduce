@@ -53,7 +53,8 @@ fun ProfileContent(
                 "Alamat",
                 "Voucher",
             ),
-            modifier = Modifier.padding(horizontal = 16.dp)
+            onItemClicked = {},
+            modifier = Modifier.padding(horizontal = 16.dp),
         )
         Divider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f))
         ProfileContentActivity(
@@ -64,6 +65,7 @@ fun ProfileContent(
                 "Pusat Bantuan",
                 "Hubungi Kami",
             ),
+            onItemClicked = {},
             modifier = Modifier.padding(horizontal = 16.dp)
         )
         Divider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f))
@@ -76,7 +78,8 @@ fun ProfileContent(
                 "Pusat Bantuan",
                 "Bahasa",
             ),
-            modifier = Modifier.padding(horizontal = 16.dp)
+            onItemClicked = onLogoutClickedClicked,
+            modifier = Modifier.padding(horizontal = 16.dp),
         )
     }
 }
@@ -85,7 +88,8 @@ fun ProfileContent(
 fun ProfileContentActivity(
     @StringRes title: Int,
     activities: List<String>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onItemClicked: () -> Unit
 ) {
     Column(modifier = modifier) {
         Text(
@@ -97,7 +101,10 @@ fun ProfileContentActivity(
             modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
         )
         activities.forEach { activity ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.clickable { onItemClicked() }
+            ) {
                 Text(
                     text = activity,
                     style = MaterialTheme.typography.bodyLarge.copy(
@@ -106,7 +113,6 @@ fun ProfileContentActivity(
                     ),
                     modifier = Modifier
                         .weight(1f)
-                        .clickable { }
                         .padding(vertical = 8.dp)
                 )
                 Icon(imageVector = Icons.Filled.NavigateNext, contentDescription = null)
@@ -134,7 +140,8 @@ fun PreviewProfileContentActivity() {
             activities = listOf(
                 "Alamat",
                 "Voucher",
-            )
+            ),
+            onItemClicked = {}
         )
     }
 }

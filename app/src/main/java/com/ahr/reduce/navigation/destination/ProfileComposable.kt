@@ -16,7 +16,7 @@ fun NavGraphBuilder.profileComposable(
     composable(route = Screen.PROFILE.route) {
         ProfileScreen(
             modifier = modifier.fillMaxSize(),
-            onLogoutClickedClicked = {}
+            onLogoutClickedClicked = onLogoutClicked
         )
     }
 }

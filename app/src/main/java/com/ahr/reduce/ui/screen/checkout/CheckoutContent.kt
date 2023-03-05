@@ -169,7 +169,7 @@ fun CheckoutButton(
             )
         }
         ReduceFilledButton(
-            title = R.string.next,
+            title = R.string.checkout,
             onButtonClicked = {
                 scope.launch {
                     snackbarHostState.showSnackbar(
