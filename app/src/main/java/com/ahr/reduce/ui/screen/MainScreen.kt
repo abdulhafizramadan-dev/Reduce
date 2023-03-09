@@ -18,12 +18,14 @@ import com.ahr.reduce.R
 import com.ahr.reduce.data.BottomNavigationItem
 import com.ahr.reduce.navigation.MainNavigation
 import com.ahr.reduce.navigation.BottomBarScreen
+import com.ahr.reduce.navigation.Navigator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
+    navigator: Navigator,
 ) {
     Scaffold(
         bottomBar = {
@@ -33,6 +35,7 @@ fun MainScreen(
     ) { paddingValues ->
         MainNavigation(
             navController = navController,
+            navigator = navigator,
             modifier = Modifier.padding(paddingValues)
         )
     }

@@ -2,6 +2,7 @@ package com.ahr.reduce.navigation
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -21,51 +22,71 @@ fun ReduceNavigation(
     navController: NavHostController = rememberNavController()
 ) {
 
+    val navigator = remember(key1 = navController) {
+        Navigator(navController)
+    }
+
     NavHost(
         navController = navController,
         startDestination = Graph.Auth.route
     ) {
 
-        authNavGraph(navController = navController)
+        authNavGraph(navigator = navigator)
 
         composable(route = Graph.Main.route) {
-            MainScreen()
+            MainScreen(navigator = navigator)
         }
 
         composable(
             route = ProfileSettings.route,
             arguments = listOf(
-                navArgument(ProfileSettings.PREV_SCREEN_KEY) {
-                    type = NavType.StringType
-                    nullable = true
-                },
-                navArgument(ProfileSettings.NEXT_SCREEN_KEY) {
-                    type = NavType.StringType
-                    nullable = true
+                navArgument(ProfileSettings.IS_REGISTER_FLOW_KEY) {
+                    type = NavType.BoolType
                 }
             )
-        ) {  navBackStackEntry ->
-            val prevPage = navBackStackEntry.arguments?.getString(ProfileSettings.PREV_SCREEN_KEY)
-            val nextPage = navBackStackEntry.arguments?.getString(ProfileSettings.NEXT_SCREEN_KEY)
+        ) { navBackStackEntry ->
+            val isRegisterFlow = navBackStackEntry.arguments?.getBoolean(ProfileSettings.IS_REGISTER_FLOW_KEY) ?: false
             ProfileSettingScreen(
-                navController = navController,
-                prevPage = prevPage,
-                nextPage = nextPage,
+                navigator = navigator,
+                isRegisterFlow = isRegisterFlow
             )
         }
-        composable(route = DetailAddress.route) {
-            DetailAddressScreen(navController = navController)
+        composable(
+            route = DetailAddress.route,
+            arguments = listOf(
+                navArgument(DetailAddress.IS_REGISTER_FLOW_KEY) {
+                    type = NavType.BoolType
+                }
+            )
+        ) { navBackStackEntry ->
+            val isRegisterFlow = navBackStackEntry.arguments?.getBoolean(ProfileSettings.IS_REGISTER_FLOW_KEY) ?: false
+            DetailAddressScreen(
+                navigator = navigator,
+                isRegisterFlow = isRegisterFlow
+            )
         }
-        composable(route = DetailProduct.route) {
-            DetailProductScreen(navController = navController)
+        composable(
+            route = DetailProduct.route,
+            arguments = listOf(
+                navArgument(DetailProduct.PRODUCT_ID_KEY) {
+                    type = NavType.IntType
+                }
+            )
+        ) { navBackStackEntry ->
+            val productId = navBackStackEntry.arguments?.getInt(DetailProduct.PRODUCT_ID_KEY) ?: 1
+            DetailProductScreen(
+                navController = navController,
+                navigator  = navigator,
+                productId = productId
+            )
         }
         composable(route = Checkout.route) {
-            CheckoutScreen(navController = navController)
+            CheckoutScreen(navigator = navigator)
         }
     }
 }
 
 sealed class Graph(val route: String) {
-    object Auth : Graph("auth")
-    object Main : Graph("main")
+    object Auth : Graph("auth_graph")
+    object Main : Graph("main_graph")
 }

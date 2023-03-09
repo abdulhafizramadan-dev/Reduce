@@ -10,7 +10,7 @@ import com.ahr.reduce.ui.screen.login.LoginScreen
 import com.ahr.reduce.ui.screen.register.RegisterScreen
 
 fun NavGraphBuilder.authNavGraph(
-    navController: NavHostController
+    navigator: Navigator
 ) {
     navigation(
         startDestination = AuthScreen.Login.route,
@@ -18,13 +18,13 @@ fun NavGraphBuilder.authNavGraph(
     ) {
         composable(route = AuthScreen.Login.route) {
             LoginScreen(
-                navController = navController,
+                navigator = navigator,
                 modifier = Modifier.fillMaxSize()
             )
         }
         composable(route = AuthScreen.Register.route) {
             RegisterScreen(
-                navController = navController,
+                navigator = navigator,
                 modifier = Modifier.fillMaxSize()
             )
         }

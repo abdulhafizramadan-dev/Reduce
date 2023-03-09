@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.R
 import com.ahr.reduce.ui.component.topappbar.DetailTopAppBar
 import com.ahr.reduce.data.products
+import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.ui.theme.ReduceTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -19,6 +20,7 @@ fun DetailProductScreen(
     modifier: Modifier = Modifier,
     productId: Int = 0,
     navController: NavHostController,
+    navigator: Navigator,
 ) {
 
     var orderCount by remember { mutableStateOf(1) }
@@ -36,7 +38,7 @@ fun DetailProductScreen(
     ) { paddingValues ->
         DetailProductContent(
             product = products[0],
-            onCartClicked = {},
+            onCartClicked = navigator.navigateToCheckout,
             modifier = Modifier.padding(paddingValues),
             orderCount = orderCount,
             onOrderCountChanged = { orderCount = it }
@@ -48,9 +50,11 @@ fun DetailProductScreen(
 @Composable
 fun PreviewDetailScreen() {
     ReduceTheme {
+        val navController = rememberNavController()
         DetailProductScreen(
             productId = 0,
-            navController = rememberNavController()
+            navController = navController,
+            navigator = Navigator(navController)
         )
     }
 }

@@ -13,32 +13,30 @@ sealed class BottomBarScreen(val route: String) {
 }
 
 sealed class IndependentScreen(val route: String) {
-    object ProfileSettings : IndependentScreen(
-        route = "profile_settings?prev_screen={prev_screen}&next_screen={next_screen}"
-    ) {
+    object ProfileSettings : IndependentScreen(route = "profile_settings?is_register_flow={is_register_flow}") {
+        const val IS_REGISTER_FLOW_KEY = "is_register_flow"
         fun getRoute(
-            prevScreen: String? = null,
-            nextScreen: String? = null
+            isRegisterFlow: Boolean = false,
         ): String {
-            return "profile_settings?prev_screen=$prevScreen&next_screen=$nextScreen"
+            return "profile_settings?is_register_flow=$isRegisterFlow"
+        }
+    }
+    object DetailAddress : IndependentScreen(route = "detail_address?is_register_flow={is_register_flow}") {
+        const val IS_REGISTER_FLOW_KEY = "is_register_flow"
+        fun getRoute(
+            isRegisterFlow: Boolean = false,
+        ): String {
+            return "detail_address?is_register_flow=$isRegisterFlow"
+        }
+    }
+    object DetailProduct : IndependentScreen("detail_product/{product_id}") {
+        const val PRODUCT_ID_KEY = "product_id"
+        fun getRoute(
+            productId: Int,
+        ): String {
+            return "detail_product/$productId"
         }
 
-        const val PREV_SCREEN_KEY = "prev_screen"
-        const val NEXT_SCREEN_KEY = "next_screen"
     }
-    object DetailAddress : IndependentScreen(
-        route = "detail_address?prev_screen={prev_screen}&next_screen={next_screen}"
-    ) {
-        fun getRoute(
-            prevScreen: String? = null,
-            nextScreen: String? = null
-        ): String {
-            return "detail_address/?prev_screen=$prevScreen&next_screen=$nextScreen"
-        }
-
-        const val PREV_SCREEN_KEY = "prev_screen"
-        const val NEXT_SCREEN_KEY = "next_screen"
-    }
-    object DetailProduct : IndependentScreen("detail_product/{product_id}")
     object Checkout : IndependentScreen("checkout")
 }

@@ -5,15 +5,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.ahr.reduce.navigation.AuthScreen
-import com.ahr.reduce.navigation.IndependentScreen
-import com.ahr.reduce.navigation.IndependentScreen.ProfileSettings
+import com.ahr.reduce.navigation.AuthScreen.*
+import com.ahr.reduce.navigation.Graph.*
+import com.ahr.reduce.navigation.IndependentScreen.*
+import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.ui.theme.ReduceTheme
 
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navigator: Navigator
 ) {
 
     var firstName by remember { mutableStateOf("") }
@@ -21,15 +22,6 @@ fun RegisterScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
-
-    val registerClicked: () -> Unit = {
-        navController.popBackStack()
-        val profileSettingsRoute = ProfileSettings.getRoute(
-            prevScreen = AuthScreen.Register.route,
-            nextScreen = IndependentScreen.DetailAddress.route
-        )
-        navController.navigate(profileSettingsRoute)
-    }
 
     RegisterContent(
         firstName = firstName,
@@ -42,8 +34,10 @@ fun RegisterScreen(
         onPasswordChanged = { password = it },
         confirmPassword = confirmPassword,
         onConfirmPasswordChanged = { confirmPassword = it },
-        onRegisterClicked = registerClicked,
-        onLoginClicked = { navController.navigateUp() },
+        onRegisterClicked = {
+            navigator.navigateToProfileSettingsRegisterFlow()
+        },
+        onLoginClicked = navigator.navigateUp,
         modifier = modifier
     )
 
@@ -53,8 +47,9 @@ fun RegisterScreen(
 @Composable
 fun PreviewRegisterScreen() {
     ReduceTheme {
+        val navController = rememberNavController()
         RegisterScreen(
-            navController = rememberNavController()
+            navigator = Navigator(navController)
         )
     }
 }

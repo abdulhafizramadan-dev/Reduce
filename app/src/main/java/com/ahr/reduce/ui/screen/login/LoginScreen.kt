@@ -12,12 +12,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.navigation.Graph
 import com.ahr.reduce.navigation.AuthScreen
+import com.ahr.reduce.navigation.AuthScreen.Login
+import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.ui.theme.ReduceTheme
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navigator: Navigator
 ) {
 
     var email by remember { mutableStateOf("") }
@@ -30,12 +32,9 @@ fun LoginScreen(
         onPasswordChanged = { password = it },
         onForgotPassword = { },
         onLoginClicked = {
-            navController.popBackStack()
-            navController.navigate(Graph.Main.route)
+            navigator.navigateToMainGraph(Login.route)
         },
-        onRegisterClicked = {
-            navController.navigate(AuthScreen.Register.route)
-        },
+        onRegisterClicked = navigator.navigateToRegisterScreen,
         modifier = modifier
     )
 }
@@ -44,9 +43,10 @@ fun LoginScreen(
 @Composable
 fun PreviewLoginScreen() {
     ReduceTheme {
+        val navController = rememberNavController()
         LoginScreen(
             modifier = Modifier.fillMaxSize(),
-            navController = rememberNavController()
+            navigator = Navigator(navController)
         )
     }
 }

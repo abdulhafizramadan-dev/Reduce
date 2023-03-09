@@ -8,6 +8,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.R
+import com.ahr.reduce.navigation.Graph
+import com.ahr.reduce.navigation.IndependentScreen
+import com.ahr.reduce.navigation.IndependentScreen.DetailAddress
+import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.ui.component.topappbar.DetailTopAppBar
 import com.ahr.reduce.ui.theme.ReduceTheme
 
@@ -15,26 +19,34 @@ import com.ahr.reduce.ui.theme.ReduceTheme
 @Composable
 fun DetailAddressScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navigator: Navigator,
+    isRegisterFlow: Boolean
 ) {
     Scaffold(
         topBar = {
             DetailTopAppBar(
                 title = R.string.detail_address,
-                onNavigationClicked = {
-                    navController.navigateUp()
-                }
+                onNavigationClicked = navigator.navigateUp
             )
         },
         modifier = modifier
     ) { paddingValues ->
 
-        var streetName by remember { mutableStateOf("Jl. Mawar Blok A12 No.99") }
-        var ward by remember { mutableStateOf("Cinta") }
-        var regency by remember { mutableStateOf("Curug") }
-        var province by remember { mutableStateOf("Tangerang") }
-        var subdistrict by remember { mutableStateOf("Jawa Barat") }
-        var completeAddress by remember { mutableStateOf("Jl.Mawar Blok A12 No.99, Kel. Cinta, Kec. Curug, Kabupaten Tangerang, Jawa Barat 1189") }
+        var streetName by remember { mutableStateOf("") }
+        var ward by remember { mutableStateOf("") }
+        var regency by remember { mutableStateOf("") }
+        var province by remember { mutableStateOf("") }
+        var subdistrict by remember { mutableStateOf("") }
+        var completeAddress by remember { mutableStateOf("") }
+
+        val onSaveClicked: () -> Unit = {
+            if (!isRegisterFlow) {
+                navigator.navigateUp()
+            } else {
+                navigator.navigateToMainGraph(DetailAddress.route)
+            }
+        }
+
 
         DetailAddressContent(
             streetName = streetName,
@@ -49,7 +61,7 @@ fun DetailAddressScreen(
             onProvinceChanged = { province = it },
             completeAddress = completeAddress,
             onCompleteAddressChanged = { completeAddress = it },
-            onSaveClicked = {},
+            onSaveClicked = onSaveClicked,
             modifier = Modifier.padding(paddingValues)
         )
     }
@@ -60,8 +72,10 @@ fun DetailAddressScreen(
 @Composable
 fun PreviewDetailAddressScreen() {
     ReduceTheme {
+        val navController = rememberNavController()
         DetailAddressScreen(
-            navController = rememberNavController()
+            isRegisterFlow = false,
+            navigator = Navigator(navController)
         )
     }
 }

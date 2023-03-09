@@ -8,6 +8,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.R
+import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.ui.component.topappbar.DetailTopAppBar
 import com.ahr.reduce.ui.theme.ReduceTheme
 import com.ahr.reduce.util.Gender
@@ -15,18 +16,15 @@ import com.ahr.reduce.util.Gender
 @ExperimentalMaterial3Api
 @Composable
 fun ProfileSettingScreen(
+    navigator: Navigator,
     modifier: Modifier = Modifier,
-    navController: NavHostController,
-    prevPage: String? = null,
-    nextPage: String? = null
+    isRegisterFlow: Boolean = false,
 ) {
     Scaffold(
         topBar = {
             DetailTopAppBar(
                 title = R.string.profile_settings,
-                onNavigationClicked = {
-                    navController.navigateUp()
-                }
+                onNavigationClicked = navigator.navigateUp
             )
         },
         modifier = modifier
@@ -39,12 +37,10 @@ fun ProfileSettingScreen(
         var birthDate by remember { mutableStateOf("") }
         var gender by remember { mutableStateOf(Gender.MAN.gender) }
 
-        val onSaveClicked: () -> Unit = {
-            if (prevPage == null && nextPage == null) {
-                navController.navigateUp()
-            } else {
-                navController.navigate(nextPage.toString())
-            }
+        val onSaveClicked: () -> Unit = if (!isRegisterFlow) {
+            navigator.navigateUp
+        } else {
+            navigator.navigateToDetailAddressRegisterFlow
         }
 
         ProfileSettingContent(
@@ -71,8 +67,9 @@ fun ProfileSettingScreen(
 @Composable
 fun PreviewProfileScreen() {
     ReduceTheme {
+        val navController = rememberNavController()
         ProfileSettingScreen(
-            navController = rememberNavController()
+            navigator = Navigator(navController)
         )
     }
 }

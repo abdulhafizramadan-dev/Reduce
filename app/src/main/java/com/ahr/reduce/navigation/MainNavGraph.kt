@@ -16,7 +16,8 @@ import com.ahr.reduce.ui.screen.transction.TransactionScreen
 @Composable
 fun MainNavigation(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigator: Navigator
 ) {
     NavHost(
         navController = navController,
@@ -24,7 +25,7 @@ fun MainNavigation(
     ) {
         composable(route = BottomBarScreen.Home.route) {
             HomeScreen(
-                navigateToDetailScreen = {},
+                navigator = navigator,
                 modifier = modifier.fillMaxSize()
             )
         }

@@ -18,17 +18,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.ui.component.product.ProductItem
 import com.ahr.reduce.data.products
+import com.ahr.reduce.navigation.Graph
+import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.ui.theme.ReduceTheme
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    navigateToDetailScreen: (Int) -> Unit,
+    navigator: Navigator,
 ) {
 
     var searchQuery by remember { mutableStateOf("") }
+
+    val navigateToDetailProduct: (Int) -> Unit = { productId ->
+        navigator.navigateToDetailProduct(productId)
+    }
 
     LazyVerticalGrid(
         columns = GridCells.Adaptive(152.dp),
@@ -63,7 +71,7 @@ fun HomeScreen(
                 type = product.type,
                 name = product.name,
                 photo = product.photo,
-                onProductClicked = navigateToDetailScreen,
+                onProductClicked = navigateToDetailProduct,
                 smallItem = false
             )
         }
@@ -76,6 +84,7 @@ fun HomeScreen(
 @Composable
 fun PreviewHomeScreen() {
     ReduceTheme {
-        HomeScreen(navigateToDetailScreen = {})
+        val navController = rememberNavController()
+        HomeScreen(navigator = Navigator(navController))
     }
 }
