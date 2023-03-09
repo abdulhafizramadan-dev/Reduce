@@ -5,6 +5,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.R
 import com.ahr.reduce.ui.component.topappbar.DetailTopAppBar
 import com.ahr.reduce.ui.theme.ReduceTheme
@@ -14,14 +16,17 @@ import com.ahr.reduce.util.Gender
 @Composable
 fun ProfileSettingScreen(
     modifier: Modifier = Modifier,
-    onNavigateUpClicked: () -> Unit,
-    onSaveClicked: () -> Unit
+    navController: NavHostController,
+    prevPage: String? = null,
+    nextPage: String? = null
 ) {
     Scaffold(
         topBar = {
             DetailTopAppBar(
                 title = R.string.profile_settings,
-                onNavigationClicked = onNavigateUpClicked
+                onNavigationClicked = {
+                    navController.navigateUp()
+                }
             )
         },
         modifier = modifier
@@ -33,6 +38,14 @@ fun ProfileSettingScreen(
         var telephone by remember { mutableStateOf("") }
         var birthDate by remember { mutableStateOf("") }
         var gender by remember { mutableStateOf(Gender.MAN.gender) }
+
+        val onSaveClicked: () -> Unit = {
+            if (prevPage == null && nextPage == null) {
+                navController.navigateUp()
+            } else {
+                navController.navigate(nextPage.toString())
+            }
+        }
 
         ProfileSettingContent(
             firstName = firstName,
@@ -59,8 +72,7 @@ fun ProfileSettingScreen(
 fun PreviewProfileScreen() {
     ReduceTheme {
         ProfileSettingScreen(
-            onNavigateUpClicked = {},
-            onSaveClicked = {}
+            navController = rememberNavController()
         )
     }
 }

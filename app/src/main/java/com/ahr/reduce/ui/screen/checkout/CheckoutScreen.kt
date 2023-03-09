@@ -8,6 +8,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.R
 import com.ahr.reduce.ui.component.topappbar.DetailTopAppBar
 import com.ahr.reduce.ui.theme.ReduceTheme
@@ -16,8 +18,7 @@ import com.ahr.reduce.ui.theme.ReduceTheme
 @Composable
 fun CheckoutScreen(
     modifier: Modifier = Modifier,
-    onNavigateUpClicked: () -> Unit,
-    navigateToHomeScreen: () -> Unit
+    navController: NavHostController
 ) {
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -27,7 +28,9 @@ fun CheckoutScreen(
         topBar = {
             DetailTopAppBar(
                 title = R.string.checkout,
-                onNavigationClicked = onNavigateUpClicked
+                onNavigationClicked = {
+                    navController.navigateUp()
+                }
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -38,7 +41,7 @@ fun CheckoutScreen(
             modifier = Modifier.padding(paddingValues),
             snackbarHostState = snackbarHostState,
             scope = scope,
-            onCheckoutClicked = navigateToHomeScreen
+            onCheckoutClicked = {}
         )
     }
 }
@@ -48,8 +51,7 @@ fun CheckoutScreen(
 fun PreviewCheckoutScreen() {
     ReduceTheme {
         CheckoutScreen(
-            onNavigateUpClicked = {},
-            navigateToHomeScreen = {}
+            navController = rememberNavController()
         )
     }
 }

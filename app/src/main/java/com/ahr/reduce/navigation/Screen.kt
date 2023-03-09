@@ -1,23 +1,44 @@
 package com.ahr.reduce.navigation
 
-enum class Screen(val route: String) {
+sealed class AuthScreen(val route: String) {
+    object Login : AuthScreen("login")
+    object Register : AuthScreen("register")
+}
 
-    LOGIN("login"),
-    REGISTER("register"),
-    PROFILE_SETTINGS("profileSettings"),
-    DETAIL_ADDRESS("detailAddress"),
-    DETAIL_PRODUCT("detailProduct/{productId}"),
-    CHECKOUT("checkout"),
+sealed class BottomBarScreen(val route: String) {
+    object Home : BottomBarScreen("home")
+    object Market : BottomBarScreen("market")
+    object Transaction : BottomBarScreen("transaction")
+    object Profile : BottomBarScreen("profile")
+}
 
+sealed class IndependentScreen(val route: String) {
+    object ProfileSettings : IndependentScreen(
+        route = "profile_settings?prev_screen={prev_screen}&next_screen={next_screen}"
+    ) {
+        fun getRoute(
+            prevScreen: String? = null,
+            nextScreen: String? = null
+        ): String {
+            return "profile_settings?prev_screen=$prevScreen&next_screen=$nextScreen"
+        }
 
-    AUTH_ROUTE("authRoute"),
-    MAIN_ROUTE("mainRoute"),
+        const val PREV_SCREEN_KEY = "prev_screen"
+        const val NEXT_SCREEN_KEY = "next_screen"
+    }
+    object DetailAddress : IndependentScreen(
+        route = "detail_address?prev_screen={prev_screen}&next_screen={next_screen}"
+    ) {
+        fun getRoute(
+            prevScreen: String? = null,
+            nextScreen: String? = null
+        ): String {
+            return "detail_address/?prev_screen=$prevScreen&next_screen=$nextScreen"
+        }
 
-    MAIN("main"),
-
-    // Bottom Navigation
-    HOME("home"),
-    MARKET("market"),
-    TRANSACTION("transaction"),
-    PROFILE("profile"),
+        const val PREV_SCREEN_KEY = "prev_screen"
+        const val NEXT_SCREEN_KEY = "next_screen"
+    }
+    object DetailProduct : IndependentScreen("detail_product/{product_id}")
+    object Checkout : IndependentScreen("checkout")
 }

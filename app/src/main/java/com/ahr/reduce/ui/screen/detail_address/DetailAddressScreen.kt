@@ -5,6 +5,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.R
 import com.ahr.reduce.ui.component.topappbar.DetailTopAppBar
 import com.ahr.reduce.ui.theme.ReduceTheme
@@ -13,12 +15,16 @@ import com.ahr.reduce.ui.theme.ReduceTheme
 @Composable
 fun DetailAddressScreen(
     modifier: Modifier = Modifier,
-    onNavigateUpClicked: () -> Unit,
-    onSaveClicked: () -> Unit
+    navController: NavHostController
 ) {
     Scaffold(
         topBar = {
-            DetailTopAppBar(title = R.string.detail_address, onNavigationClicked = onNavigateUpClicked)
+            DetailTopAppBar(
+                title = R.string.detail_address,
+                onNavigationClicked = {
+                    navController.navigateUp()
+                }
+            )
         },
         modifier = modifier
     ) { paddingValues ->
@@ -43,7 +49,7 @@ fun DetailAddressScreen(
             onProvinceChanged = { province = it },
             completeAddress = completeAddress,
             onCompleteAddressChanged = { completeAddress = it },
-            onSaveClicked = onSaveClicked,
+            onSaveClicked = {},
             modifier = Modifier.padding(paddingValues)
         )
     }
@@ -55,8 +61,7 @@ fun DetailAddressScreen(
 fun PreviewDetailAddressScreen() {
     ReduceTheme {
         DetailAddressScreen(
-            onNavigateUpClicked = {},
-            onSaveClicked = {}
+            navController = rememberNavController()
         )
     }
 }

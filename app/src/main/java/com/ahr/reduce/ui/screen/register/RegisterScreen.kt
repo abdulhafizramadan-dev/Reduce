@@ -1,19 +1,19 @@
 package com.ahr.reduce.ui.screen.register
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.ahr.reduce.navigation.AuthScreen
+import com.ahr.reduce.navigation.IndependentScreen
+import com.ahr.reduce.navigation.IndependentScreen.ProfileSettings
 import com.ahr.reduce.ui.theme.ReduceTheme
 
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    navigateToProfileSettingsScreen: () -> Unit,
-    navigateToLoginScreen: () -> Unit
+    navController: NavHostController
 ) {
 
     var firstName by remember { mutableStateOf("") }
@@ -21,6 +21,15 @@ fun RegisterScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+
+    val registerClicked: () -> Unit = {
+        navController.popBackStack()
+        val profileSettingsRoute = ProfileSettings.getRoute(
+            prevScreen = AuthScreen.Register.route,
+            nextScreen = IndependentScreen.DetailAddress.route
+        )
+        navController.navigate(profileSettingsRoute)
+    }
 
     RegisterContent(
         firstName = firstName,
@@ -33,8 +42,8 @@ fun RegisterScreen(
         onPasswordChanged = { password = it },
         confirmPassword = confirmPassword,
         onConfirmPasswordChanged = { confirmPassword = it },
-        onRegisterClicked = navigateToProfileSettingsScreen,
-        onLoginClicked = navigateToLoginScreen,
+        onRegisterClicked = registerClicked,
+        onLoginClicked = { navController.navigateUp() },
         modifier = modifier
     )
 
@@ -45,8 +54,7 @@ fun RegisterScreen(
 fun PreviewRegisterScreen() {
     ReduceTheme {
         RegisterScreen(
-            navigateToProfileSettingsScreen = {},
-            navigateToLoginScreen = {}
+            navController = rememberNavController()
         )
     }
 }

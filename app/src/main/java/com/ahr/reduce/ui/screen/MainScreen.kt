@@ -17,15 +17,13 @@ import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.R
 import com.ahr.reduce.data.BottomNavigationItem
 import com.ahr.reduce.navigation.MainNavigation
-import com.ahr.reduce.navigation.Navigator
-import com.ahr.reduce.navigation.Screen
+import com.ahr.reduce.navigation.BottomBarScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    navigator: Navigator,
 ) {
     Scaffold(
         bottomBar = {
@@ -35,7 +33,6 @@ fun MainScreen(
     ) { paddingValues ->
         MainNavigation(
             navController = navController,
-            navigator = navigator,
             modifier = Modifier.padding(paddingValues)
         )
     }
@@ -50,22 +47,22 @@ fun MainBottomBar(
         BottomNavigationItem(
             title = R.string.menu_home,
             icon = Icons.Filled.Home,
-            screen = Screen.HOME
+            screen = BottomBarScreen.Home
         ),
         BottomNavigationItem(
             title = R.string.menu_market,
             icon = Icons.Filled.LocalMall,
-            screen = Screen.MARKET
+            screen = BottomBarScreen.Market
         ),
         BottomNavigationItem(
             title = R.string.menu_transaction,
             icon = Icons.Filled.ReceiptLong,
-            screen = Screen.TRANSACTION
+            screen = BottomBarScreen.Transaction
         ),
         BottomNavigationItem(
             title = R.string.menu_profile,
             icon = Icons.Filled.Person,
-            screen = Screen.PROFILE
+            screen = BottomBarScreen.Profile
         ),
     )
 
