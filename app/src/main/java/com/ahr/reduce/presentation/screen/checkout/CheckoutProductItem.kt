@@ -10,8 +10,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ahr.reduce.data.Product
-import com.ahr.reduce.data.products
+import com.ahr.reduce.domain.data.Product
+import com.ahr.reduce.domain.data.products
 import com.ahr.reduce.presentation.component.product.ProductItem
 import com.ahr.reduce.ui.theme.ReduceTheme
 

@@ -9,7 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.R
-import com.ahr.reduce.data.products
+import com.ahr.reduce.domain.data.products
 import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.presentation.component.topappbar.DetailTopAppBar
 import com.ahr.reduce.ui.theme.ReduceTheme

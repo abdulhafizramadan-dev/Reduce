@@ -16,8 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ahr.reduce.R
-import com.ahr.reduce.data.Product
-import com.ahr.reduce.data.products
+import com.ahr.reduce.domain.data.Product
+import com.ahr.reduce.domain.data.products
 import com.ahr.reduce.presentation.component.button.ReduceFilledButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay

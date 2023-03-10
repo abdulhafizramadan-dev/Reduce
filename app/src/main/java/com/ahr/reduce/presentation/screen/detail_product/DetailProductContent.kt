@@ -20,7 +20,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ahr.reduce.R
-import com.ahr.reduce.data.Product
+import com.ahr.reduce.domain.data.Product
 import com.ahr.reduce.presentation.component.button.ReduceFilledButton
 import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextField
 

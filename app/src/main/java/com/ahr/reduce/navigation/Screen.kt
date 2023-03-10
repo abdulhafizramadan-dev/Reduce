@@ -39,5 +39,7 @@ sealed class IndependentScreen(val route: String) {
         }
 
     }
+
+    object Cart : IndependentScreen("cart")
     object Checkout : IndependentScreen("checkout")
 }

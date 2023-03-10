@@ -1,4 +1,4 @@
-package com.ahr.reduce.data
+package com.ahr.reduce.domain.data
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector

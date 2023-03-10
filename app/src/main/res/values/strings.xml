@@ -74,4 +74,6 @@
     <string name="skip">Skip</string>
     <string name="start">Mulai</string>
     <string name="furthermore">Selanjutnya</string>
+    <string name="cart">Keranjang</string>
+    <string name="order">Pesan(%d)</string>
 </resources>

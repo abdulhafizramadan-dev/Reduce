@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ahr.reduce.R
-import com.ahr.reduce.data.Product
+import com.ahr.reduce.domain.data.Product
 
 @Composable
 fun TransactionContent(

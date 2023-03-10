@@ -15,7 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.R
-import com.ahr.reduce.data.BottomNavigationItem
+import com.ahr.reduce.domain.data.BottomNavigationItem
 import com.ahr.reduce.navigation.MainNavigation
 import com.ahr.reduce.navigation.BottomBarScreen
 import com.ahr.reduce.navigation.Navigator

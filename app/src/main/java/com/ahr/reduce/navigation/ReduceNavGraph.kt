@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.ahr.reduce.navigation.IndependentScreen.*
 import com.ahr.reduce.presentation.screen.MainScreen
+import com.ahr.reduce.presentation.screen.cart.CartScreen
 import com.ahr.reduce.presentation.screen.checkout.CheckoutScreen
 import com.ahr.reduce.presentation.screen.detail_address.DetailAddressScreen
 import com.ahr.reduce.presentation.screen.detail_product.DetailProductScreen
@@ -84,6 +85,9 @@ fun ReduceNavigation(
                 navigator  = navigator,
                 productId = productId
             )
+        }
+        composable(route = Cart.route) {
+            CartScreen(navigator = navigator)
         }
         composable(route = Checkout.route) {
             CheckoutScreen(navigator = navigator)

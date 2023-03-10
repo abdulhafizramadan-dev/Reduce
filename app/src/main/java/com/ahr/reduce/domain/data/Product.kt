@@ -1,4 +1,4 @@
-package com.ahr.reduce.data
+package com.ahr.reduce.domain.data
 
 import com.ahr.reduce.R
 
