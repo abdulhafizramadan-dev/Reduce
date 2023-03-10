@@ -13,13 +13,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.data.products
+import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.presentation.component.product.ProductItem
 import com.ahr.reduce.ui.theme.ReduceTheme
 
 @Composable
 fun MarketScreen(
     modifier: Modifier = Modifier,
+    navigator: Navigator,
 ) {
 
     var searchQuery by remember { mutableStateOf("") }
@@ -53,7 +56,9 @@ fun MarketScreen(
                 type = product.type,
                 name = product.name,
                 photo = product.photo,
-                onProductClicked = {},
+                onProductClicked = {
+                    navigator.navigateToDetailProduct(product.id)
+                },
                 smallItem = false
             )
         }
@@ -64,6 +69,7 @@ fun MarketScreen(
 @Composable
 fun PreviewMarketScreen() {
     ReduceTheme {
-        MarketScreen()
+        val navController = rememberNavController()
+        MarketScreen(navigator = Navigator(navController))
     }
 }

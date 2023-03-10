@@ -31,6 +31,7 @@ fun MainNavigation(
         }
         composable(route = BottomBarScreen.Market.route) {
             MarketScreen(
+                navigator = navigator,
                 modifier = modifier.fillMaxSize()
             )
         }
