@@ -10,11 +10,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.ahr.reduce.navigation.IndependentScreen.*
-import com.ahr.reduce.ui.screen.MainScreen
-import com.ahr.reduce.ui.screen.checkout.CheckoutScreen
-import com.ahr.reduce.ui.screen.detail_address.DetailAddressScreen
-import com.ahr.reduce.ui.screen.detail_product.DetailProductScreen
-import com.ahr.reduce.ui.screen.profile_setting.ProfileSettingScreen
+import com.ahr.reduce.presentation.screen.MainScreen
+import com.ahr.reduce.presentation.screen.checkout.CheckoutScreen
+import com.ahr.reduce.presentation.screen.detail_address.DetailAddressScreen
+import com.ahr.reduce.presentation.screen.detail_product.DetailProductScreen
+import com.ahr.reduce.presentation.screen.profile_setting.ProfileSettingScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -7,10 +7,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.ahr.reduce.ui.screen.home.HomeScreen
-import com.ahr.reduce.ui.screen.market.MarketScreen
-import com.ahr.reduce.ui.screen.profile.ProfileScreen
-import com.ahr.reduce.ui.screen.transction.TransactionScreen
+import com.ahr.reduce.presentation.screen.home.HomeScreen
+import com.ahr.reduce.presentation.screen.market.MarketScreen
+import com.ahr.reduce.presentation.screen.profile.ProfileScreen
+import com.ahr.reduce.presentation.screen.transction.TransactionScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,13 +31,11 @@ fun MainNavigation(
         }
         composable(route = BottomBarScreen.Market.route) {
             MarketScreen(
-                navigateToDetailScreen = {},
                 modifier = modifier.fillMaxSize()
             )
         }
         composable(route = BottomBarScreen.Transaction.route) {
             TransactionScreen(
-                navigateToDetailTransactionScreen = {},
                 modifier = modifier.fillMaxSize()
             )
         }
