@@ -21,7 +21,8 @@ import com.ahr.reduce.presentation.screen.profile_setting.ProfileSettingScreen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReduceNavigation(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    startDestination: String
 ) {
 
     val navigator = remember(key1 = navController) {
@@ -30,7 +31,7 @@ fun ReduceNavigation(
 
     NavHost(
         navController = navController,
-        startDestination = OnBoarding.route
+        startDestination = startDestination
     ) {
 
         authNavGraph(navigator = navigator)

@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.R
 import com.ahr.reduce.domain.data.OnBoarding
@@ -33,7 +34,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnBoardingScreen(
     navigator: Navigator,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onBoardingViewModel: OnBoardingViewModel = hiltViewModel()
 ) {
 
     val scrollState = rememberScrollState()
@@ -101,6 +103,7 @@ fun OnBoardingScreen(
         }
         val onButtonClicked: () -> Unit = {
             if (endOfOnBoarding) {
+                onBoardingViewModel.saveOnBoardingState(true)
                 navigator.navigateToAuthGraph(IndependentScreen.OnBoarding.route)
             } else {
                 scope.launch {
