@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">Reduce</string>
 
+    <string name="on_boarding_title_1">Pembelian Mudah</string>
+    <string name="on_boarding_title_2">Lacak Semuanya</string>
+    <string name="on_boarding_title_3">Enjoy Everyday!</string>
+
+    <string name="on_boarding_description_1">Dapatkan kemudahan untuk membeli semua jenis isi ulang produk kemasan Anda hanya dengan beberapa ketukan. Pesanan Anda menjadi cepat dan efisien. Selamat menikmati!</string>
+    <string name="on_boarding_description_2">Perjalanan pembelian isi ulang produk Anda dimulai di sini. Kami di sini untuk membantu Anda melacak dan menangani setiap pembelian isi ulang produk 24/Hari</string>
+    <string name="on_boarding_description_3">Jadilah bijak, dan temukan pengalaman isi ulang produk kemasan terbaik Anda bersama kami. Semuanya ada di tangan Anda!</string>
+
     <string name="register">Register</string>
     <string name="register_title">Create Your Account</string>
     <string name="register_subtitle">Create an account to get started</string>
@@ -63,4 +71,7 @@
     <string name="exit">Keluar</string>
     <string name="option">Opsi</string>
     <string name="order_now">Pesan Sekarang</string>
+    <string name="skip">Skip</string>
+    <string name="start">Mulai</string>
+    <string name="furthermore">Selanjutnya</string>
 </resources>

@@ -14,6 +14,7 @@ import com.ahr.reduce.presentation.screen.MainScreen
 import com.ahr.reduce.presentation.screen.checkout.CheckoutScreen
 import com.ahr.reduce.presentation.screen.detail_address.DetailAddressScreen
 import com.ahr.reduce.presentation.screen.detail_product.DetailProductScreen
+import com.ahr.reduce.presentation.screen.onboarding.OnBoardingScreen
 import com.ahr.reduce.presentation.screen.profile_setting.ProfileSettingScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,13 +29,17 @@ fun ReduceNavigation(
 
     NavHost(
         navController = navController,
-        startDestination = Graph.Auth.route
+        startDestination = OnBoarding.route
     ) {
 
         authNavGraph(navigator = navigator)
 
         composable(route = Graph.Main.route) {
             MainScreen(navigator = navigator)
+        }
+
+        composable(route = OnBoarding.route) {
+            OnBoardingScreen(navigator = navigator)
         }
 
         composable(

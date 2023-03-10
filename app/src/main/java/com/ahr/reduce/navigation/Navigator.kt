@@ -50,6 +50,10 @@ class Navigator(private val navController: NavHostController) {
         navController.navigateUp()
     }
 
+    val popBackStack: () -> Unit = {
+        navController.popBackStack()
+    }
+
     // Registration Flow
     val navigateToProfileSettingsRegisterFlow: () -> Unit = {
         navController.navigate(ProfileSettings.getRoute(true)) {

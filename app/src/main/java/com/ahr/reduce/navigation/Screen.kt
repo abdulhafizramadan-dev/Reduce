@@ -13,6 +13,7 @@ sealed class BottomBarScreen(val route: String) {
 }
 
 sealed class IndependentScreen(val route: String) {
+    object OnBoarding : IndependentScreen("on_boarding")
     object ProfileSettings : IndependentScreen(route = "profile_settings?is_register_flow={is_register_flow}") {
         const val IS_REGISTER_FLOW_KEY = "is_register_flow"
         fun getRoute(
