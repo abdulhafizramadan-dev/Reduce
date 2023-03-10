@@ -8,11 +8,9 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.R
-import com.ahr.reduce.navigation.IndependentScreen
-import com.ahr.reduce.navigation.IndependentScreen.Checkout
+import com.ahr.reduce.navigation.Graph
 import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.ui.component.topappbar.DetailTopAppBar
 import com.ahr.reduce.ui.theme.ReduceTheme
@@ -42,7 +40,7 @@ fun CheckoutScreen(
             modifier = Modifier.padding(paddingValues),
             snackbarHostState = snackbarHostState,
             scope = scope,
-            onCheckoutClicked = { navigator.navigateToMainGraph(Checkout.route) }
+            onCheckoutClicked = { navigator.navigateToMainGraph(Graph.Main.route) }
         )
     }
 }

@@ -60,11 +60,7 @@ class Navigator(private val navController: NavHostController) {
     }
 
     val navigateToDetailAddressRegisterFlow: () -> Unit = {
-        navController.navigate(DetailAddress.getRoute(true)) {
-            popUpTo(ProfileSettings.route) {
-                inclusive = true
-            }
-        }
+        navController.navigate(DetailAddress.getRoute(true))
     }
 
 }

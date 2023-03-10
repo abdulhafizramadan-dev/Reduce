@@ -5,12 +5,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.R
 import com.ahr.reduce.navigation.Graph
-import com.ahr.reduce.navigation.IndependentScreen
-import com.ahr.reduce.navigation.IndependentScreen.DetailAddress
 import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.ui.component.topappbar.DetailTopAppBar
 import com.ahr.reduce.ui.theme.ReduceTheme
@@ -43,7 +40,7 @@ fun DetailAddressScreen(
             if (!isRegisterFlow) {
                 navigator.navigateUp()
             } else {
-                navigator.navigateToMainGraph(DetailAddress.route)
+                navigator.navigateToMainGraph(Graph.Auth.route)
             }
         }
 
