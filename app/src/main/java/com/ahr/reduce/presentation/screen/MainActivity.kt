@@ -10,8 +10,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.ahr.reduce.domain.data.UiState
 import com.ahr.reduce.navigation.Graph
 import com.ahr.reduce.navigation.IndependentScreen
 import com.ahr.reduce.navigation.ReduceNavigation
@@ -27,6 +29,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val splashScreen = installSplashScreen()
+
         setContent {
             ReduceTheme {
                 // A surface container using the 'background' color from the theme
@@ -35,13 +40,26 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val onBoardingState by mainViewModel.onBoardingState.collectAsState()
-                    navController = rememberNavController()
-                    val startDestination =
-                        if (onBoardingState) Graph.Auth.route else IndependentScreen.OnBoarding.route
-                    ReduceNavigation(
-                        navController = navController,
-                        startDestination = startDestination
-                    )
+                    splashScreen.setKeepOnScreenCondition {
+                        onBoardingState is UiState.Loading
+                    }
+                    if (onBoardingState is UiState.Success) {
+                        navController = rememberNavController()
+                        val startDestination =
+                            if ((onBoardingState as UiState.Success).data) Graph.Auth.route else IndependentScreen.OnBoarding.route
+                        ReduceNavigation(
+                            navController = navController,
+                            startDestination = startDestination
+                        )
+                    }
+                    if (onBoardingState is UiState.Error) {
+                        navController = rememberNavController()
+                        val startDestination = IndependentScreen.OnBoarding.route
+                        ReduceNavigation(
+                            navController = navController,
+                            startDestination = startDestination
+                        )
+                    }
                 }
             }
         }
