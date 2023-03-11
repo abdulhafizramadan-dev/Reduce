@@ -27,7 +27,8 @@ fun ReduceOutlinedTextFieldPassword(
     onTextChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-    isError: Boolean = false
+    isError: Boolean = false,
+    @StringRes errorMessage: Int = R.string.empty_password,
 ) {
 
     var isShowPassword by remember {
@@ -63,7 +64,7 @@ fun ReduceOutlinedTextFieldPassword(
         )
         if (isError) {
             Text(
-                text = stringResource(R.string.invalid_email),
+                text = stringResource(errorMessage),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.error,
                 modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)

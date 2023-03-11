@@ -24,7 +24,7 @@ fun ReduceOutlinedTextField(
     onTextChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
     isError: Boolean = false,
-//    @StringRes errorMessage: Int,
+    @StringRes errorMessage: Int = R.string.empty_field,
     readOnly: Boolean = false,
     singleLine: Boolean = true,
     largeGapLabel: Boolean = false,
@@ -60,7 +60,7 @@ fun ReduceOutlinedTextField(
         )
         if (isError) {
             Text(
-                text = stringResource(R.string.invalid_email),
+                text = stringResource(errorMessage),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.error,
                 modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)

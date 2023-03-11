@@ -8,6 +8,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,11 +21,12 @@ import androidx.compose.ui.unit.dp
 import com.ahr.reduce.R
 import com.ahr.reduce.presentation.component.button.ReduceFilledButton
 import com.ahr.reduce.presentation.component.button.ReduceTextButton
-import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextField
-import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextFieldPassword
 import com.ahr.reduce.presentation.component.text.AuthSubtitle
 import com.ahr.reduce.presentation.component.text.AuthTitle
+import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextField
+import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextFieldPassword
 import com.ahr.reduce.ui.theme.Gray20
+import com.ahr.reduce.util.isEmailFormat
 
 @Composable
 fun LoginContent(
@@ -104,12 +108,41 @@ fun LoginForm(
     isPasswordNotValid: Boolean
 ) {
 
+    val emailErrorMessage by remember(key1 = email) {
+        derivedStateOf {
+            if (email.isEmpty()) {
+                R.string.empty_email
+            } else {
+                if (!email.isEmailFormat()) {
+                    R.string.invalid_email
+                } else {
+                    R.string.empty_string
+                }
+            }
+        }
+    }
+
+    val passwordErrorMessage by remember(key1 = password) {
+        derivedStateOf {
+            if (password.isEmpty()) {
+                R.string.empty_password
+            } else {
+                if (!password.isEmailFormat()) {
+                    R.string.invalid_password
+                } else {
+                    R.string.empty_string
+                }
+            }
+        }
+    }
+
     Column(modifier = modifier) {
         ReduceOutlinedTextField(
             label = R.string.label_email,
             text = email,
             onTextChanged = onEmailChanged,
             isError = isEmailNotValid,
+            errorMessage = emailErrorMessage,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 62.dp)
@@ -122,7 +155,8 @@ fun LoginForm(
             modifier = Modifier
                 .fillMaxWidth(),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            isError = isPasswordNotValid
+            isError = isPasswordNotValid,
+            errorMessage = passwordErrorMessage
         )
 
         ReduceTextButton(

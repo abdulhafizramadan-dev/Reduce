@@ -9,6 +9,8 @@ import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.navigation.AuthScreen.Login
 import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.ui.theme.ReduceTheme
+import com.ahr.reduce.util.isEmailFormat
+import com.ahr.reduce.util.isPasswordFormat
 
 @Composable
 fun LoginScreen(
@@ -17,15 +19,17 @@ fun LoginScreen(
     navigator: Navigator,
 ) {
 
-    val email by loginViewModel.email.collectAsState("")
+    val email by loginViewModel.email.collectAsState()
     val password by loginViewModel.password.collectAsState()
 
     val isEmailNotValid by loginViewModel.isEmailNotValid.collectAsState()
     val isPasswordNotValid by loginViewModel.isPasswordNotValid.collectAsState()
 
-    val isLoginButtonEnabled by remember(key1 = email, key2 = password) {
+    val isLoginButtonEnabled by remember(key1 = isEmailNotValid, key2 = isPasswordNotValid) {
         derivedStateOf {
-            email.isNotEmpty() && password.isNotEmpty()
+            email.isNotEmpty() && email.isEmailFormat()
+                    &&
+            password.isNotEmpty() && password.isPasswordFormat()
         }
     }
 
