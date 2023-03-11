@@ -1,18 +1,12 @@
 package com.ahr.reduce.presentation.component.textfield
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -33,6 +27,7 @@ fun ReduceOutlinedTextFieldPassword(
     onTextChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+    isError: Boolean = false
 ) {
 
     var isShowPassword by remember {
@@ -64,7 +59,16 @@ fun ReduceOutlinedTextFieldPassword(
             visualTransformation = if (isShowPassword) VisualTransformation.None else PasswordVisualTransformation(),
             singleLine = true,
             keyboardOptions = keyboardOptions,
+            isError = isError
         )
+        if (isError) {
+            Text(
+                text = stringResource(R.string.invalid_email),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
+            )
+        }
     }
 }
 

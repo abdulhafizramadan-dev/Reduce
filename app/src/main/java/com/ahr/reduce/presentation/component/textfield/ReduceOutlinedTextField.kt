@@ -1,17 +1,11 @@
 package com.ahr.reduce.presentation.component.textfield
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Cancel
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -29,6 +23,8 @@ fun ReduceOutlinedTextField(
     text: String,
     onTextChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
+    isError: Boolean = false,
+//    @StringRes errorMessage: Int,
     readOnly: Boolean = false,
     singleLine: Boolean = true,
     largeGapLabel: Boolean = false,
@@ -57,10 +53,19 @@ fun ReduceOutlinedTextField(
                 }
                 trailingIcon?.invoke()
             },
+            isError = isError,
             singleLine = singleLine,
             readOnly = readOnly,
-            keyboardOptions = keyboardOptions
+            keyboardOptions = keyboardOptions,
         )
+        if (isError) {
+            Text(
+                text = stringResource(R.string.invalid_email),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
+            )
+        }
     }
 }
 
@@ -72,7 +77,8 @@ fun PreviewReduceOutlinedTextField() {
             label = R.string.label_first_name,
             text = "Abdul",
             onTextChanged = {},
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            isError = false,
         )
     }
 }

@@ -76,4 +76,5 @@
     <string name="furthermore">Selanjutnya</string>
     <string name="cart">Keranjang</string>
     <string name="order">Pesan(%d)</string>
+    <string name="invalid_email">Email tidak valid!</string>
 </resources>

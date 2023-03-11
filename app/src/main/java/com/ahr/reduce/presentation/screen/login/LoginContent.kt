@@ -33,7 +33,10 @@ fun LoginContent(
     onForgotPassword: () -> Unit,
     onLoginClicked: () -> Unit,
     onRegisterClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isLoginButtonEnabled: Boolean,
+    isEmailNotValid: Boolean,
+    isPasswordNotValid: Boolean
 ) {
 
     val scrollState = rememberScrollState()
@@ -48,12 +51,15 @@ fun LoginContent(
             email = email,
             onEmailChanged = onEmailChanged,
             password = password,
+            isEmailNotValid = isEmailNotValid,
             onPasswordChanged = onPasswordChanged,
-            onForgotPassword = onForgotPassword
+            onForgotPassword = onForgotPassword,
+            isPasswordNotValid = isPasswordNotValid
         )
         LoginFooter(
             onLoginClicked = onLoginClicked,
-            onRegisterClicked = onRegisterClicked
+            onRegisterClicked = onRegisterClicked,
+            isLoginButtonEnabled = isLoginButtonEnabled
         )
     }
 }
@@ -93,25 +99,30 @@ fun LoginForm(
     password: String,
     onPasswordChanged: (String) -> Unit,
     onForgotPassword: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isEmailNotValid: Boolean,
+    isPasswordNotValid: Boolean
 ) {
+
     Column(modifier = modifier) {
         ReduceOutlinedTextField(
             label = R.string.label_email,
             text = email,
             onTextChanged = onEmailChanged,
+            isError = isEmailNotValid,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 62.dp)
         )
+        Spacer(modifier = Modifier.height(8.dp))
         ReduceOutlinedTextFieldPassword(
             label = R.string.label_password,
             text = password,
             onTextChanged = onPasswordChanged,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 3.dp),
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
+                .fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            isError = isPasswordNotValid
         )
 
         ReduceTextButton(
@@ -129,7 +140,8 @@ fun LoginForm(
 fun LoginFooter(
     onLoginClicked: () -> Unit,
     onRegisterClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isLoginButtonEnabled: Boolean
 ) {
 
     Column(modifier = modifier) {
@@ -137,6 +149,7 @@ fun LoginFooter(
         ReduceFilledButton(
             title = R.string.login,
             onButtonClicked = onLoginClicked,
+            enabled = isLoginButtonEnabled,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp)

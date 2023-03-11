@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.navigation.AuthScreen.Login
 import com.ahr.reduce.navigation.Navigator
@@ -12,22 +13,35 @@ import com.ahr.reduce.ui.theme.ReduceTheme
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    navigator: Navigator
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    navigator: Navigator,
 ) {
 
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    val email by loginViewModel.email.collectAsState("")
+    val password by loginViewModel.password.collectAsState()
+
+    val isEmailNotValid by loginViewModel.isEmailNotValid.collectAsState()
+    val isPasswordNotValid by loginViewModel.isPasswordNotValid.collectAsState()
+
+    val isLoginButtonEnabled by remember(key1 = email, key2 = password) {
+        derivedStateOf {
+            email.isNotEmpty() && password.isNotEmpty()
+        }
+    }
 
     LoginContent(
         email = email,
-        onEmailChanged = { email = it },
+        onEmailChanged = loginViewModel::updateEmail,
+        isEmailNotValid = isEmailNotValid,
         password = password,
-        onPasswordChanged = { password = it },
+        onPasswordChanged = loginViewModel::updatePassword,
+        isPasswordNotValid = isPasswordNotValid,
         onForgotPassword = { },
         onLoginClicked = {
             navigator.navigateToMainGraph(Login.route)
         },
         onRegisterClicked = navigator.navigateToRegisterScreen,
+        isLoginButtonEnabled = isLoginButtonEnabled,
         modifier = modifier
     )
 }
