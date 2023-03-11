@@ -7,10 +7,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,20 +27,21 @@ import com.ahr.reduce.util.isEmailFormat
 
 @Composable
 fun LoginContent(
-    email: String,
-    onEmailChanged: (String) -> Unit,
-    password: String,
-    onPasswordChanged: (String) -> Unit,
+    loginViewModel: LoginViewModel,
     onForgotPassword: () -> Unit,
     onLoginClicked: () -> Unit,
     onRegisterClicked: () -> Unit,
-    modifier: Modifier = Modifier,
-    isLoginButtonEnabled: Boolean,
-    isEmailNotValid: Boolean,
-    isPasswordNotValid: Boolean
+    modifier: Modifier = Modifier
 ) {
 
     val scrollState = rememberScrollState()
+
+    val loginForm by loginViewModel.loginForm.collectAsState()
+
+    val isEmailNotValid = loginViewModel.isEmailNotValid
+    val isPasswordNotValid = loginViewModel.isPasswordNotValid
+
+    val allFormValid by loginViewModel.allFormValid.collectAsState(initial = false)
 
     Column(modifier = modifier
         .fillMaxSize()
@@ -52,18 +50,18 @@ fun LoginContent(
     ) {
         LoginHeader(modifier = Modifier.fillMaxWidth())
         LoginForm(
-            email = email,
-            onEmailChanged = onEmailChanged,
-            password = password,
+            email = loginForm.email,
+            onEmailChanged = loginViewModel::updateEmail,
+            password = loginForm.password,
             isEmailNotValid = isEmailNotValid,
-            onPasswordChanged = onPasswordChanged,
+            onPasswordChanged = loginViewModel::updatePassword,
             onForgotPassword = onForgotPassword,
             isPasswordNotValid = isPasswordNotValid
         )
         LoginFooter(
             onLoginClicked = onLoginClicked,
             onRegisterClicked = onRegisterClicked,
-            isLoginButtonEnabled = isLoginButtonEnabled
+            isLoginButtonEnabled = allFormValid
         )
     }
 }
