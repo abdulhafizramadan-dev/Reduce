@@ -85,6 +85,8 @@
     <string name="invalid_email">Email tidak valid!</string>
     <string name="empty_password">Password tidak boleh kosong!</string>
     <string name="invalid_password">Panjang password minimal 8 karakter!</string>
+    <string name="empty_telephone">No telepon tidak boleh kosong!</string>
+    <string name="empty_birth_date">Tanggal lahir tidak boleh kosong!</string>
     <string name="empty_string"> </string>
     <string name="not_match_password">Password tidak sama!</string>
 
