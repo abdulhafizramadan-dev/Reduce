@@ -7,7 +7,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,25 +23,27 @@ import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextFieldPa
 import com.ahr.reduce.presentation.component.text.AuthSubtitle
 import com.ahr.reduce.presentation.component.text.AuthTitle
 import com.ahr.reduce.ui.theme.Gray20
+import com.ahr.reduce.util.isEmailFormat
 
 @Composable
 fun RegisterContent(
-    firstName: String,
-    onFirstNameChanged: (String) -> Unit,
-    lastName: String,
-    onLastNameChanged: (String) -> Unit,
-    email: String,
-    onEmailChanged: (String) -> Unit,
-    password: String,
-    onPasswordChanged: (String) -> Unit,
-    confirmPassword: String,
-    onConfirmPasswordChanged: (String) -> Unit,
+    registerViewModel: RegisterViewModel,
     onRegisterClicked: () -> Unit,
     onLoginClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
 
     val scrollState = rememberScrollState()
+
+    val registerForm by registerViewModel.registerForm.collectAsState()
+
+    val isFirstNameNotValid = registerViewModel.isFirstNameNotValid
+    val isLastNameNotValid = registerViewModel.isLastNameNotValid
+    val isEmailNotValid = registerViewModel.isEmailNotValid
+    val isPasswordNotValid = registerViewModel.isPasswordNotValid
+    val isConfirmPasswordNotValid = registerViewModel.isConfirmPasswordNotValid
+
+    val allFormValid by registerViewModel.allFormValid.collectAsState(initial = false)
 
     Column(modifier = modifier
         .fillMaxSize()
@@ -51,20 +53,26 @@ fun RegisterContent(
 
         RegisterHeader(modifier = Modifier.fillMaxWidth())
         RegisterForm(
-            firstName = firstName,
-            onFirstNameChanged = onFirstNameChanged,
-            lastName = lastName,
-            onLastNameChanged = onLastNameChanged,
-            email = email,
-            onEmailChanged = onEmailChanged,
-            password = password,
-            onPasswordChanged = onPasswordChanged,
-            confirmPassword = confirmPassword,
-            onConfirmPasswordChanged = onConfirmPasswordChanged
+            firstName = registerForm.firstName,
+            onFirstNameChanged = registerViewModel::updateFirstName,
+            isFirstNameNotValid = isFirstNameNotValid,
+            lastName = registerForm.lastName,
+            onLastNameChanged = registerViewModel::updateLastName,
+            isLastNameNotValid = isLastNameNotValid,
+            email = registerForm.email,
+            isEmailNotValid = isEmailNotValid,
+            onEmailChanged = registerViewModel::updateEmail,
+            password = registerForm.password,
+            isPasswordNotValid = isPasswordNotValid,
+            onPasswordChanged = registerViewModel::updatePassword,
+            confirmPassword = registerForm.confirmPassword,
+            onConfirmPasswordChanged = registerViewModel::updateConfirmPassword,
+            isConfirmPasswordNotValid = isConfirmPasswordNotValid,
         )
         Spacer(modifier = Modifier.weight(1f))
         RegisterFooter(
             onRegisterClicked = onRegisterClicked,
+            registerButtonEnabled = allFormValid,
             onLoginClicked = onLoginClicked
         )
     }
@@ -113,48 +121,88 @@ fun RegisterForm(
     onPasswordChanged: (String) -> Unit,
     confirmPassword: String,
     onConfirmPasswordChanged: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isFirstNameNotValid: Boolean,
+    isLastNameNotValid: Boolean,
+    isEmailNotValid: Boolean,
+    isPasswordNotValid: Boolean,
+    isConfirmPasswordNotValid: Boolean
 ) {
+
+    val emailErrorMessage by remember(key1 = email) {
+        derivedStateOf {
+            if (email.isEmpty()) {
+                R.string.empty_email
+            } else {
+                if (!email.isEmailFormat()) {
+                    R.string.invalid_email
+                } else {
+                    R.string.empty_string
+                }
+            }
+        }
+    }
+
+    val passwordErrorMessage by remember(key1 = password) {
+        derivedStateOf {
+            if (password.isEmpty()) {
+                R.string.empty_password
+            } else {
+                if (!password.isEmailFormat()) {
+                    R.string.invalid_password
+                } else {
+                    R.string.empty_string
+                }
+            }
+        }
+    }
+    
     Column(modifier = modifier) {
         ReduceOutlinedTextField(
             label = R.string.label_first_name,
             text = firstName,
             onTextChanged = onFirstNameChanged,
+            isError = isFirstNameNotValid,
+            errorMessage = R.string.empty_first_name,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 24.dp)
         )
+        Spacer(modifier = Modifier.height(4.dp))
         ReduceOutlinedTextField(
             label = R.string.label_last_name,
             text = lastName,
             onTextChanged = onLastNameChanged,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 3.dp)
+            isError = isLastNameNotValid,
+            errorMessage = R.string.empty_last_name,
+            modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.height(4.dp))
         ReduceOutlinedTextField(
             label = R.string.label_email,
             text = email,
             onTextChanged = onEmailChanged,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 3.dp)
+            isError = isEmailNotValid,
+            errorMessage = emailErrorMessage,
+            modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.height(4.dp))
         ReduceOutlinedTextFieldPassword(
             label = R.string.label_password,
             text = password,
             onTextChanged = onPasswordChanged,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 3.dp)
+            isError = isPasswordNotValid,
+            errorMessage = passwordErrorMessage,
+            modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.height(4.dp))
         ReduceOutlinedTextFieldPassword(
             label = R.string.label_confirm_password,
             text = confirmPassword,
             onTextChanged = onConfirmPasswordChanged,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 3.dp),
+            isError = isConfirmPasswordNotValid,
+            errorMessage = R.string.not_match_password,
+            modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
         )
     }
@@ -164,13 +212,15 @@ fun RegisterForm(
 fun RegisterFooter(
     onRegisterClicked: () -> Unit,
     onLoginClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    registerButtonEnabled: Boolean
 ) {
 
     Column(modifier = modifier) {
         ReduceFilledButton(
             title = R.string.register,
             onButtonClicked = onRegisterClicked,
+            enabled = registerButtonEnabled,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp)
