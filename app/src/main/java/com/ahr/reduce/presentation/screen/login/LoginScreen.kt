@@ -9,6 +9,8 @@ import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.navigation.AuthScreen.Login
 import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.ui.theme.ReduceTheme
+import com.stevdzasan.onetap.OneTapSignInWithGoogle
+import com.stevdzasan.onetap.rememberOneTapSignInState
 
 @Composable
 fun LoginScreen(
@@ -17,8 +19,18 @@ fun LoginScreen(
     navigator: Navigator,
 ) {
 
+    val oneTapSignInState = rememberOneTapSignInState()
+
+    OneTapSignInWithGoogle(
+        state = oneTapSignInState,
+        clientId = "",
+        onTokenIdReceived = {},
+        onDialogDismissed = {}
+    )
+
     LoginContent(
         loginViewModel = loginViewModel,
+        oneTapSignInState = oneTapSignInState,
         onForgotPassword = {},
         onRegisterClicked = navigator.navigateToRegisterScreen,
         modifier = modifier,

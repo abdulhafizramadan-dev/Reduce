@@ -25,10 +25,12 @@ import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextField
 import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextFieldPassword
 import com.ahr.reduce.ui.theme.Gray20
 import com.ahr.reduce.util.isEmailFormat
+import com.stevdzasan.onetap.OneTapSignInState
 
 @Composable
 fun LoginContent(
     loginViewModel: LoginViewModel,
+    oneTapSignInState: OneTapSignInState,
     onForgotPassword: () -> Unit,
     onLoginClicked: () -> Unit,
     onRegisterClicked: () -> Unit,
@@ -43,6 +45,10 @@ fun LoginContent(
     val isPasswordNotValid = loginViewModel.isPasswordNotValid
 
     val allFormValid by loginViewModel.allFormValid.collectAsState(initial = false)
+
+    val openSignInWithGoogleDialog = {
+        oneTapSignInState.open()
+    }
 
     Column(modifier = modifier
         .fillMaxSize()
@@ -63,8 +69,8 @@ fun LoginContent(
             onLoginClicked = onLoginClicked,
             onRegisterClicked = onRegisterClicked,
             isLoginButtonEnabled = allFormValid,
-            onSignInWithGoogleClicked = {},
-            isSignInWithGoogleEnabled = true,
+            onSignInWithGoogleClicked = openSignInWithGoogleDialog,
+            isSignInWithGoogleEnabled = !oneTapSignInState.opened,
             modifier = Modifier.weight(1f),
         )
     }
