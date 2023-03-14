@@ -22,6 +22,9 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     var isPasswordNotValid by mutableStateOf(false)
         private set
 
+    var signInWithGoogleLoadingState by mutableStateOf(false)
+        private set
+
     val allFormValid get() = _loginForm.map {  loginForm ->
         loginForm.email.isNotEmpty() &&
         loginForm.email.isEmailFormat() &&
@@ -36,6 +39,10 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     fun updatePassword(password: String) {
         _loginForm.update { it.copy(password = password) }
         isPasswordNotValid = password.isEmpty() || !password.isPasswordFormat()
+    }
+
+    fun updateSignInWithGoogleLoadingState(state: Boolean) {
+        signInWithGoogleLoadingState = state
     }
 
 }

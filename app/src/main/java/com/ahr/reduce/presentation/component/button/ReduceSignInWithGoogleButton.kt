@@ -1,11 +1,15 @@
 package com.ahr.reduce.presentation.component.button
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,21 +31,18 @@ fun ReduceSignInWithGoogleButton(
     modifier: Modifier = Modifier,
     @StringRes title: Int = R.string.signin_with_google,
     onButtonClicked: () -> Unit,
-    enabled: Boolean = true
+    isLoading: Boolean,
+    enabled: Boolean = true,
 ) {
-    val background = if (enabled) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f)
     Surface(
         shape = RoundedCornerShape(24.dp),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground.copy(alpha = .8f)),
         modifier = modifier
             .fillMaxWidth()
-            .height(height = 56.dp)
-            .clickable {
-                if (enabled) {
-                    onButtonClicked()
-                }
-            },
-        color = background
+            .height(height = 50.dp)
+            .clickable(enabled = enabled) {
+                onButtonClicked()
+            }
     ) {
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -50,6 +51,12 @@ fun ReduceSignInWithGoogleButton(
                 .padding(
                     horizontal = 24.dp,
                     vertical = 10.dp
+                )
+                .animateContentSize(
+                    animationSpec = tween(
+                        durationMillis = 300,
+                        easing = LinearOutSlowInEasing
+                    )
                 )
         ) {
             Box(
@@ -73,6 +80,14 @@ fun ReduceSignInWithGoogleButton(
                 lineHeight = 20.sp,
                 style = MaterialTheme.typography.labelLarge
             )
+            if (isLoading) {
+                Spacer(modifier = Modifier.width(16.dp))
+                CircularProgressIndicator(
+                    modifier = Modifier.size(16.dp),
+                    strokeWidth = 2.dp,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         }
     }
 }
@@ -84,7 +99,8 @@ fun PreviewReduceSignInWithGoogleButton() {
         ReduceSignInWithGoogleButton(
             onButtonClicked = {},
             modifier = Modifier.padding(all = 16.dp),
-            enabled = false
+            enabled = false,
+            isLoading = true
         )
     }
 }

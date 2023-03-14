@@ -25,15 +25,14 @@ import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextField
 import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextFieldPassword
 import com.ahr.reduce.ui.theme.Gray20
 import com.ahr.reduce.util.isEmailFormat
-import com.stevdzasan.onetap.OneTapSignInState
 
 @Composable
 fun LoginContent(
     loginViewModel: LoginViewModel,
-    oneTapSignInState: OneTapSignInState,
     onForgotPassword: () -> Unit,
     onLoginClicked: () -> Unit,
     onRegisterClicked: () -> Unit,
+    onSignInWithGoogleClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -44,11 +43,9 @@ fun LoginContent(
     val isEmailNotValid = loginViewModel.isEmailNotValid
     val isPasswordNotValid = loginViewModel.isPasswordNotValid
 
-    val allFormValid by loginViewModel.allFormValid.collectAsState(initial = false)
+    val signInWithGoogleLoadingState = loginViewModel.signInWithGoogleLoadingState
 
-    val openSignInWithGoogleDialog = {
-        oneTapSignInState.open()
-    }
+    val allFormValid by loginViewModel.allFormValid.collectAsState(initial = false)
 
     Column(modifier = modifier
         .fillMaxSize()
@@ -68,9 +65,10 @@ fun LoginContent(
         LoginFooter(
             onLoginClicked = onLoginClicked,
             onRegisterClicked = onRegisterClicked,
+            onSignInWithGoogleClicked = onSignInWithGoogleClicked,
             isLoginButtonEnabled = allFormValid,
-            onSignInWithGoogleClicked = openSignInWithGoogleDialog,
-            isSignInWithGoogleEnabled = !oneTapSignInState.opened,
+            isSignInWithGoogleEnabled = signInWithGoogleLoadingState,
+            signInWithGoogleLoadingState = signInWithGoogleLoadingState,
             modifier = Modifier.weight(1f),
         )
     }
@@ -185,6 +183,7 @@ fun LoginFooter(
     onSignInWithGoogleClicked: () -> Unit,
     isLoginButtonEnabled: Boolean,
     isSignInWithGoogleEnabled: Boolean,
+    signInWithGoogleLoadingState: Boolean,
     modifier: Modifier = Modifier,
 ) {
 
@@ -222,7 +221,8 @@ fun LoginFooter(
         Spacer(modifier = Modifier.weight(1f))
         ReduceSignInWithGoogleButton(
             onButtonClicked = onSignInWithGoogleClicked,
-            enabled = isSignInWithGoogleEnabled
+            enabled = isSignInWithGoogleEnabled,
+            isLoading = signInWithGoogleLoadingState
         )
         Spacer(modifier = Modifier.height(24.dp))
     }
