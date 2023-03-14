@@ -5,6 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.R
 import com.ahr.reduce.navigation.Graph
@@ -15,9 +16,10 @@ import com.ahr.reduce.ui.theme.ReduceTheme
 @ExperimentalMaterial3Api
 @Composable
 fun DetailAddressScreen(
-    modifier: Modifier = Modifier,
     navigator: Navigator,
-    isRegisterFlow: Boolean
+    isRegisterFlow: Boolean,
+    modifier: Modifier = Modifier,
+    detailAddressViewModel: DetailAddressViewModel = hiltViewModel()
 ) {
     Scaffold(
         topBar = {
@@ -29,13 +31,6 @@ fun DetailAddressScreen(
         modifier = modifier
     ) { paddingValues ->
 
-        var streetName by remember { mutableStateOf("") }
-        var ward by remember { mutableStateOf("") }
-        var regency by remember { mutableStateOf("") }
-        var province by remember { mutableStateOf("") }
-        var subdistrict by remember { mutableStateOf("") }
-        var completeAddress by remember { mutableStateOf("") }
-
         val onSaveClicked: () -> Unit = {
             if (!isRegisterFlow) {
                 navigator.navigateUp()
@@ -46,18 +41,7 @@ fun DetailAddressScreen(
 
 
         DetailAddressContent(
-            streetName = streetName,
-            onStreetNameChanged = { streetName = it },
-            ward = ward,
-            onWardChanged = { ward = it },
-            subDistrict = subdistrict,
-            onSubDistrictChanged = { subdistrict = it },
-            regency = regency,
-            onRegencyChanged = { regency = it },
-            province = province,
-            onProvinceChanged = { province = it },
-            completeAddress = completeAddress,
-            onCompleteAddressChanged = { completeAddress = it },
+            detailAddressViewModel = detailAddressViewModel,
             onSaveClicked = onSaveClicked,
             modifier = Modifier.padding(paddingValues)
         )

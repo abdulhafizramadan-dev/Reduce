@@ -1,38 +1,37 @@
 package com.ahr.reduce.presentation.screen.detail_address
 
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ahr.reduce.R
 import com.ahr.reduce.presentation.component.button.ReduceFilledButton
 import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextField
 import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextFieldArea
-import com.ahr.reduce.ui.theme.ReduceTheme
 
 @Composable
 fun DetailAddressContent(
-    streetName: String,
-    onStreetNameChanged: (String) -> Unit,
-    ward: String,
-    onWardChanged: (String) -> Unit,
-    subDistrict: String,
-    onSubDistrictChanged: (String) -> Unit,
-    regency: String,
-    onRegencyChanged: (String) -> Unit,
-    province: String,
-    onProvinceChanged: (String) -> Unit,
-    completeAddress: String,
-    onCompleteAddressChanged: (String) -> Unit,
+    detailAddressViewModel: DetailAddressViewModel,
     onSaveClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    scrollState: ScrollState = rememberScrollState()
 ) {
+
+    val scrollState = rememberScrollState()
+
+    val detailAddressForm by detailAddressViewModel.detailAddressForm.collectAsState()
+
+    val isStreetNameNotValid = detailAddressViewModel.isStreetNameNotValid
+    val isWardNotValid = detailAddressViewModel.isWardNotValid
+    val isSubdistrictNotValid = detailAddressViewModel.isSubdistrictNotValid
+    val isRegencyNotValid = detailAddressViewModel.isRegencyNotValid
+    val isProvinceNotValid = detailAddressViewModel.isProvinceNotValid
+    val isCompleteAddressNotValid = detailAddressViewModel.isCompleteAddressNotValid
+
+    val allFormValid by detailAddressViewModel.allFormValid.collectAsState(initial = false)
 
     Column(
         modifier = modifier
@@ -44,8 +43,10 @@ fun DetailAddressContent(
 
         ReduceOutlinedTextField(
             label = R.string.label_street_name,
-            text = streetName,
-            onTextChanged = onStreetNameChanged,
+            text = detailAddressForm.streetName,
+            onTextChanged = detailAddressViewModel::updateStreetName,
+            isError = isStreetNameNotValid,
+            errorMessage = R.string.empty_street_name,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -54,8 +55,10 @@ fun DetailAddressContent(
 
         ReduceOutlinedTextField(
             label = R.string.label_ward,
-            text = ward,
-            onTextChanged = onWardChanged,
+            text = detailAddressForm.ward,
+            onTextChanged = detailAddressViewModel::updateWard,
+            isError = isWardNotValid,
+            errorMessage = R.string.empty_ward,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -64,8 +67,10 @@ fun DetailAddressContent(
 
         ReduceOutlinedTextField(
             label = R.string.label_subdistrict,
-            text = subDistrict,
-            onTextChanged = onSubDistrictChanged,
+            text = detailAddressForm.subdistrict,
+            onTextChanged = detailAddressViewModel::updateSubdistrict,
+            isError = isSubdistrictNotValid,
+            errorMessage = R.string.empty_subdistrict,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -74,8 +79,10 @@ fun DetailAddressContent(
 
         ReduceOutlinedTextField(
             label = R.string.label_regency,
-            text = regency,
-            onTextChanged = onRegencyChanged,
+            text = detailAddressForm.regency,
+            onTextChanged = detailAddressViewModel::updateRegency,
+            isError = isRegencyNotValid,
+            errorMessage = R.string.empty_regency,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -84,8 +91,10 @@ fun DetailAddressContent(
 
         ReduceOutlinedTextField(
             label = R.string.label_province,
-            text = province,
-            onTextChanged = onProvinceChanged,
+            text = detailAddressForm.province,
+            onTextChanged = detailAddressViewModel::updateProvince,
+            isError = isProvinceNotValid,
+            errorMessage = R.string.empty_province,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -96,8 +105,10 @@ fun DetailAddressContent(
 
         ReduceOutlinedTextFieldArea(
             label = R.string.label_complete_address,
-            text = completeAddress,
-            onTextChanged = onCompleteAddressChanged,
+            text = detailAddressForm.completeAddress,
+            onTextChanged = detailAddressViewModel::updateCompleteAddress,
+            isError = isCompleteAddressNotValid,
+            errorMessage = R.string.empty_complete_address,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 36.dp)
@@ -109,33 +120,11 @@ fun DetailAddressContent(
         ReduceFilledButton(
             title = R.string.save,
             onButtonClicked = onSaveClicked,
+            enabled = allFormValid,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 24.dp)
                 .padding(horizontal = 16.dp)
-        )
-    }
-}
-
-@ExperimentalMaterial3Api
-@Preview(showBackground = true)
-@Composable
-fun PreviewDetailAddressContent() {
-    ReduceTheme {
-        DetailAddressContent(
-            streetName = "Jl. Mawar Blok A12 No.99",
-            onStreetNameChanged = {},
-            ward = "Cinta",
-            onWardChanged = {},
-            subDistrict = "Curug",
-            onSubDistrictChanged = {},
-            regency = "Tangerang",
-            onRegencyChanged = {},
-            province = "Jawa Barat",
-            onProvinceChanged = {},
-            completeAddress = "Jl.Mawar Blok A12 No.99, Kel. Cinta, Kec. Curug, Kabupaten Tangerang, Jawa Barat 1189",
-            onCompleteAddressChanged = {},
-            onSaveClicked = {}
         )
     }
 }

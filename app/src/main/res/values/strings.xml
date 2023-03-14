@@ -20,7 +20,6 @@
     <string name="label_confirm_password">Konfirmasi Password</string>
 
     <string name="label_complete_address">Alamat Lengkap</string>
-    <string name="label_subdistrict">Kecamatan</string>
     <string name="label_note_to_courier">Note to courier</string>
 
     <string name="clear_text_field">Clear text field!</string>
@@ -56,14 +55,26 @@
     <string name="next">Lanjut</string>
     <string name="empty_transaction_title">Kok sepi sih?</string>
     <string name="empty_transaction_description">Mulai belanja sekarang  untuk mengurangi sampah di sekitarmu bersama Reduce!</string>
-    <string name="label_street_name">Nama Jalan\n</string>
+
+    <string name="label_street_name">Nama Jalan</string>
     <string name="label_ward">Kelurahan</string>
+    <string name="label_subdistrict">Kecamatan</string>
     <string name="label_regency">Kabupaten</string>
     <string name="label_province">Provinsi</string>
+
+    <string name="empty_street_name">Nama jalan tidak boleh kosong!</string>
+    <string name="empty_ward">Kelurahan tidak boleh kosong!</string>
+    <string name="empty_subdistrict">Kecamatan tidak boleh kosong!</string>
+    <string name="empty_regency"> Kabupaten tidak boleh kosong!</string>
+    <string name="empty_province">Provinsi tidak boleh kosong!</string>
+    <string name="empty_complete_address">Alamat lengkap tidak boleh kosong!</string>
+
+
     <string name="menu_home">Home</string>
     <string name="menu_market">Market</string>
     <string name="menu_transaction">Transaction</string>
     <string name="menu_profile">Profile</string>
+
     <string name="filter">Filter</string>
     <string name="sort">Sort</string>
     <string name="edit_profile">Edit Profile</string>
