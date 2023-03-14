@@ -1,14 +1,18 @@
 package com.ahr.reduce.presentation.screen.login
 
+import android.app.Activity
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
+import com.ahr.reduce.domain.data.UiState
 import com.ahr.reduce.navigation.AuthScreen.Login
 import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.ui.theme.ReduceTheme
@@ -22,40 +26,46 @@ fun LoginScreen(
     navigator: Navigator,
 ) {
 
-    val signInRequestCode = 1
+    val loginUiState by loginViewModel.loginUiState.collectAsState()
+
+    LaunchedEffect(key1 = loginUiState) {
+        when (loginUiState) {
+            is UiState.Idle -> {}
+            is UiState.Loading -> {
+                loginViewModel.updateSignInWithGoogleLoadingState(true)
+            }
+            is UiState.Success -> {
+                loginViewModel.updateSignInWithGoogleLoadingState(false)
+                Log.d("TAG", "LoginScreen: Success")
+                navigator.navigateToMainGraph(Login.route)
+            }
+            is UiState.Error -> {
+                Log.d("TAG", "LoginScreen: Error = ${(loginUiState as UiState.Error).exception.message}")
+            }
+        }
+    }
 
     val authResultLauncher = rememberLauncherForActivityResult(
         contract = AuthResultContract()
     ) { task ->
         try {
             val account = task?.getResult(ApiException::class.java)
-            if (account == null) {
-//                text = "Google sign in failed"
+            if (account != null) {
+                val tokenId = account.idToken.toString()
+                loginViewModel.signInWithGoogle(tokenId = tokenId)
             } else {
-                Log.d("TAG", "LoginScreen: token=${account.idToken}")
-//                coroutineScope.launch {
-//                    authViewModel.signIn(
-//                        email = account.email,
-//                        displayName = account.displayName,
-//                    )
-//                }
+                val tokenId = account?.idToken.toString()
+                Log.d("TAG", "LoginScreen: token Empty = $tokenId")
             }
         } catch (e: ApiException) {
-//            text = "Google sign in failed"
             Log.d("TAG", "LoginScreen: error=${e.message}")
-        } finally {
-            loginViewModel.updateSignInWithGoogleLoadingState(false)
         }
     }
 
-    val onLoginClicked = {
-        navigator.navigateToMainGraph(Login.route)
-    }
+    val onLoginClicked = {}
 
     val onSignInWithGoogleClicked = {
-        loginViewModel.updateSignInWithGoogleLoadingState(true)
-//        oneTapSignInState.open()
-        authResultLauncher.launch(signInRequestCode)
+        authResultLauncher.launch(Activity.RESULT_OK)
     }
 
     LoginContent(

@@ -4,18 +4,27 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ahr.reduce.domain.data.LoginForm
+import com.ahr.reduce.domain.data.UiState
+import com.ahr.reduce.domain.repository.RealmRepository
 import com.ahr.reduce.util.isEmailFormat
 import com.ahr.reduce.util.isPasswordFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor() : ViewModel() {
+class LoginViewModel @Inject constructor(
+    private val realmRepository: RealmRepository
+) : ViewModel() {
 
     private val _loginForm = MutableStateFlow(LoginForm())
     val loginForm get() = _loginForm.asStateFlow()
+
+    private val _loginUiState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
+    val loginUiState get() = _loginUiState.asStateFlow()
 
     var isEmailNotValid by mutableStateOf(false)
         private set
@@ -29,6 +38,14 @@ class LoginViewModel @Inject constructor() : ViewModel() {
         loginForm.email.isNotEmpty() &&
         loginForm.email.isEmailFormat() &&
         loginForm.password.isPasswordFormat()
+    }
+
+    fun signInWithGoogle(tokenId: String) {
+        viewModelScope.launch {
+            realmRepository.signInWithGoogle(tokenId).collectLatest { state ->
+                _loginUiState.value = state
+            }
+        }
     }
 
     fun updateEmail(email: String) {
