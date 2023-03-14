@@ -54,8 +54,7 @@ fun LoginScreen(
                 val tokenId = account.idToken.toString()
                 loginViewModel.signInWithGoogle(tokenId = tokenId)
             } else {
-                val tokenId = account?.idToken.toString()
-                Log.d("TAG", "LoginScreen: token Empty = $tokenId")
+                Log.d("TAG", "LoginScreen: token Empty")
             }
         } catch (e: ApiException) {
             Log.d("TAG", "LoginScreen: error=${e.message}")
