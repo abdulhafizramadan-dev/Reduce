@@ -100,5 +100,7 @@
     <string name="empty_birth_date">Tanggal lahir tidak boleh kosong!</string>
     <string name="empty_string"> </string>
     <string name="not_match_password">Password tidak sama!</string>
+    <string name="google_logo">Google logo</string>
+    <string name="signin_with_google">Sign in with Google</string>
 
 </resources>

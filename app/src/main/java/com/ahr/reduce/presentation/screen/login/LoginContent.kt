@@ -17,6 +17,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.ahr.reduce.R
 import com.ahr.reduce.presentation.component.button.ReduceFilledButton
+import com.ahr.reduce.presentation.component.button.ReduceSignInWithGoogleButton
 import com.ahr.reduce.presentation.component.button.ReduceTextButton
 import com.ahr.reduce.presentation.component.text.AuthSubtitle
 import com.ahr.reduce.presentation.component.text.AuthTitle
@@ -61,7 +62,10 @@ fun LoginContent(
         LoginFooter(
             onLoginClicked = onLoginClicked,
             onRegisterClicked = onRegisterClicked,
-            isLoginButtonEnabled = allFormValid
+            isLoginButtonEnabled = allFormValid,
+            onSignInWithGoogleClicked = {},
+            isSignInWithGoogleEnabled = true,
+            modifier = Modifier.weight(1f),
         )
     }
 }
@@ -172,8 +176,10 @@ fun LoginForm(
 fun LoginFooter(
     onLoginClicked: () -> Unit,
     onRegisterClicked: () -> Unit,
+    onSignInWithGoogleClicked: () -> Unit,
+    isLoginButtonEnabled: Boolean,
+    isSignInWithGoogleEnabled: Boolean,
     modifier: Modifier = Modifier,
-    isLoginButtonEnabled: Boolean
 ) {
 
     Column(modifier = modifier) {
@@ -190,7 +196,7 @@ fun LoginFooter(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 12.dp),
+                .padding(top = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -207,5 +213,11 @@ fun LoginFooter(
                     .clip(MaterialTheme.shapes.extraSmall)
             )
         }
+        Spacer(modifier = Modifier.weight(1f))
+        ReduceSignInWithGoogleButton(
+            onButtonClicked = onSignInWithGoogleClicked,
+            enabled = isSignInWithGoogleEnabled
+        )
+        Spacer(modifier = Modifier.height(24.dp))
     }
 }
