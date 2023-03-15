@@ -1,6 +1,8 @@
 package com.ahr.reduce.data.repository
 
 import com.ahr.reduce.domain.data.ApiState
+import com.ahr.reduce.domain.data.ApiState.Error
+import com.ahr.reduce.domain.data.LoginForm
 import com.ahr.reduce.domain.data.RegisterForm
 import com.ahr.reduce.domain.repository.FirebaseRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -24,10 +26,27 @@ class FirebaseRepositoryImpl(
             saveUser(registerForm)
             emit(ApiState.Success(true))
         } else {
-            emit(ApiState.Error(UnknownError("Register failed!")))
+            emit(Error(UnknownError("Register failed!")))
         }
     }.catch { exception ->
-        emit(ApiState.Error(exception))
+        emit(Error(exception))
+    }
+
+    override fun signIpWithEmailAndPassword(
+        loginForm: LoginForm
+    ): Flow<ApiState<Boolean>> = flow {
+        emit(ApiState.Loading)
+        val signUpResult = firebaseAuth.signInWithEmailAndPassword(
+            loginForm.email,
+            loginForm.password
+        ).await()
+        if (signUpResult.user != null) {
+            emit(ApiState.Success(true))
+        } else {
+            emit(Error(UnknownError("Login failed!")))
+        }
+    }.catch { exception ->
+        emit(Error(exception))
     }
 
     override fun saveUser(registerForm: RegisterForm): Boolean {

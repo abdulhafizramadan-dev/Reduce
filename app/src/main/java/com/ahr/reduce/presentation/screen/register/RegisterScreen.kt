@@ -1,10 +1,11 @@
 package com.ahr.reduce.presentation.screen.register
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
@@ -24,18 +25,21 @@ fun RegisterScreen(
 
     val registerUiState by registerViewModel.registerUiState.collectAsState()
     val messageBarState = rememberMessageBarState()
+    val context = LocalContext.current
 
-    when (registerUiState) {
-        is UiState.Idle -> {}
-        is UiState.Loading -> registerViewModel.updateSignUpLoadingState(true)
-        is UiState.Success -> {
-            registerViewModel.updateSignUpLoadingState(false)
-            messageBarState.addSuccess(stringResource(id = R.string.message_success_register_user))
-        }
-        is UiState.Error -> {
-            registerViewModel.updateSignUpLoadingState(false)
-            val message = (registerUiState as UiState.Error).exception.message
-            messageBarState.addError(Exception(message))
+    LaunchedEffect(key1 = registerUiState) {
+        when (registerUiState) {
+            is UiState.Idle,
+            is UiState.Loading -> {}
+            is UiState.Success -> {
+                registerViewModel.updateSignUpLoadingState(false)
+                messageBarState.addSuccess(context.getString(R.string.message_success_register_user))
+            }
+            is UiState.Error -> {
+                registerViewModel.updateSignUpLoadingState(false)
+                val message = (registerUiState as UiState.Error).exception.message
+                messageBarState.addError(Exception(message))
+            }
         }
     }
 

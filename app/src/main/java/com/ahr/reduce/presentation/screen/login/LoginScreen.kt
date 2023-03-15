@@ -18,6 +18,8 @@ import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.ui.theme.ReduceTheme
 import com.ahr.reduce.util.AuthResultContract
 import com.google.android.gms.common.api.ApiException
+import com.stevdzasan.messagebar.ContentWithMessageBar
+import com.stevdzasan.messagebar.rememberMessageBarState
 
 @Composable
 fun LoginScreen(
@@ -27,18 +29,22 @@ fun LoginScreen(
 ) {
 
     val loginUiState by loginViewModel.loginUiState.collectAsState()
+    val messageBarState = rememberMessageBarState()
 
     LaunchedEffect(key1 = loginUiState) {
         when (loginUiState) {
-            is UiState.Idle -> {}
+            is UiState.Idle,
             is UiState.Loading -> {}
             is UiState.Success -> {
+                loginViewModel.updateSignInWithEmailAndPasswordLoadingState(false)
                 loginViewModel.updateSignInWithGoogleLoadingState(false)
-//                navigator.navigateToMainGraph(Login.route)
+                navigator.navigateToMainGraph(Login.route)
             }
             is UiState.Error -> {
+                loginViewModel.updateSignInWithEmailAndPasswordLoadingState(false)
                 loginViewModel.updateSignInWithGoogleLoadingState(false)
-                Log.d("TAG", "LoginScreen: Error = ${(loginUiState as UiState.Error).exception.message}")
+                val message = (loginUiState as UiState.Error).exception.message
+                messageBarState.addError(Exception(message))
             }
         }
     }
@@ -60,20 +66,31 @@ fun LoginScreen(
         }
     }
 
-    val onLoginClicked = {}
+    val onLoginClicked = {
+        loginViewModel.updateSignInWithEmailAndPasswordLoadingState(true)
+        loginViewModel.signInWithEmailAndPassword()
+    }
 
-    val onSignInWithGoogleClicked = {
+    val onLoginWithGoogleClicked = {
         authResultLauncher.launch(Activity.RESULT_OK)
     }
 
-    LoginContent(
-        loginViewModel = loginViewModel,
-        onForgotPassword = {},
-        onRegisterClicked = navigator.navigateToRegisterScreen,
-        modifier = modifier,
-        onLoginClicked = onLoginClicked,
-        onSignInWithGoogleClicked = onSignInWithGoogleClicked
-    )
+    ContentWithMessageBar(
+        messageBarState = messageBarState,
+        visibilityDuration = 1000L,
+        showToastOnCopy = false,
+        errorMaxLines = 2,
+    ) {
+        LoginContent(
+            loginViewModel = loginViewModel,
+            onForgotPassword = {},
+            onRegisterClicked = navigator.navigateToRegisterScreen,
+            modifier = modifier,
+            onLoginClicked = onLoginClicked,
+            onSignInWithGoogleClicked = onLoginWithGoogleClicked
+        )
+    }
+
 }
 
 @Preview(showBackground = true)

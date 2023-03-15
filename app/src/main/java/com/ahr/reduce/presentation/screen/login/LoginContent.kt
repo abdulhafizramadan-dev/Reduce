@@ -43,6 +43,7 @@ fun LoginContent(
     val isEmailNotValid = loginViewModel.isEmailNotValid
     val isPasswordNotValid = loginViewModel.isPasswordNotValid
 
+    val signInWithEmailAndPasswordLoadingState = loginViewModel.signInWithEmailAndPasswordLoadingState
     val signInWithGoogleLoadingState = loginViewModel.signInWithGoogleLoadingState
 
     val allFormValid by loginViewModel.allFormValid.collectAsState(initial = false)
@@ -68,6 +69,7 @@ fun LoginContent(
             onSignInWithGoogleClicked = onSignInWithGoogleClicked,
             isLoginButtonEnabled = allFormValid,
             isSignInWithGoogleEnabled = !signInWithGoogleLoadingState,
+            signInWithEmailAndPasswordLoadingState = signInWithEmailAndPasswordLoadingState,
             signInWithGoogleLoadingState = signInWithGoogleLoadingState,
             modifier = Modifier.weight(1f),
         )
@@ -185,6 +187,7 @@ fun LoginFooter(
     isSignInWithGoogleEnabled: Boolean,
     signInWithGoogleLoadingState: Boolean,
     modifier: Modifier = Modifier,
+    signInWithEmailAndPasswordLoadingState: Boolean,
 ) {
 
     Column(modifier = modifier) {
@@ -193,9 +196,10 @@ fun LoginFooter(
             title = R.string.login,
             onButtonClicked = onLoginClicked,
             enabled = isLoginButtonEnabled,
+            loadingState = signInWithEmailAndPasswordLoadingState,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp)
+                .padding(top = 16.dp),
         )
 
         Row(
