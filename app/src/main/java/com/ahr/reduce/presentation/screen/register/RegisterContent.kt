@@ -43,6 +43,8 @@ fun RegisterContent(
     val isPasswordNotValid = registerViewModel.isPasswordNotValid
     val isConfirmPasswordNotValid = registerViewModel.isConfirmPasswordNotValid
 
+    val signUpLoadingState = registerViewModel.signUpLoadingState
+
     val allFormValid by registerViewModel.allFormValid.collectAsState(initial = false)
 
     Column(modifier = modifier
@@ -73,7 +75,8 @@ fun RegisterContent(
         RegisterFooter(
             onRegisterClicked = onRegisterClicked,
             registerButtonEnabled = allFormValid,
-            onLoginClicked = onLoginClicked
+            onLoginClicked = onLoginClicked,
+            signUpLoadingState = signUpLoadingState
         )
     }
 }
@@ -213,7 +216,8 @@ fun RegisterFooter(
     onRegisterClicked: () -> Unit,
     onLoginClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    registerButtonEnabled: Boolean
+    registerButtonEnabled: Boolean,
+    signUpLoadingState: Boolean
 ) {
 
     Column(modifier = modifier) {
@@ -221,9 +225,10 @@ fun RegisterFooter(
             title = R.string.register,
             onButtonClicked = onRegisterClicked,
             enabled = registerButtonEnabled,
+            loadingState = signUpLoadingState,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp)
+                .padding(top = 16.dp),
         )
 
         Row(

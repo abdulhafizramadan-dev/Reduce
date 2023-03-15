@@ -102,5 +102,7 @@
     <string name="not_match_password">Password tidak sama!</string>
     <string name="google_logo">Google logo</string>
     <string name="signin_with_google">Sign in with Google</string>
+    <string name="loading">Loading</string>
+    <string name="message_success_register_user">Registrasi berhasil!</string>
 
 </resources>

@@ -20,6 +20,7 @@ import com.ahr.reduce.presentation.component.text.AuthTextFieldLabel
 import com.ahr.reduce.ui.theme.Gray90
 import com.ahr.reduce.ui.theme.ReduceTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReduceOutlinedTextFieldPassword(
     @StringRes label: Int,

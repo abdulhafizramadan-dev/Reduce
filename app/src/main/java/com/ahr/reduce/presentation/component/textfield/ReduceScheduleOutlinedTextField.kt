@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.ahr.reduce.R
 import com.ahr.reduce.ui.theme.ReduceTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReduceScheduleOutlinedTextField(
     query: String,

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "78444657038",
+    "project_id": "reduce-a6a72",
+    "storage_bucket": "reduce-a6a72.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78444657038:android:0142b9635e04ff1471ccdf",
+        "android_client_info": {
+          "package_name": "com.ahr.reduce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "78444657038-i9hmu1qp4uhh956cfecbbtp0ctt0rp8o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBspCGuAkPhaTUwY_aC5YeOF_S_JCPRaUk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "78444657038-i9hmu1qp4uhh956cfecbbtp0ctt0rp8o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

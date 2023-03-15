@@ -5,10 +5,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -17,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.ahr.reduce.R
 import com.ahr.reduce.ui.theme.ReduceTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReduceSearchOutlinedTextField(
     query: String,

@@ -4,21 +4,27 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ahr.reduce.domain.data.ApiState
 import com.ahr.reduce.domain.data.RegisterForm
 import com.ahr.reduce.domain.data.UiState
+import com.ahr.reduce.domain.repository.FirebaseRepository
 import com.ahr.reduce.util.isEmailFormat
 import com.ahr.reduce.util.isPasswordFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor() : ViewModel() {
+class RegisterViewModel @Inject constructor(
+    private val firebaseRepository: FirebaseRepository
+) : ViewModel() {
 
     private val _registerForm = MutableStateFlow(RegisterForm())
     val registerForm get() = _registerForm.asStateFlow()
 
-    private val _registerUiState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
+    private val _registerUiState = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
     val registerUiState get() = _registerUiState.asStateFlow()
 
     var isFirstNameNotValid by mutableStateOf(false)
@@ -32,6 +38,9 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
     var isConfirmPasswordNotValid by mutableStateOf(false)
         private set
 
+    var signUpLoadingState by mutableStateOf(false)
+        private set
+
     val allFormValid get() = _registerForm.map {  registerForm ->
         registerForm.firstName.isNotEmpty() &&
         registerForm.lastName.isNotEmpty() &&
@@ -39,6 +48,19 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
         registerForm.email.isEmailFormat() &&
         registerForm.password.isPasswordFormat() &&
         registerForm.password == registerForm.confirmPassword
+    }
+
+    fun signUpUser() {
+        viewModelScope.launch {
+            firebaseRepository.signUpWithEmailAndPassword(registerForm = registerForm.value)
+                .collect { apiState ->
+                    when (apiState) {
+                        is ApiState.Loading -> _registerUiState.value = UiState.Loading
+                        is ApiState.Success -> _registerUiState.value = UiState.Success(apiState.data)
+                        is ApiState.Error -> _registerUiState.value = UiState.Error(apiState.exception)
+                    }
+                }
+        }
     }
 
     fun updateFirstName(firstName: String) {
@@ -64,6 +86,10 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
     fun updateConfirmPassword(confirmPassword: String) {
         _registerForm.update { it.copy(confirmPassword = confirmPassword) }
         isConfirmPasswordNotValid = confirmPassword != _registerForm.value.password
+    }
+
+    fun updateSignUpLoadingState(state: Boolean) {
+        signUpLoadingState = state
     }
 
 }

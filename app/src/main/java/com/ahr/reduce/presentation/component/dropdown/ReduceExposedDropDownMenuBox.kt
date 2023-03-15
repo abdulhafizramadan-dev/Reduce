@@ -62,6 +62,7 @@ fun ReduceExposedDropDownMenuBox(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReduceDropDownTextField(
     @StringRes label: Int,

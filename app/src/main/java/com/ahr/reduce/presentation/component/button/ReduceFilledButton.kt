@@ -1,13 +1,12 @@
 package com.ahr.reduce.presentation.component.button
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,14 +19,37 @@ fun ReduceFilledButton(
     onButtonClicked: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    loadingState: Boolean = false,
 ) {
+    val buttonTitle = if (loadingState) {
+        R.string.loading
+    } else {
+        title
+    }
+    val buttonBackground = if (loadingState) {
+        MaterialTheme.colorScheme.primary.copy(alpha = .5f)
+    } else {
+        MaterialTheme.colorScheme.primary
+    }
     Button(
         onClick = onButtonClicked,
         enabled = enabled,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = buttonBackground,
+        ),
         modifier = modifier
-            .height(50.dp),
+            .height(50.dp)
+            .animateContentSize(),
     ) {
-        Text(text = stringResource(id = title))
+        Text(text = stringResource(id = buttonTitle))
+        if (loadingState) {
+            Spacer(modifier = Modifier.width(16.dp))
+            CircularProgressIndicator(
+                modifier = Modifier.size(16.dp),
+                strokeWidth = 2.dp,
+                color = Color.White
+            )
+        }
     }
 }
 

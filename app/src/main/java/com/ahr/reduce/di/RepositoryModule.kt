@@ -2,7 +2,10 @@ package com.ahr.reduce.di
 
 import android.content.Context
 import com.ahr.reduce.data.repository.DatastoreRepositoryImpl
+import com.ahr.reduce.data.repository.FirebaseRepositoryImpl
 import com.ahr.reduce.domain.repository.DatastoreRepository
+import com.ahr.reduce.domain.repository.FirebaseRepository
+import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,4 +25,17 @@ object RepositoryModule {
         return DatastoreRepositoryImpl(context)
     }
 
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth {
+        return FirebaseAuth.getInstance()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseRepository(
+        firebaseAuth: FirebaseAuth
+    ): FirebaseRepository {
+        return FirebaseRepositoryImpl(firebaseAuth)
+    }
 }

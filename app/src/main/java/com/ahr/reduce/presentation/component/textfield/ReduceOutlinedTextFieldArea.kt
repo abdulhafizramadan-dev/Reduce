@@ -3,6 +3,7 @@ package com.ahr.reduce.presentation.component.textfield
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -16,6 +17,7 @@ import com.ahr.reduce.R
 import com.ahr.reduce.presentation.component.text.AuthTextFieldLabel
 import com.ahr.reduce.ui.theme.ReduceTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReduceOutlinedTextFieldArea(
     @StringRes label: Int,
