@@ -1,5 +1,6 @@
 package com.ahr.reduce.data.repository
 
+import android.util.Log
 import com.ahr.reduce.data.data.ProductRealm
 import com.ahr.reduce.data.data.UserRealm
 import com.ahr.reduce.domain.data.UiState
@@ -14,6 +15,7 @@ import io.realm.kotlin.mongodb.User
 import io.realm.kotlin.mongodb.sync.SyncConfiguration
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import org.mongodb.kbson.ObjectId
 
 class RealmRepositoryImpl(private val realmApp: App) : RealmRepository {
@@ -42,6 +44,8 @@ class RealmRepositoryImpl(private val realmApp: App) : RealmRepository {
             )
             if (result.loggedIn) {
                 configureRealm(result)
+//                val products = realm.query<ProductRealm>().find()
+//                Log.d("TAG", "HomeScreen: homeProducts = $products")
                 emit(UiState.Success(true))
             } else {
                 emit(UiState.Error(UnknownError("User is not logged in.")))
@@ -66,7 +70,8 @@ class RealmRepositoryImpl(private val realmApp: App) : RealmRepository {
     }
 
     override fun getHomeProduct(): Flow<List<ProductRealm>> {
-        TODO("Not yet implemented")
+//        Log.d("TAG", "HomeScreen: homeProducts = valle")
+        return realm.query<ProductRealm>().limit(6).asFlow().map { it.list }
     }
 
     override fun getAllProduct(): Flow<List<ProductRealm>> {

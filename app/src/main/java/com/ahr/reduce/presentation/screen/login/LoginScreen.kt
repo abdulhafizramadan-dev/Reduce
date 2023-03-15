@@ -34,7 +34,7 @@ fun LoginScreen(
             is UiState.Loading -> {}
             is UiState.Success -> {
                 loginViewModel.updateSignInWithGoogleLoadingState(false)
-                navigator.navigateToMainGraph(Login.route)
+//                navigator.navigateToMainGraph(Login.route)
             }
             is UiState.Error -> {
                 loginViewModel.updateSignInWithGoogleLoadingState(false)
