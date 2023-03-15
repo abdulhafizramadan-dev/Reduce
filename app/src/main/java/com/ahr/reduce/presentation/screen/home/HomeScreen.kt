@@ -1,6 +1,5 @@
 package com.ahr.reduce.presentation.screen.home
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,14 +35,10 @@ fun HomeScreen(
     }
 
 
-    val homeProducts by homeViewModel.homeProducts.collectAsState()
+//    val homeProducts by homeViewModel.homeProducts.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
         homeViewModel.getHomeProduct()
-    }
-
-    LaunchedEffect(key1 = homeProducts) {
-        Log.d("TAG", "HomeScreen: homeProducts = $homeProducts")
     }
 
     LazyVerticalGrid(

@@ -4,21 +4,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.ahr.reduce.domain.data.RegisterForm
 import com.ahr.reduce.domain.data.UiState
-import com.ahr.reduce.domain.repository.RealmRepository
 import com.ahr.reduce.util.isEmailFormat
 import com.ahr.reduce.util.isPasswordFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(
-    private val realmRepository: RealmRepository
-) : ViewModel() {
+class RegisterViewModel @Inject constructor() : ViewModel() {
 
     private val _registerForm = MutableStateFlow(RegisterForm())
     val registerForm get() = _registerForm.asStateFlow()

@@ -7,18 +7,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ahr.reduce.domain.data.LoginForm
 import com.ahr.reduce.domain.data.UiState
-import com.ahr.reduce.domain.repository.RealmRepository
 import com.ahr.reduce.util.isEmailFormat
 import com.ahr.reduce.util.isPasswordFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
-    private val realmRepository: RealmRepository
-) : ViewModel() {
+class LoginViewModel @Inject constructor() : ViewModel() {
 
     private val _loginForm = MutableStateFlow(LoginForm())
     val loginForm get() = _loginForm.asStateFlow()
@@ -42,9 +42,7 @@ class LoginViewModel @Inject constructor(
 
     fun signInWithGoogle(idToken: String) {
         viewModelScope.launch {
-            realmRepository.signInWithGoogle(idToken).collectLatest { state ->
-                _loginUiState.value = state
-            }
+
         }
     }
 
