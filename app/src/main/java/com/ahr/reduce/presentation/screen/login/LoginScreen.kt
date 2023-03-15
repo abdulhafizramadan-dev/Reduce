@@ -31,15 +31,13 @@ fun LoginScreen(
     LaunchedEffect(key1 = loginUiState) {
         when (loginUiState) {
             is UiState.Idle -> {}
-            is UiState.Loading -> {
-                loginViewModel.updateSignInWithGoogleLoadingState(true)
-            }
+            is UiState.Loading -> {}
             is UiState.Success -> {
                 loginViewModel.updateSignInWithGoogleLoadingState(false)
-                Log.d("TAG", "LoginScreen: Success")
                 navigator.navigateToMainGraph(Login.route)
             }
             is UiState.Error -> {
+                loginViewModel.updateSignInWithGoogleLoadingState(false)
                 Log.d("TAG", "LoginScreen: Error = ${(loginUiState as UiState.Error).exception.message}")
             }
         }
@@ -51,8 +49,9 @@ fun LoginScreen(
         try {
             val account = task?.getResult(ApiException::class.java)
             if (account != null) {
-                val tokenId = account.idToken.toString()
-                loginViewModel.signInWithGoogle(tokenId = tokenId)
+                loginViewModel.updateSignInWithGoogleLoadingState(true)
+                val idToken = account.idToken.toString()
+                loginViewModel.signInWithGoogle(idToken = idToken)
             } else {
                 Log.d("TAG", "LoginScreen: token Empty")
             }

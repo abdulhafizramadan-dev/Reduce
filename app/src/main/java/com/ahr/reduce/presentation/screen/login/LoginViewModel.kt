@@ -40,9 +40,9 @@ class LoginViewModel @Inject constructor(
         loginForm.password.isPasswordFormat()
     }
 
-    fun signInWithGoogle(tokenId: String) {
+    fun signInWithGoogle(idToken: String) {
         viewModelScope.launch {
-            realmRepository.signInWithGoogle(tokenId).collectLatest { state ->
+            realmRepository.signInWithGoogle(idToken).collectLatest { state ->
                 _loginUiState.value = state
             }
         }

@@ -67,8 +67,8 @@ fun LoginContent(
             onRegisterClicked = onRegisterClicked,
             onSignInWithGoogleClicked = onSignInWithGoogleClicked,
             isLoginButtonEnabled = allFormValid,
-            isSignInWithGoogleEnabled = signInWithGoogleLoadingState,
-            signInWithGoogleLoadingState = !signInWithGoogleLoadingState,
+            isSignInWithGoogleEnabled = !signInWithGoogleLoadingState,
+            signInWithGoogleLoadingState = signInWithGoogleLoadingState,
             modifier = Modifier.weight(1f),
         )
     }

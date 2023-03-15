@@ -8,12 +8,14 @@ import kotlinx.coroutines.flow.Flow
 import org.mongodb.kbson.ObjectId
 
 interface RealmRepository {
+    val user: User?
     fun configureRealm(user: User)
-    fun signInWithGoogle(tokenId: String): Flow<UiState<Boolean>>
+    fun signInWithGoogle(idToken: String): Flow<UiState<Boolean>>
     fun signUpWithEmailAndPassword(userRealm: UserRealm): Flow<UiState<Boolean>>
-    suspend fun saveUser(userRealm: UserRealm)
+    fun getUser(): UserRealm?
     fun getHomeProduct(): Flow<List<ProductRealm>>
     fun getAllProduct(): Flow<List<ProductRealm>>
     fun searchProduct(): Flow<List<ProductRealm>>
     fun getCartProduct(userId: ObjectId): Flow<List<ProductRealm>>
+    suspend fun saveUser(userRealm: UserRealm)
 }

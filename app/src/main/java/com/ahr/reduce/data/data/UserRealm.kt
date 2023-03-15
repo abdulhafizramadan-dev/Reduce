@@ -2,18 +2,24 @@ package com.ahr.reduce.data.data
 
 import io.realm.kotlin.types.RealmInstant
 import io.realm.kotlin.types.RealmObject
+import io.realm.kotlin.types.annotations.PersistedName
 import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
 
 class UserRealm : RealmObject {
     @PrimaryKey
-    var _id: ObjectId = ObjectId.invoke()
-    var token_id: String = ""
-    var first_name: String = ""
-    var last_name: String = ""
+    @PersistedName("_id")
+    var id: ObjectId = ObjectId.invoke()
+    @PersistedName("owner_id")
+    var ownerId: String = ""
+    @PersistedName("first_name")
+    var firstName: String = ""
+    @PersistedName("last_name")
+    var lastName: String = ""
     var email: String = ""
     var telephone: String = ""
-    var birth_date: String = ""
+    @PersistedName("birth_date")
+    var birthDate: String = ""
     var gender: String = ""
     var timestamp: RealmInstant = RealmInstant.now()
 }

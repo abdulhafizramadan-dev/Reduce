@@ -12,15 +12,13 @@ import io.realm.kotlin.mongodb.Credentials
 import io.realm.kotlin.mongodb.GoogleAuthType
 import io.realm.kotlin.mongodb.User
 import io.realm.kotlin.mongodb.sync.SyncConfiguration
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
 import org.mongodb.kbson.ObjectId
 
 class RealmRepositoryImpl(private val realmApp: App) : RealmRepository {
 
-    private val user get() = realmApp.currentUser
+    override val user: User? get() = realmApp.currentUser
     private lateinit var realm: Realm
 
     override fun configureRealm(user: User) {
@@ -29,26 +27,21 @@ class RealmRepositoryImpl(private val realmApp: App) : RealmRepository {
             schema = setOf(UserRealm::class, ProductRealm::class)
         )
             .initialSubscriptions { realm ->
-                add(query = realm.query<UserRealm>(query = "token_id == $0", user.id))
+                add(query = realm.query<UserRealm>(query = "owner_id == $0", user.id))
             }
             .log(LogLevel.ALL)
             .build()
         realm = Realm.open(config)
     }
 
-    override fun signInWithGoogle(tokenId: String): Flow<UiState<Boolean>> = flow {
+    override fun signInWithGoogle(idToken: String): Flow<UiState<Boolean>> = flow {
         emit(UiState.Loading)
         try {
-            val result = withContext(Dispatchers.IO) {
-                realmApp.login(
-                    Credentials.google(token = tokenId, type = GoogleAuthType.ID_TOKEN)
-                )
-            }
+            val result = realmApp.login(
+                Credentials.google(token = idToken, type = GoogleAuthType.ID_TOKEN)
+            )
             if (result.loggedIn) {
                 configureRealm(result)
-                val defaultUserRealm = UserRealm()
-                defaultUserRealm.token_id = result.id
-                saveUser(defaultUserRealm)
                 emit(UiState.Success(true))
             } else {
                 emit(UiState.Error(UnknownError("User is not logged in.")))
@@ -58,12 +51,16 @@ class RealmRepositoryImpl(private val realmApp: App) : RealmRepository {
         }
     }
 
+    override fun getUser(): UserRealm? {
+        return realm.query<UserRealm>(query = "owner_id == $0", user?.id.toString()).first().find()
+    }
+
     override fun signUpWithEmailAndPassword(userRealm: UserRealm): Flow<UiState<Boolean>> {
         TODO("Not yet implemented")
     }
 
     override suspend fun saveUser(userRealm: UserRealm) {
-        realm.writeBlocking {
+        realm.write {
             copyToRealm(userRealm)
         }
     }
