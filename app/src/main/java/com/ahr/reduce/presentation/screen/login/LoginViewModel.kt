@@ -11,14 +11,20 @@ import com.ahr.reduce.domain.data.UiState
 import com.ahr.reduce.domain.repository.FirebaseRepository
 import com.ahr.reduce.util.isEmailFormat
 import com.ahr.reduce.util.isPasswordFormat
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val firebaseRepository: FirebaseRepository
+    private val firebaseRepository: FirebaseRepository,
+    private val mGoogleSignInClient: GoogleSignInClient
 ) : ViewModel() {
 
     private val _loginForm = MutableStateFlow(LoginForm())
@@ -26,6 +32,8 @@ class LoginViewModel @Inject constructor(
 
     private val _loginUiState = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
     val loginUiState get() = _loginUiState.asStateFlow()
+
+    val googleSignInClient: GoogleSignInClient get() = mGoogleSignInClient
 
     var isEmailNotValid by mutableStateOf(false)
         private set
@@ -44,16 +52,24 @@ class LoginViewModel @Inject constructor(
         loginForm.password.isPasswordFormat()
     }
 
-    fun signInWithGoogle(idToken: String) {
-        viewModelScope.launch {
-
-        }
-    }
-
     fun signInWithEmailAndPassword() {
         viewModelScope.launch {
             firebaseRepository
-                .signIpWithEmailAndPassword(loginForm.value)
+                .signInWithEmailAndPassword(loginForm.value)
+                .collect { apiState ->
+                    when (apiState) {
+                        is ApiState.Loading -> _loginUiState.value = UiState.Loading
+                        is ApiState.Success -> _loginUiState.value = UiState.Success(apiState.data)
+                        is ApiState.Error -> _loginUiState.value = UiState.Error(apiState.exception)
+                    }
+                }
+        }
+    }
+
+    fun signInWithGoogle(authCredential: AuthCredential) {
+        viewModelScope.launch {
+            firebaseRepository
+                .signInWithGoogle(authCredential)
                 .collect { apiState ->
                     when (apiState) {
                         is ApiState.Loading -> _loginUiState.value = UiState.Loading

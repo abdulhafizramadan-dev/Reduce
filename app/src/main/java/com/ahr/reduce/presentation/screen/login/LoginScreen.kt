@@ -1,8 +1,8 @@
 package com.ahr.reduce.presentation.screen.login
 
 import android.app.Activity
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,8 +16,9 @@ import com.ahr.reduce.domain.data.UiState
 import com.ahr.reduce.navigation.AuthScreen.Login
 import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.ui.theme.ReduceTheme
-import com.ahr.reduce.util.AuthResultContract
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.GoogleAuthProvider
 import com.stevdzasan.messagebar.ContentWithMessageBar
 import com.stevdzasan.messagebar.rememberMessageBarState
 
@@ -29,6 +30,7 @@ fun LoginScreen(
 ) {
 
     val loginUiState by loginViewModel.loginUiState.collectAsState()
+    val googleSignInClient = loginViewModel.googleSignInClient
     val messageBarState = rememberMessageBarState()
 
     LaunchedEffect(key1 = loginUiState) {
@@ -49,20 +51,20 @@ fun LoginScreen(
         }
     }
 
-    val authResultLauncher = rememberLauncherForActivityResult(
-        contract = AuthResultContract()
-    ) { task ->
-        try {
-            val account = task?.getResult(ApiException::class.java)
-            if (account != null) {
-                loginViewModel.updateSignInWithGoogleLoadingState(true)
-                val idToken = account.idToken.toString()
-                loginViewModel.signInWithGoogle(idToken = idToken)
-            } else {
-                Log.d("TAG", "LoginScreen: token Empty")
+    val signInWithGoogleLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val account = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            try {
+                val accountResult = account.getResult(ApiException::class.java)
+                val credentials = GoogleAuthProvider.getCredential(accountResult.idToken, null)
+                loginViewModel.signInWithGoogle(authCredential = credentials)
+            } catch (exception: ApiException) {
+                messageBarState.addError(exception)
             }
-        } catch (e: ApiException) {
-            Log.d("TAG", "LoginScreen: error=${e.message}")
+        } else {
+            loginViewModel.updateSignInWithGoogleLoadingState(false)
         }
     }
 
@@ -72,12 +74,12 @@ fun LoginScreen(
     }
 
     val onLoginWithGoogleClicked = {
-        authResultLauncher.launch(Activity.RESULT_OK)
+        loginViewModel.updateSignInWithGoogleLoadingState(true)
+        signInWithGoogleLauncher.launch(googleSignInClient.signInIntent)
     }
 
     ContentWithMessageBar(
         messageBarState = messageBarState,
-        visibilityDuration = 1000L,
         showToastOnCopy = false,
         errorMaxLines = 2,
     ) {

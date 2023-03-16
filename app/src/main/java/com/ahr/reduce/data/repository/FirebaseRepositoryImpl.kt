@@ -5,6 +5,7 @@ import com.ahr.reduce.domain.data.ApiState.Error
 import com.ahr.reduce.domain.data.LoginForm
 import com.ahr.reduce.domain.data.RegisterForm
 import com.ahr.reduce.domain.repository.FirebaseRepository
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -32,7 +33,7 @@ class FirebaseRepositoryImpl(
         emit(Error(exception))
     }
 
-    override fun signIpWithEmailAndPassword(
+    override fun signInWithEmailAndPassword(
         loginForm: LoginForm
     ): Flow<ApiState<Boolean>> = flow {
         emit(ApiState.Loading)
@@ -46,6 +47,17 @@ class FirebaseRepositoryImpl(
             emit(Error(UnknownError("Login failed!")))
         }
     }.catch { exception ->
+        emit(Error(exception))
+    }
+    override fun signInWithGoogle(googleCredential: AuthCredential): Flow<ApiState<Boolean>> = flow {
+        emit(ApiState.Loading)
+        val authResult = firebaseAuth.signInWithCredential(googleCredential).await()
+        val isNewUser = authResult.additionalUserInfo?.isNewUser ?: false
+        if (isNewUser) {
+            // TODO: Save user to collection
+        }
+        emit(ApiState.Success(true))
+    }.catch  { exception ->
         emit(Error(exception))
     }
 

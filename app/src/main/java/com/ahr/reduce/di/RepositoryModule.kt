@@ -36,6 +36,8 @@ object RepositoryModule {
     fun provideFirebaseRepository(
         firebaseAuth: FirebaseAuth
     ): FirebaseRepository {
-        return FirebaseRepositoryImpl(firebaseAuth)
+        return FirebaseRepositoryImpl(
+            firebaseAuth = firebaseAuth
+        )
     }
 }

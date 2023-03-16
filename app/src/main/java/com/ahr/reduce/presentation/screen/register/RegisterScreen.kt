@@ -45,7 +45,6 @@ fun RegisterScreen(
 
     ContentWithMessageBar(
         messageBarState = messageBarState,
-        visibilityDuration = 1000L,
         showToastOnCopy = false,
         errorMaxLines = 2,
     ) {
