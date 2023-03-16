@@ -58,10 +58,9 @@ class Navigator(private val navController: NavHostController) {
         navController.popBackStack()
     }
 
-    // Registration Flow
     val navigateToProfileSettingsRegisterFlow: () -> Unit = {
         navController.navigate(ProfileSettings.getRoute(true)) {
-            popUpTo(Register.route) {
+            popUpTo(Graph.Auth.route) {
                 inclusive = true
             }
         }

@@ -5,6 +5,9 @@ import com.ahr.reduce.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +17,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object FirebaseModule {
 
     @Provides
     @Singleton
@@ -34,5 +37,11 @@ object NetworkModule {
         googleSignInOptions: GoogleSignInOptions
     ): GoogleSignInClient {
         return GoogleSignIn.getClient(context, googleSignInOptions)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseFirestore(): FirebaseFirestore {
+        return Firebase.firestore
     }
 }

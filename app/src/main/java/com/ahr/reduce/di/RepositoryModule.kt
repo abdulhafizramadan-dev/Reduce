@@ -6,6 +6,7 @@ import com.ahr.reduce.data.repository.FirebaseRepositoryImpl
 import com.ahr.reduce.domain.repository.DatastoreRepository
 import com.ahr.reduce.domain.repository.FirebaseRepository
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,10 +35,12 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideFirebaseRepository(
-        firebaseAuth: FirebaseAuth
+        firebaseAuth: FirebaseAuth,
+        firebaseFirestore: FirebaseFirestore
     ): FirebaseRepository {
         return FirebaseRepositoryImpl(
-            firebaseAuth = firebaseAuth
+            firebaseAuth = firebaseAuth,
+            firebaseFirestore = firebaseFirestore
         )
     }
 }

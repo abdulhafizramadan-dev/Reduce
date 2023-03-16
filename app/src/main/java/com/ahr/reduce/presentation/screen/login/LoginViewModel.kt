@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ahr.reduce.domain.data.ApiState
 import com.ahr.reduce.domain.data.LoginForm
+import com.ahr.reduce.domain.data.SignInWithGoogleResponse
 import com.ahr.reduce.domain.data.UiState
 import com.ahr.reduce.domain.repository.FirebaseRepository
 import com.ahr.reduce.util.isEmailFormat
@@ -30,7 +31,7 @@ class LoginViewModel @Inject constructor(
     private val _loginForm = MutableStateFlow(LoginForm())
     val loginForm get() = _loginForm.asStateFlow()
 
-    private val _loginUiState = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
+    private val _loginUiState = MutableStateFlow<UiState<SignInWithGoogleResponse>>(UiState.Idle)
     val loginUiState get() = _loginUiState.asStateFlow()
 
     val googleSignInClient: GoogleSignInClient get() = mGoogleSignInClient
@@ -59,7 +60,9 @@ class LoginViewModel @Inject constructor(
                 .collect { apiState ->
                     when (apiState) {
                         is ApiState.Loading -> _loginUiState.value = UiState.Loading
-                        is ApiState.Success -> _loginUiState.value = UiState.Success(apiState.data)
+                        is ApiState.Success -> _loginUiState.value = UiState.Success(
+                            SignInWithGoogleResponse(isSuccess = apiState.data)
+                        )
                         is ApiState.Error -> _loginUiState.value = UiState.Error(apiState.exception)
                     }
                 }

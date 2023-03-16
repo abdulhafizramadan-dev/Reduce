@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
+import com.ahr.reduce.domain.data.SignInWithGoogleResponse
 import com.ahr.reduce.domain.data.UiState
 import com.ahr.reduce.navigation.AuthScreen.Login
 import com.ahr.reduce.navigation.Navigator
@@ -40,7 +41,11 @@ fun LoginScreen(
             is UiState.Success -> {
                 loginViewModel.updateSignInWithEmailAndPasswordLoadingState(false)
                 loginViewModel.updateSignInWithGoogleLoadingState(false)
-                navigator.navigateToMainGraph(Login.route)
+                if ((loginUiState as UiState.Success<SignInWithGoogleResponse>).data.isNewUser){
+                    navigator.navigateToProfileSettingsRegisterFlow()
+                } else {
+                    navigator.navigateToMainGraph(Login.route)
+                }
             }
             is UiState.Error -> {
                 loginViewModel.updateSignInWithEmailAndPasswordLoadingState(false)
