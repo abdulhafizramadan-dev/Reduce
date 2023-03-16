@@ -34,6 +34,7 @@ fun RegisterScreen(
             is UiState.Success -> {
                 registerViewModel.updateSignUpLoadingState(false)
                 messageBarState.addSuccess(context.getString(R.string.message_success_register_user))
+                navigator.navigateToProfileSettingsRegisterFlow()
             }
             is UiState.Error -> {
                 registerViewModel.updateSignUpLoadingState(false)
