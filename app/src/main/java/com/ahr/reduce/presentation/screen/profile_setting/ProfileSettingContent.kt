@@ -4,10 +4,12 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.ahr.reduce.R
 import com.ahr.reduce.domain.data.UiState
@@ -43,12 +45,14 @@ fun ProfileSettingContent(
     val isEmailNotValid = profileSettingViewModel.isEmailNotValid
     val isTelephoneNotValid = profileSettingViewModel.isTelephoneNotValid
 
+    val selectedDate by profileSettingViewModel.birthDateInLocalDate.collectAsState(initial = LocalDate.now())
+
     val allFormValid by profileSettingViewModel.allFormValid.collectAsState(initial = false)
 
     val saveButtonLoadingState = profileSettingViewModel.saveButtonLoadingState
     val saveUserState = profileSettingViewModel.saveUserProfileState
 
-    LaunchedEffect(key1 = Unit) {
+    LaunchedEffect(key1 = saveUserState) {
         when (saveUserState) {
             is UiState.Idle,
             is UiState.Loading -> {}
@@ -79,7 +83,6 @@ fun ProfileSettingContent(
 
     val genders = Gender.values().map { it.gender }
 
-    val selectedDate = remember { mutableStateOf<LocalDate?>(LocalDate.now()) }
     val sheetState = rememberSheetState()
 
     CalendarDialog(
@@ -90,9 +93,9 @@ fun ProfileSettingContent(
             style = CalendarStyle.MONTH,
         ),
         selection = CalendarSelection.Date(
-            selectedDate = selectedDate.value
+            selectedDate = selectedDate
         ) { newDate ->
-            selectedDate.value = newDate
+            profileSettingViewModel.updateBirthDate(newDate.toString())
         },
     )
 
@@ -147,12 +150,13 @@ fun ProfileSettingContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 13.dp),
-            isError = isTelephoneNotValid
+            isError = isTelephoneNotValid,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
 
         ReduceDatePickerTextField(
             label = R.string.label_birth_date,
-            text = selectedDate.value.toString(),
+            text = selectedDate.toString(),
             errorMessage = R.string.empty_birth_date,
             modifier = Modifier
                 .fillMaxWidth()
@@ -173,7 +177,7 @@ fun ProfileSettingContent(
             title = R.string.save,
             onButtonClicked = {
                 profileSettingViewModel.updateSaveButtonLoadingState(true)
-                onSaveClicked()
+                profileSettingViewModel.saveUserProfile()
             },
             enabled = allFormValid,
             loadingState = saveButtonLoadingState,
@@ -184,9 +188,3 @@ fun ProfileSettingContent(
     }
 }
 
-@Composable
-fun ReduceOutlinedTextFieldDatePicker(
-
-) {
-
-}

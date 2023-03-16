@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,7 +27,9 @@ fun ReduceDatePickerTextField(
     isError: Boolean = false,
     @StringRes errorMessage: Int = R.string.empty_field,
     largeGapLabel: Boolean = false,
-    onTextFieldClicked: () -> Unit
+    onTextFieldClicked: () -> Unit,
+    trailingIcon: ImageVector? = null,
+    angle: Float = 0.0f
 ) {
     Column(modifier = modifier) {
         AuthTextFieldLabel(text = label, modifier = Modifier.fillMaxWidth())
@@ -40,10 +44,19 @@ fun ReduceDatePickerTextField(
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
                     MaterialTheme.shapes.extraLarge
                 )
-                .clickable { onTextFieldClicked() },
-            verticalAlignment = Alignment.CenterVertically
+                .clickable { onTextFieldClicked() }
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = text, modifier = Modifier.padding(start = 16.dp))
+            Text(text = text)
+            if (trailingIcon != null) {
+                Icon(
+                    imageVector = trailingIcon,
+                    contentDescription = null,
+                    modifier = Modifier.rotate(angle)
+                )
+            }
         }
         if (isError) {
             Text(

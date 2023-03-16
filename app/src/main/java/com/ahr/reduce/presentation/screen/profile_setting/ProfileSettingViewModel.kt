@@ -1,5 +1,7 @@
 package com.ahr.reduce.presentation.screen.profile_setting
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,12 +12,14 @@ import com.ahr.reduce.domain.data.ProfileSettingForm
 import com.ahr.reduce.domain.data.UiState
 import com.ahr.reduce.domain.repository.FirebaseRepository
 import com.ahr.reduce.util.isEmailFormat
+import com.ahr.reduce.util.toLocalDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,11 +38,19 @@ class ProfileSettingViewModel @Inject constructor(
         private set
     var isTelephoneNotValid by mutableStateOf(false)
         private set
-    var isBirthDateNotValid by mutableStateOf(false)
-        private set
 
     var saveButtonLoadingState by mutableStateOf(false)
         private set
+
+    val birthDateInLocalDate @RequiresApi(Build.VERSION_CODES.O)
+    get() = _profileSettingForm.map {
+        val dateBirth = it.birthDate.ifEmpty {
+            val currentDate = LocalDate.now().toString()
+            updateBirthDate(currentDate)
+            currentDate
+        }
+        dateBirth.toLocalDate()
+    }
 
     var saveUserProfileState: UiState<Boolean> by mutableStateOf(UiState.Idle)
         private set
@@ -53,7 +65,7 @@ class ProfileSettingViewModel @Inject constructor(
     }
 
     init {
-//        getUserProfile()
+        getUserProfile()
     }
 
     private fun getUserProfile() {
@@ -66,10 +78,7 @@ class ProfileSettingViewModel @Inject constructor(
                         saveButtonLoadingState = false
                         _profileSettingForm.value = apiState.data
                     }
-                    is ApiState.Error -> {
-                        saveButtonLoadingState = false
-                        saveUserProfileState = UiState.Error(apiState.exception)
-                    }
+                    is ApiState.Error -> { saveButtonLoadingState = false }
                 }
             }
         }
@@ -109,7 +118,6 @@ class ProfileSettingViewModel @Inject constructor(
 
     fun updateBirthDate(birthDate: String) {
         _profileSettingForm.update { it.copy(birthDate = birthDate) }
-        isBirthDateNotValid = birthDate.isEmpty()
     }
 
     fun updateGender(gender: String) {

@@ -8,13 +8,10 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ahr.reduce.R
-import com.ahr.reduce.presentation.component.text.AuthTextFieldLabel
-import com.ahr.reduce.ui.theme.Gray90
+import com.ahr.reduce.presentation.component.textfield.ReduceDatePickerTextField
 import com.ahr.reduce.ui.theme.ReduceTheme
 
 @ExperimentalMaterial3Api
@@ -30,21 +27,21 @@ fun ReduceExposedDropDownMenuBox(
     var isExposed by remember { mutableStateOf(false) }
     val animatedAngle by animateFloatAsState(targetValue = if (isExposed) 180f else 0f)
 
-    ExposedDropdownMenuBox(
-        expanded = isExposed,
-        onExpandedChange = { isExposed = !isExposed },
+    Column(
         modifier = modifier
     ) {
-        ReduceDropDownTextField(
+        ReduceDatePickerTextField(
             label = label,
             text = selectedOption,
-            angle = animatedAngle,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            onTextFieldClicked = { isExposed = !isExposed },
+            trailingIcon = Icons.Filled.KeyboardArrowDown,
+            angle = animatedAngle
         )
         DropdownMenu(
             expanded = isExposed,
             onDismissRequest = { isExposed = !isExposed },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(.92f)
         ) {
             options.forEach { option ->
                 ReduceExposedDropDownMenuItem(
@@ -60,35 +57,35 @@ fun ReduceExposedDropDownMenuBox(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ReduceDropDownTextField(
-    @StringRes label: Int,
-    text: String,
-    angle: Float,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier = modifier) {
-        AuthTextFieldLabel(text = label, modifier = Modifier.fillMaxWidth())
-        Spacer(modifier = Modifier.height(3.dp))
-        OutlinedTextField(
-            value = text,
-            onValueChange = {},
-            modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.extraLarge,
-            trailingIcon = {
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowDown,
-                    contentDescription = stringResource(id = R.string.clear_text_field),
-                    tint = Gray90,
-                    modifier = Modifier.rotate(angle)
-                )
-            },
-            singleLine = true,
-            readOnly = true,
-        )
-    }
-}
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun ReduceDropDownTextField(
+//    @StringRes label: Int,
+//    text: String,
+//    angle: Float,
+//    modifier: Modifier = Modifier
+//) {
+//    Column(modifier = modifier) {
+//        AuthTextFieldLabel(text = label, modifier = Modifier.fillMaxWidth())
+//        Spacer(modifier = Modifier.height(3.dp))
+//        OutlinedTextField(
+//            value = text,
+//            onValueChange = {},
+//            modifier = Modifier.fillMaxWidth(),
+//            shape = MaterialTheme.shapes.extraLarge,
+//            trailingIcon = {
+//                Icon(
+//                    imageVector = Icons.Default.KeyboardArrowDown,
+//                    contentDescription = stringResource(id = R.string.clear_text_field),
+//                    tint = Gray90,
+//                    modifier = Modifier.rotate(angle)
+//                )
+//            },
+//            singleLine = true,
+//            readOnly = true,
+//        )
+//    }
+//}
 
 @ExperimentalMaterial3Api
 @Composable

@@ -34,7 +34,7 @@ fun ReduceNavigation(
 
     NavHost(
         navController = navController,
-        startDestination = IndependentScreen.ProfileSettings.route
+        startDestination = startDestination
     ) {
 
         authNavGraph(navigator = navigator)
