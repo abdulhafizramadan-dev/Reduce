@@ -9,4 +9,5 @@ interface FirebaseRepository {
     fun signInWithEmailAndPassword(loginForm: LoginForm): Flow<ApiState<Boolean>>
     fun signInWithGoogle(googleCredential: AuthCredential): Flow<ApiState<SignInWithGoogleResponse>>
     suspend fun saveUser(profileSettingForm: ProfileSettingForm): Boolean
+    fun getUser(): Flow<ApiState<ProfileSettingForm>>
 }

@@ -2,13 +2,11 @@ package com.ahr.reduce.presentation.component.dropdown
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
@@ -46,7 +44,7 @@ fun ReduceExposedDropDownMenuBox(
         DropdownMenu(
             expanded = isExposed,
             onDismissRequest = { isExposed = !isExposed },
-            modifier = Modifier.fillMaxWidth(0.92f)
+            modifier = Modifier.fillMaxWidth()
         ) {
             options.forEach { option ->
                 ReduceExposedDropDownMenuItem(
@@ -99,15 +97,15 @@ fun ReduceExposedDropDownMenuItem(
     onItemSelected: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(
+    DropdownMenuItem(
         modifier = modifier
-            .clickable { onItemSelected(text) }
             .padding(horizontal = 12.dp)
             .height(48.dp),
-        contentAlignment = Alignment.CenterStart,
-    ) {
-        Text(text = text, style = MaterialTheme.typography.labelLarge)
-    }
+        text = {
+            Text(text = text, style = MaterialTheme.typography.labelLarge)
+        },
+        onClick = { onItemSelected(text) }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

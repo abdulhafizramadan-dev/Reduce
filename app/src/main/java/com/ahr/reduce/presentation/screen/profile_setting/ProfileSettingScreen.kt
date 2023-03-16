@@ -1,5 +1,7 @@
 package com.ahr.reduce.presentation.screen.profile_setting
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -11,7 +13,10 @@ import com.ahr.reduce.R
 import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.presentation.component.topappbar.DetailTopAppBar
 import com.ahr.reduce.ui.theme.ReduceTheme
+import com.stevdzasan.messagebar.ContentWithMessageBar
+import com.stevdzasan.messagebar.rememberMessageBarState
 
+@RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalMaterial3Api
 @Composable
 fun ProfileSettingScreen(
@@ -36,14 +41,20 @@ fun ProfileSettingScreen(
             navigator.navigateToDetailAddressRegisterFlow
         }
 
-        ProfileSettingContent(
-            profileSettingViewModel = profileSettingViewModel,
-            onSaveClicked = onSaveClicked,
-            modifier = Modifier.padding(paddingValues)
-        )
+        val messageBarState = rememberMessageBarState()
+
+        ContentWithMessageBar(messageBarState = messageBarState) {
+            ProfileSettingContent(
+                profileSettingViewModel = profileSettingViewModel,
+                messageBarState = messageBarState,
+                onSaveClicked = onSaveClicked,
+                modifier = Modifier.padding(paddingValues)
+            )
+        }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable

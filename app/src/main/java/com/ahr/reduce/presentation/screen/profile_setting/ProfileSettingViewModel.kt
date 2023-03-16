@@ -4,26 +4,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ahr.reduce.domain.data.ApiState
 import com.ahr.reduce.domain.data.ProfileSettingForm
+import com.ahr.reduce.domain.data.UiState
+import com.ahr.reduce.domain.repository.FirebaseRepository
 import com.ahr.reduce.util.isEmailFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileSettingViewModel @Inject constructor() : ViewModel() {
+class ProfileSettingViewModel @Inject constructor(
+    private val firebaseRepository: FirebaseRepository
+) : ViewModel() {
 
-    private val _profileSettingForm = MutableStateFlow(ProfileSettingForm(
-        firstName = "Abdul",
-        lastName = "Hafiz Ramadan",
-        email = "abdulhafizramadan@gmail.com",
-        telephone = "0822880117760",
-        birthDate = "22-11-2002",
-        gender = "Laki-Laki"
-    ))
+    private val _profileSettingForm = MutableStateFlow(ProfileSettingForm())
     val profileSettingForm get() = _profileSettingForm.asStateFlow()
 
     var isFirstNameNotValid by mutableStateOf(false)
@@ -37,6 +37,12 @@ class ProfileSettingViewModel @Inject constructor() : ViewModel() {
     var isBirthDateNotValid by mutableStateOf(false)
         private set
 
+    var saveButtonLoadingState by mutableStateOf(false)
+        private set
+
+    var saveUserProfileState: UiState<Boolean> by mutableStateOf(UiState.Idle)
+        private set
+
     val allFormValid get() = _profileSettingForm.map {  profileSettingForm ->
         profileSettingForm.firstName.isNotEmpty() &&
         profileSettingForm.lastName.isNotEmpty() &&
@@ -44,6 +50,41 @@ class ProfileSettingViewModel @Inject constructor() : ViewModel() {
         profileSettingForm.email.isEmailFormat() &&
         profileSettingForm.birthDate.isNotEmpty() &&
         profileSettingForm.gender.isNotEmpty()
+    }
+
+    init {
+//        getUserProfile()
+    }
+
+    private fun getUserProfile() {
+        saveButtonLoadingState = true
+        viewModelScope.launch {
+            firebaseRepository.getUser().collect { apiState ->
+                when (apiState) {
+                    is ApiState.Loading -> saveUserProfileState = UiState.Loading
+                    is ApiState.Success -> {
+                        saveButtonLoadingState = false
+                        _profileSettingForm.value = apiState.data
+                    }
+                    is ApiState.Error -> {
+                        saveButtonLoadingState = false
+                        saveUserProfileState = UiState.Error(apiState.exception)
+                    }
+                }
+            }
+        }
+    }
+
+    fun saveUserProfile() {
+        saveUserProfileState = UiState.Loading
+        viewModelScope.launch {
+            saveUserProfileState = try {
+                val saveResult = firebaseRepository.saveUser(profileSettingForm.value)
+                UiState.Success(saveResult)
+            } catch (exception: Exception) {
+                UiState.Error(exception)
+            }
+        }
     }
 
     fun updateFirstName(firstName: String) {
@@ -73,5 +114,9 @@ class ProfileSettingViewModel @Inject constructor() : ViewModel() {
 
     fun updateGender(gender: String) {
         _profileSettingForm.update { it.copy(gender = gender) }
+    }
+
+    fun updateSaveButtonLoadingState(state: Boolean) {
+        saveButtonLoadingState = state
     }
 }

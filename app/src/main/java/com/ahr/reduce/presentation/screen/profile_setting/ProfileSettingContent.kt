@@ -1,31 +1,39 @@
 package com.ahr.reduce.presentation.screen.profile_setting
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.ahr.reduce.R
+import com.ahr.reduce.domain.data.UiState
 import com.ahr.reduce.presentation.component.button.ReduceFilledButton
 import com.ahr.reduce.presentation.component.dropdown.ReduceExposedDropDownMenuBox
+import com.ahr.reduce.presentation.component.textfield.ReduceDatePickerTextField
 import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextField
-import com.ahr.reduce.util.FormAuthTextField
 import com.ahr.reduce.util.Gender
 import com.ahr.reduce.util.isEmailFormat
+import com.maxkeppeker.sheets.core.models.base.rememberSheetState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarConfig
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import com.maxkeppeler.sheets.calendar.models.CalendarStyle
+import com.stevdzasan.messagebar.MessageBarState
+import java.time.LocalDate
 
+@RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalMaterial3Api
 @Composable
 fun ProfileSettingContent(
     onSaveClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    profileSettingViewModel: ProfileSettingViewModel
+    profileSettingViewModel: ProfileSettingViewModel,
+    messageBarState: MessageBarState
 ) {
-
     val scrollState = rememberScrollState()
 
     val profileSettingForm by profileSettingViewModel.profileSettingForm.collectAsState()
@@ -34,9 +42,26 @@ fun ProfileSettingContent(
     val isLastNameNotValid = profileSettingViewModel.isLastNameNotValid
     val isEmailNotValid = profileSettingViewModel.isEmailNotValid
     val isTelephoneNotValid = profileSettingViewModel.isTelephoneNotValid
-    val isBirthDateNotValid = profileSettingViewModel.isBirthDateNotValid
 
     val allFormValid by profileSettingViewModel.allFormValid.collectAsState(initial = false)
+
+    val saveButtonLoadingState = profileSettingViewModel.saveButtonLoadingState
+    val saveUserState = profileSettingViewModel.saveUserProfileState
+
+    LaunchedEffect(key1 = Unit) {
+        when (saveUserState) {
+            is UiState.Idle,
+            is UiState.Loading -> {}
+            is UiState.Success -> {
+                profileSettingViewModel.updateSaveButtonLoadingState(false)
+                onSaveClicked()
+            }
+            is UiState.Error -> {
+                profileSettingViewModel.updateSaveButtonLoadingState(false)
+                messageBarState.addError(saveUserState.exception as Exception)
+            }
+        }
+    }
 
     val emailErrorMessage by remember(key1 = profileSettingForm.email) {
         derivedStateOf {
@@ -52,55 +77,24 @@ fun ProfileSettingContent(
         }
     }
 
-    val formProfiles = listOf(
-        FormAuthTextField(
-            label = R.string.label_first_name,
-            text = profileSettingForm.firstName,
-            onTextChanged = profileSettingViewModel::updateFirstName,
-            isError = isFirstNameNotValid,
-            errorMessage = R.string.empty_first_name
-        ),
-        FormAuthTextField(
-            label = R.string.label_last_name,
-            text = profileSettingForm.lastName,
-            onTextChanged = profileSettingViewModel::updateLastName,
-            isError = isLastNameNotValid,
-            errorMessage = R.string.empty_last_name
-        ),
-        FormAuthTextField(
-            label = R.string.label_email,
-            text = profileSettingForm.email,
-            onTextChanged = profileSettingViewModel::updateEmail,
-            readOnly = true,
-            isError = isEmailNotValid,
-            errorMessage = emailErrorMessage,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Next
-            )
-        ),
-        FormAuthTextField(
-            label = R.string.label_telephone,
-            text = profileSettingForm.telephone,
-            onTextChanged = profileSettingViewModel::updateTelephone,
-            isError = isTelephoneNotValid,
-            errorMessage = R.string.empty_telephone,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Next
-            )
-        ),
-        FormAuthTextField(
-            label = R.string.label_birth_date,
-            text = profileSettingForm.birthDate,
-            onTextChanged = profileSettingViewModel::updateBirthDate,
-            readOnly = true,
-            isError = isBirthDateNotValid,
-            errorMessage = R.string.empty_birth_date
-        )
-    )
-
     val genders = Gender.values().map { it.gender }
+
+    val selectedDate = remember { mutableStateOf<LocalDate?>(LocalDate.now()) }
+    val sheetState = rememberSheetState()
+
+    CalendarDialog(
+        state = sheetState,
+        config = CalendarConfig(
+            yearSelection = true,
+            monthSelection = true,
+            style = CalendarStyle.MONTH,
+        ),
+        selection = CalendarSelection.Date(
+            selectedDate = selectedDate.value
+        ) { newDate ->
+            selectedDate.value = newDate
+        },
+    )
 
     Column(
         modifier = modifier
@@ -111,19 +105,60 @@ fun ProfileSettingContent(
 
         Spacer(modifier = Modifier.padding(top = 22.dp))
 
-        formProfiles.forEach { form ->
-            ReduceOutlinedTextField(
-                label = form.label,
-                text = form.text,
-                onTextChanged = form.onTextChanged,
-                readOnly = form.readOnly,
-                isError = form.isError,
-                errorMessage = form.errorMessage,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 13.dp)
-            )
-        }
+        ReduceOutlinedTextField(
+            label = R.string.label_first_name,
+            text = profileSettingForm.firstName,
+            onTextChanged = profileSettingViewModel::updateFirstName,
+            errorMessage = R.string.empty_first_name,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 13.dp),
+            isError = isFirstNameNotValid
+        )
+
+        ReduceOutlinedTextField(
+            label = R.string.label_last_name,
+            text = profileSettingForm.lastName,
+            onTextChanged = profileSettingViewModel::updateLastName,
+            errorMessage = R.string.empty_last_name,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 13.dp),
+            isError = isLastNameNotValid
+        )
+
+        ReduceOutlinedTextField(
+            label = R.string.label_email,
+            text = profileSettingForm.email,
+            onTextChanged = profileSettingViewModel::updateEmail,
+            readOnly = true,
+            errorMessage = emailErrorMessage,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 13.dp),
+            isError = isEmailNotValid
+        )
+
+        ReduceOutlinedTextField(
+            label = R.string.label_telephone,
+            text = profileSettingForm.telephone,
+            onTextChanged = profileSettingViewModel::updateTelephone,
+            errorMessage = R.string.empty_telephone,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 13.dp),
+            isError = isTelephoneNotValid
+        )
+
+        ReduceDatePickerTextField(
+            label = R.string.label_birth_date,
+            text = selectedDate.value.toString(),
+            errorMessage = R.string.empty_birth_date,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 13.dp),
+            onTextFieldClicked = { sheetState.show() }
+        )
 
         ReduceExposedDropDownMenuBox(
             label = R.string.label_gender,
@@ -136,11 +171,22 @@ fun ProfileSettingContent(
 
         ReduceFilledButton(
             title = R.string.save,
-            onButtonClicked = onSaveClicked,
+            onButtonClicked = {
+                profileSettingViewModel.updateSaveButtonLoadingState(true)
+                onSaveClicked()
+            },
             enabled = allFormValid,
+            loadingState = saveButtonLoadingState,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp, bottom = 28.dp),
         )
     }
+}
+
+@Composable
+fun ReduceOutlinedTextFieldDatePicker(
+
+) {
+
 }

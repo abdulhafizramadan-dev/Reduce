@@ -1,65 +1,50 @@
 package com.ahr.reduce.presentation.component.textfield
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ahr.reduce.R
 import com.ahr.reduce.presentation.component.text.AuthTextFieldLabel
-import com.ahr.reduce.ui.theme.Gray90
 import com.ahr.reduce.ui.theme.ReduceTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReduceOutlinedTextField(
+fun ReduceDatePickerTextField(
     @StringRes label: Int,
     text: String,
-    onTextChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
     isError: Boolean = false,
     @StringRes errorMessage: Int = R.string.empty_field,
-    readOnly: Boolean = false,
-    singleLine: Boolean = true,
     largeGapLabel: Boolean = false,
-    leadingIcon: @Composable (() -> Unit)? = null,
-    trailingIcon: @Composable (() -> Unit)? = null,
-    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-    textFieldModifier: Modifier = Modifier,
+    onTextFieldClicked: () -> Unit
 ) {
     Column(modifier = modifier) {
         AuthTextFieldLabel(text = label, modifier = Modifier.fillMaxWidth())
         Spacer(modifier = Modifier.height(if (largeGapLabel) 13.dp else 3.dp))
-        OutlinedTextField(
-            value = text,
-            onValueChange = onTextChanged,
-            modifier = textFieldModifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.extraLarge,
-            leadingIcon = leadingIcon,
-            trailingIcon = {
-                if (text.isNotEmpty() && trailingIcon == null && !readOnly) {
-                    IconButton(onClick = { onTextChanged("") }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Cancel,
-                            contentDescription = stringResource(id = R.string.clear_text_field),
-                            tint = Gray90
-                        )
-                    }
-                }
-                trailingIcon?.invoke()
-            },
-            isError = isError,
-            singleLine = singleLine,
-            readOnly = readOnly,
-            keyboardOptions = keyboardOptions,
-        )
+        Row(
+            modifier = Modifier
+                .heightIn(TextFieldDefaults.MinHeight)
+                .fillMaxWidth()
+                .clip(MaterialTheme.shapes.extraLarge)
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+                    MaterialTheme.shapes.extraLarge
+                )
+                .clickable { onTextFieldClicked() },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = text, modifier = Modifier.padding(start = 16.dp))
+        }
         if (isError) {
             Text(
                 text = stringResource(errorMessage),
@@ -73,7 +58,7 @@ fun ReduceOutlinedTextField(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewReduceOutlinedTextField() {
+fun PreviewReduceDatePickerTextField() {
     ReduceTheme {
         ReduceOutlinedTextField(
             label = R.string.label_first_name,

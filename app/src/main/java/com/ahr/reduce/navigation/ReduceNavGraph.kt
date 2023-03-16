@@ -1,5 +1,7 @@
 package com.ahr.reduce.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -18,6 +20,7 @@ import com.ahr.reduce.presentation.screen.detail_product.DetailProductScreen
 import com.ahr.reduce.presentation.screen.onboarding.OnBoardingScreen
 import com.ahr.reduce.presentation.screen.profile_setting.ProfileSettingScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReduceNavigation(
@@ -31,7 +34,7 @@ fun ReduceNavigation(
 
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = IndependentScreen.ProfileSettings.route
     ) {
 
         authNavGraph(navigator = navigator)

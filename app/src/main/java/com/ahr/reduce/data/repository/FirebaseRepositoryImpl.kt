@@ -1,6 +1,5 @@
 package com.ahr.reduce.data.repository
 
-import android.util.Log
 import com.ahr.reduce.domain.data.*
 import com.ahr.reduce.domain.data.ApiState.Error
 import com.ahr.reduce.domain.repository.FirebaseRepository
@@ -16,6 +15,10 @@ class FirebaseRepositoryImpl(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseFirestore: FirebaseFirestore
 ) : FirebaseRepository {
+
+    private val userCollection get() = firebaseFirestore.collection(FirebaseFirestoreConstant.userCollection)
+    private val userUid get() = firebaseAuth.currentUser?.uid
+
     override fun signUpWithEmailAndPassword(
         registerForm: RegisterForm
     ): Flow<ApiState<Boolean>> = flow {
@@ -25,6 +28,12 @@ class FirebaseRepositoryImpl(
             registerForm.password
         ).await()
         if (signUpResult.user != null) {
+            val profileSettingForm = ProfileSettingForm(
+                firstName = registerForm.firstName,
+                lastName = registerForm.lastName,
+                email = registerForm.email
+            )
+            saveUser(profileSettingForm)
             emit(ApiState.Success(true))
         } else {
             emit(Error(UnknownError("Register failed!")))
@@ -57,34 +66,38 @@ class FirebaseRepositoryImpl(
         val signInWithGoogleResponse = SignInWithGoogleResponse(isSuccess = true)
 
         if (isNewUser) {
-            Log.d("TAG", "signInWithGoogle: New User")
             signInWithGoogleResponse.isNewUser = true
+            val email = firebaseAuth.currentUser?.email
+            val baseProfileUser = ProfileSettingForm(
+                email = email.toString()
+            )
+            saveUser(baseProfileUser)
             emit(ApiState.Success(signInWithGoogleResponse))
         } else {
-            Log.d("TAG", "signInWithGoogle: Old User")
             emit(ApiState.Success(signInWithGoogleResponse))
         }
     }.catch  { exception ->
-        Log.d("TAG", "signInWithGoogle: Error = ${exception.message}")
         emit(Error(exception))
     }
 
     override suspend fun saveUser(profileSettingForm: ProfileSettingForm): Boolean {
         return try {
-            val user = mapOf(
-                UserField.FIRST_NAME.field to profileSettingForm.firstName,
-                UserField.LAST_NAME.field to profileSettingForm.lastName,
-                UserField.EMAIL.field to profileSettingForm.email,
-                UserField.TELEPHONE.field to profileSettingForm.telephone,
-                UserField.BIRTH_DATE.field to profileSettingForm.birthDate,
-                UserField.GENDER.field to profileSettingForm.gender,
-            )
-            firebaseFirestore.collection(FirebaseFirestoreConstant.userCollection)
-                .add(user)
+            userCollection.document(userUid.toString())
+                .set(profileSettingForm)
                 .await()
             true
         } catch (exception: Exception) {
             false
         }
+    }
+
+    override fun getUser(): Flow<ApiState<ProfileSettingForm>> = flow {
+        emit(ApiState.Loading)
+        val userProfile = userCollection.document(userUid.toString()).get()
+            .await()
+            .toObject(ProfileSettingForm::class.java)
+        emit(ApiState.Success(userProfile ?: ProfileSettingForm()))
+    }.catch { exception ->
+        emit(Error(exception = exception))
     }
 }
