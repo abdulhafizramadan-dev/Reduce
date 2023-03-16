@@ -22,12 +22,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.R
 import com.ahr.reduce.domain.data.OnBoarding
+import com.ahr.reduce.navigation.IndependentScreen
 import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.presentation.component.button.ReduceFilledButton
 import com.ahr.reduce.ui.theme.ReduceTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPagerIndicator
-import com.ahr.reduce.navigation.IndependentScreen
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalPagerApi::class)

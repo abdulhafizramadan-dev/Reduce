@@ -18,10 +18,10 @@ import androidx.compose.ui.unit.dp
 import com.ahr.reduce.R
 import com.ahr.reduce.presentation.component.button.ReduceFilledButton
 import com.ahr.reduce.presentation.component.button.ReduceTextButton
-import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextField
-import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextFieldPassword
 import com.ahr.reduce.presentation.component.text.AuthSubtitle
 import com.ahr.reduce.presentation.component.text.AuthTitle
+import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextField
+import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextFieldPassword
 import com.ahr.reduce.ui.theme.Gray20
 import com.ahr.reduce.util.isEmailFormat
 
