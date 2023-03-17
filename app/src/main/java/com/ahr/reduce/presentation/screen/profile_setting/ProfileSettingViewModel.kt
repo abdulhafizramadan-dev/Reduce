@@ -60,6 +60,7 @@ class ProfileSettingViewModel @Inject constructor(
         profileSettingForm.lastName.isNotEmpty() &&
         profileSettingForm.email.isNotEmpty() &&
         profileSettingForm.email.isEmailFormat() &&
+        profileSettingForm.telephone.isNotEmpty() &&
         profileSettingForm.birthDate.isNotEmpty() &&
         profileSettingForm.gender.isNotEmpty()
     }
