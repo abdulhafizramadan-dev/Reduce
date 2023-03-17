@@ -34,7 +34,7 @@ fun ReduceNavigation(
 
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = Graph.Main.route
     ) {
 
         authNavGraph(navigator = navigator)

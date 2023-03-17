@@ -20,11 +20,9 @@ class FirebaseRepositoryImpl(
 ) : FirebaseRepository {
 
     private val userCollection get() = firebaseFirestore.collection(FirebaseFirestoreConstant.userCollection)
-    private val detailAddressCollection
-        get() = firebaseFirestore.collection(
-            FirebaseFirestoreConstant.detailAddressCollection
-        )
+    private val detailAddressCollection get() = firebaseFirestore.collection(FirebaseFirestoreConstant.detailAddressCollection)
     private val productCollection get() = firebaseFirestore.collection(FirebaseFirestoreConstant.productCollection)
+    private val cartCollection get() = firebaseFirestore.collection(FirebaseFirestoreConstant.cartCollection)
 
     private val storageRef get() = firebaseStorage.reference
 
@@ -176,7 +174,7 @@ class FirebaseRepositoryImpl(
 
 
         product = product?.copy(
-            photo = storageRef.child(product.photo.toString()).downloadUrl.await().toString()
+            photo = storageRef.child(product.photo).downloadUrl.await().toString()
         )
 
         if (product != null) {
@@ -184,6 +182,18 @@ class FirebaseRepositoryImpl(
         } else {
             emit(Error(NotFoundException("Product not found!")))
         }
+    }.catch { exception ->
+        emit(Error(exception))
+    }
+
+    override fun addToCart(documentId: String): Flow<ApiState<Boolean>> = flow {
+        emit(ApiState.Loading)
+        val cartData = mapOf(
+            "uid" to userUid,
+            "productDocumentId" to documentId
+        )
+        cartCollection.add(cartData).await()
+        emit(ApiState.Success(true))
     }.catch { exception ->
         emit(Error(exception))
     }

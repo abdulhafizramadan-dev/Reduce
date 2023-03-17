@@ -1,6 +1,7 @@
 package com.ahr.reduce.presentation.component.topappbar
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
@@ -16,7 +17,8 @@ import com.ahr.reduce.ui.theme.ReduceTheme
 fun DetailTopAppBar(
     @StringRes title: Int,
     onNavigationClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
         navigationIcon = {
@@ -27,6 +29,7 @@ fun DetailTopAppBar(
         title = {
             Text(text = stringResource(title))
         },
+        actions = actions,
         modifier = modifier
     )
 }

@@ -20,6 +20,9 @@ class DetailProductViewModel @Inject constructor(
     private val _productUiState = MutableStateFlow<UiState<Product>>(UiState.Idle)
     val detailProductUiState get() = _productUiState.asStateFlow()
 
+    private val _addToCartUiState = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
+    val addToCartUiState get() = _addToCartUiState.asStateFlow()
+
     fun getDetailProduct(documentId: String) {
         viewModelScope.launch {
             firebaseRepository.getProductDetail(documentId).collect { apiState ->
@@ -27,6 +30,18 @@ class DetailProductViewModel @Inject constructor(
                     is ApiState.Loading -> _productUiState.value = UiState.Loading
                     is ApiState.Success -> _productUiState.value = UiState.Success(apiState.data)
                     is ApiState.Error -> _productUiState.value = UiState.Error(apiState.exception)
+                }
+            }
+        }
+    }
+
+    fun addToCart(documentId: String) {
+        viewModelScope.launch {
+            firebaseRepository.addToCart(documentId).collect { apiState ->
+                when (apiState) {
+                    is ApiState.Loading -> _addToCartUiState.value = UiState.Loading
+                    is ApiState.Success -> _addToCartUiState.value = UiState.Success(apiState.data)
+                    is ApiState.Error -> _addToCartUiState.value = UiState.Error(apiState.exception)
                 }
             }
         }
