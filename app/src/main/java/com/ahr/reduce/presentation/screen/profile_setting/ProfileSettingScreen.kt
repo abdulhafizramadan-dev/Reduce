@@ -27,27 +27,28 @@ fun ProfileSettingScreen(
     profileSettingViewModel: ProfileSettingViewModel = hiltViewModel(),
     isRegisterFlow: Boolean = false,
 ) {
-    Scaffold(
-        topBar = {
-            DetailTopAppBar(
-                title = R.string.profile_settings,
-                onNavigationClicked = navigator.navigateUp
-            )
-        },
-        modifier = modifier
-            .statusBarsPadding()
-            .navigationBarsPadding()
-    ) { paddingValues ->
+    val messageBarState = rememberMessageBarState()
 
-        val onSaveClicked: () -> Unit = if (!isRegisterFlow) {
-            navigator.navigateUp
-        } else {
-            navigator.navigateToDetailAddressRegisterFlow
-        }
+    ContentWithMessageBar(messageBarState = messageBarState) {
 
-        val messageBarState = rememberMessageBarState()
+        Scaffold(
+            topBar = {
+                DetailTopAppBar(
+                    title = R.string.profile_settings,
+                    onNavigationClicked = navigator.navigateUp
+                )
+            },
+            modifier = modifier
+                .statusBarsPadding()
+                .navigationBarsPadding()
+        ) { paddingValues ->
 
-        ContentWithMessageBar(messageBarState = messageBarState) {
+            val onSaveClicked: () -> Unit = if (!isRegisterFlow) {
+                navigator.navigateUp
+            } else {
+                navigator.navigateToDetailAddressRegisterFlow
+            }
+
             ProfileSettingContent(
                 profileSettingViewModel = profileSettingViewModel,
                 messageBarState = messageBarState,

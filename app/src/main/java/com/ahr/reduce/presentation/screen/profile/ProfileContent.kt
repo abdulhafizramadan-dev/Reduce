@@ -35,9 +35,9 @@ fun ProfileContent(
     ) {
         ProfileHeader(
             photo = R.drawable.avatar,
-            name = "Anatasya Sabrina",
-            telephone = "+628129034567",
-            email = "anatasyasabrina123@gmail.com",
+            name = "Amita Putry",
+            telephone = "082277309703",
+            email = "20104014@ittelkom-pwt.ac.id",
             onEditClicked = {},
             modifier = Modifier
                 .padding(top = 12.dp)

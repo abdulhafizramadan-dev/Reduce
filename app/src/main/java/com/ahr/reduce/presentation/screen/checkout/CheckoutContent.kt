@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.ahr.reduce.R
 import com.ahr.reduce.domain.data.Product
 import com.ahr.reduce.presentation.component.button.ReduceFilledButton
+import com.stevdzasan.messagebar.MessageBarState
 
 @Composable
 fun CheckoutContent(

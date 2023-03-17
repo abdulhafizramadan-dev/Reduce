@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.ahr.reduce.domain.data.Product
 
 @Composable
@@ -25,11 +26,11 @@ fun TransactionProsesItem(
                 .padding(all = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-//            Image(
-//                painter = painterResource(id = product.photo),
-//                contentDescription = null,
-//                modifier = Modifier.height(82.dp)
-//            )
+            AsyncImage(
+                model = product.photo,
+                contentDescription = null,
+                modifier = Modifier.height(82.dp)
+            )
             Spacer(modifier = Modifier.width(22.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(

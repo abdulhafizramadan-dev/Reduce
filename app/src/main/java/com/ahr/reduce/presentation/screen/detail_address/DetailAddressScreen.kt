@@ -25,29 +25,29 @@ fun DetailAddressScreen(
     modifier: Modifier = Modifier,
     detailAddressViewModel: DetailAddressViewModel = hiltViewModel()
 ) {
-    Scaffold(
-        topBar = {
-            DetailTopAppBar(
-                title = R.string.detail_address,
-                onNavigationClicked = navigator.navigateUp
-            )
-        },
-        modifier = modifier
-            .statusBarsPadding()
-            .navigationBarsPadding()
-    ) { paddingValues ->
+    val messageBarState = rememberMessageBarState()
 
-        val onSaveClicked: () -> Unit = {
-            if (!isRegisterFlow) {
-                navigator.navigateUp()
-            } else {
-                navigator.navigateToMainGraph(IndependentScreen.ProfileSettings.route)
+    ContentWithMessageBar(messageBarState = messageBarState) {
+        Scaffold(
+            topBar = {
+                DetailTopAppBar(
+                    title = R.string.detail_address,
+                    onNavigationClicked = navigator.navigateUp
+                )
+            },
+            modifier = modifier
+                .statusBarsPadding()
+                .navigationBarsPadding()
+        ) { paddingValues ->
+
+            val onSaveClicked: () -> Unit = {
+                if (!isRegisterFlow) {
+                    navigator.navigateUp()
+                } else {
+                    navigator.navigateToMainGraph(IndependentScreen.ProfileSettings.route)
+                }
             }
-        }
 
-        val messageBarState = rememberMessageBarState()
-
-        ContentWithMessageBar(messageBarState = messageBarState) {
             DetailAddressContent(
                 detailAddressViewModel = detailAddressViewModel,
                 messageBarState = messageBarState,
@@ -55,7 +55,6 @@ fun DetailAddressScreen(
                 modifier = Modifier.padding(paddingValues)
             )
         }
-
     }
 }
 

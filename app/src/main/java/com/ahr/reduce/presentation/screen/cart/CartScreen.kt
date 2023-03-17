@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.R
+import com.ahr.reduce.domain.data.dummyProduct
 import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.presentation.component.topappbar.DetailTopAppBar
 import com.ahr.reduce.ui.theme.ReduceTheme
@@ -28,11 +29,11 @@ fun CartScreen(
         modifier = modifier
     ) { paddingValues ->
         CartContent(
-            items = emptyList(),
+            items = listOf(dummyProduct),
             modifier = Modifier.padding(paddingValues),
             onCartItemClicked = navigator.navigateToDetailProduct,
             onButtonClicked = {
-                navigator.navigateToCheckout("")
+                navigator.navigateToCheckout("4j34YUtYYJ0EIhb4tcFK")
             }
         )
     }
