@@ -2,7 +2,9 @@ package com.ahr.reduce.presentation.screen.profile_setting
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -33,6 +35,8 @@ fun ProfileSettingScreen(
             )
         },
         modifier = modifier
+            .statusBarsPadding()
+            .navigationBarsPadding()
     ) { paddingValues ->
 
         val onSaveClicked: () -> Unit = if (!isRegisterFlow) {

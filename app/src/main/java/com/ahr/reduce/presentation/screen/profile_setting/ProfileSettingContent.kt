@@ -25,6 +25,7 @@ import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import com.stevdzasan.messagebar.MessageBarState
+import kotlinx.coroutines.delay
 import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -58,6 +59,8 @@ fun ProfileSettingContent(
             is UiState.Loading -> {}
             is UiState.Success -> {
                 profileSettingViewModel.updateSaveButtonLoadingState(false)
+                messageBarState.addSuccess("Sukses menyimpan detail alamat!")
+                delay(3000L)
                 onSaveClicked()
             }
             is UiState.Error -> {

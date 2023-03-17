@@ -17,6 +17,7 @@ class FirebaseRepositoryImpl(
 ) : FirebaseRepository {
 
     private val userCollection get() = firebaseFirestore.collection(FirebaseFirestoreConstant.userCollection)
+    private val detailAddressCollection get() = firebaseFirestore.collection(FirebaseFirestoreConstant.detailAddressCollection)
     private val userUid get() = firebaseAuth.currentUser?.uid
 
     override fun signUpWithEmailAndPassword(
@@ -100,4 +101,26 @@ class FirebaseRepositoryImpl(
     }.catch { exception ->
         emit(Error(exception = exception))
     }
+
+    override suspend fun saveUserAddress(detailAddressForm: DetailAddressForm): Boolean {
+        return try {
+            detailAddressCollection.document(userUid.toString())
+                .set(detailAddressForm)
+                .await()
+            true
+        } catch (exception: Exception) {
+            false
+        }
+    }
+
+    override fun getUserAddress(): Flow<ApiState<DetailAddressForm>> = flow {
+        emit(ApiState.Loading)
+        val detailAddress = detailAddressCollection.document(userUid.toString()).get()
+            .await()
+            .toObject(DetailAddressForm::class.java)
+        emit(ApiState.Success(detailAddress ?: DetailAddressForm()))
+    }.catch { exception ->
+        emit(Error(exception = exception))
+    }
+
 }

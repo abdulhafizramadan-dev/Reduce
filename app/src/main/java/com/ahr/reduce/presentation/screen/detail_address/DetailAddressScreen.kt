@@ -1,6 +1,8 @@
 package com.ahr.reduce.presentation.screen.detail_address
 
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -8,10 +10,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.ahr.reduce.R
-import com.ahr.reduce.navigation.Graph
+import com.ahr.reduce.navigation.IndependentScreen
 import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.presentation.component.topappbar.DetailTopAppBar
 import com.ahr.reduce.ui.theme.ReduceTheme
+import com.stevdzasan.messagebar.ContentWithMessageBar
+import com.stevdzasan.messagebar.rememberMessageBarState
 
 @ExperimentalMaterial3Api
 @Composable
@@ -29,22 +33,29 @@ fun DetailAddressScreen(
             )
         },
         modifier = modifier
+            .statusBarsPadding()
+            .navigationBarsPadding()
     ) { paddingValues ->
 
         val onSaveClicked: () -> Unit = {
             if (!isRegisterFlow) {
                 navigator.navigateUp()
             } else {
-                navigator.navigateToMainGraph(Graph.Auth.route)
+                navigator.navigateToMainGraph(IndependentScreen.ProfileSettings.route)
             }
         }
 
+        val messageBarState = rememberMessageBarState()
 
-        DetailAddressContent(
-            detailAddressViewModel = detailAddressViewModel,
-            onSaveClicked = onSaveClicked,
-            modifier = Modifier.padding(paddingValues)
-        )
+        ContentWithMessageBar(messageBarState = messageBarState) {
+            DetailAddressContent(
+                detailAddressViewModel = detailAddressViewModel,
+                messageBarState = messageBarState,
+                onSaveClicked = onSaveClicked,
+                modifier = Modifier.padding(paddingValues)
+            )
+        }
+
     }
 }
 

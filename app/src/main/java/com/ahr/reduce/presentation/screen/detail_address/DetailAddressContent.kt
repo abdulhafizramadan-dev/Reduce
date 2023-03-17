@@ -2,22 +2,29 @@ package com.ahr.reduce.presentation.screen.detail_address
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.ahr.reduce.R
+import com.ahr.reduce.domain.data.UiState
 import com.ahr.reduce.presentation.component.button.ReduceFilledButton
 import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextField
 import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextFieldArea
+import com.stevdzasan.messagebar.MessageBarState
+import kotlinx.coroutines.delay
 
 @Composable
 fun DetailAddressContent(
     detailAddressViewModel: DetailAddressViewModel,
     onSaveClicked: () -> Unit,
     modifier: Modifier = Modifier,
+    messageBarState: MessageBarState,
 ) {
 
     val scrollState = rememberScrollState()
@@ -32,6 +39,26 @@ fun DetailAddressContent(
     val isCompleteAddressNotValid = detailAddressViewModel.isCompleteAddressNotValid
 
     val allFormValid by detailAddressViewModel.allFormValid.collectAsState(initial = false)
+
+    val saveButtonLoadingState = detailAddressViewModel.saveButtonLoadingState
+    val saveUserState = detailAddressViewModel.saveDetailAddressState
+
+    LaunchedEffect(key1 = saveUserState) {
+        when (saveUserState) {
+            is UiState.Idle,
+            is UiState.Loading -> {}
+            is UiState.Success -> {
+                detailAddressViewModel.updateSaveButtonLoadingState(false)
+                messageBarState.addSuccess("Sukses menyimpan detail alamat!")
+                delay(3000L)
+                onSaveClicked()
+            }
+            is UiState.Error -> {
+                detailAddressViewModel.updateSaveButtonLoadingState(false)
+                messageBarState.addError(saveUserState.exception as Exception)
+            }
+        }
+    }
 
     Column(
         modifier = modifier
@@ -112,19 +139,24 @@ fun DetailAddressContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 36.dp)
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
         )
 
         Spacer(modifier = Modifier.weight(1f))
 
         ReduceFilledButton(
             title = R.string.save,
-            onButtonClicked = onSaveClicked,
+            onButtonClicked = {
+                detailAddressViewModel.updateSaveButtonLoadingState(true)
+                detailAddressViewModel.saveDetailAddress()
+            },
             enabled = allFormValid,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 24.dp)
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp),
+            loadingState = saveButtonLoadingState
         )
     }
 }
