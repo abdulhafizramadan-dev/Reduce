@@ -11,7 +11,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ahr.reduce.domain.data.Product
-import com.ahr.reduce.domain.data.products
 import com.ahr.reduce.presentation.component.product.ProductItem
 import com.ahr.reduce.ui.theme.ReduceTheme
 
@@ -55,11 +54,11 @@ fun CheckoutProductItem(
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewCheckoutProductItem() {
-    ReduceTheme {
-        CheckoutProductItem(product = products[0], modifier = Modifier.fillMaxWidth())
-    }
-}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewCheckoutProductItem() {
+//    ReduceTheme {
+//        CheckoutProductItem(product = emptyList(), modifier = Modifier.fillMaxWidth())
+//    }
+//}

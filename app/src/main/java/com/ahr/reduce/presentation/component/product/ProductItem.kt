@@ -1,18 +1,16 @@
 package com.ahr.reduce.presentation.component.product
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ahr.reduce.R
+import coil.compose.AsyncImage
 import com.ahr.reduce.ui.theme.ReduceTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -21,7 +19,7 @@ fun ProductItem(
     id: Int,
     type: String,
     name: String,
-    photo: Int,
+    photo: String,
     onProductClicked: (Int) -> Unit,
     modifier: Modifier = Modifier,
     smallItem: Boolean = false,
@@ -47,8 +45,8 @@ fun ProductItem(
             )
         ) {
             val imageHeight = if (smallItem) 90 else 124
-            Image(
-                painter = painterResource(id = photo),
+            AsyncImage(
+                model = photo,
                 contentDescription = null,
                 modifier = Modifier
                     .height(imageHeight.dp)
@@ -97,7 +95,7 @@ fun PreviewProductItem() {
             id = 1,
             type = "Minyak Goreng",
             name = "Bimoli",
-            photo = R.drawable.bimoli,
+            photo = "",
             onProductClicked = { }
         )
     }

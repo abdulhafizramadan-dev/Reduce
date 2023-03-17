@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ahr.reduce.R
 import com.ahr.reduce.domain.data.Product
-import com.ahr.reduce.domain.data.products
 import com.ahr.reduce.presentation.component.button.ReduceFilledButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -43,7 +42,7 @@ fun CheckoutContent(
             CheckoutHeader(address = address)
             Divider(modifier = Modifier.padding(top = 12.dp))
             CheckProductList(
-                products = listOf(products[0]),
+                products = emptyList(),
                 modifier = Modifier.padding(top = 16.dp)
             )
             Divider()

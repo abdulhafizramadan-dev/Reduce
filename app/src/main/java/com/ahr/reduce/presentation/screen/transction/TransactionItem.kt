@@ -1,6 +1,5 @@
 package com.ahr.reduce.presentation.screen.transction
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Divider
@@ -9,13 +8,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ahr.reduce.domain.data.Product
-import com.ahr.reduce.domain.data.products
-import com.ahr.reduce.ui.theme.ReduceTheme
 
 @Composable
 fun TransactionProsesItem(
@@ -30,11 +25,11 @@ fun TransactionProsesItem(
                 .padding(all = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = product.photo),
-                contentDescription = null,
-                modifier = Modifier.height(82.dp)
-            )
+//            Image(
+//                painter = painterResource(id = product.photo),
+//                contentDescription = null,
+//                modifier = Modifier.height(82.dp)
+//            )
             Spacer(modifier = Modifier.width(22.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -59,13 +54,13 @@ fun TransactionProsesItem(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewTransactionProsesItem() {
-    ReduceTheme {
-        TransactionProsesItem(
-            product = products[0],
-            onTransactionClicked = {}
-        )
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewTransactionProsesItem() {
+//    ReduceTheme {
+//        TransactionProsesItem(
+//            product = products[0],
+//            onTransactionClicked = {}
+//        )
+//    }
+//}

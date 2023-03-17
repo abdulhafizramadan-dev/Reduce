@@ -1,5 +1,6 @@
 package com.ahr.reduce.data.repository
 
+import com.ahr.reduce.R
 import com.ahr.reduce.domain.data.*
 import com.ahr.reduce.domain.data.ApiState.Error
 import com.ahr.reduce.domain.repository.FirebaseRepository
@@ -19,7 +20,10 @@ class FirebaseRepositoryImpl(
 ) : FirebaseRepository {
 
     private val userCollection get() = firebaseFirestore.collection(FirebaseFirestoreConstant.userCollection)
-    private val detailAddressCollection get() = firebaseFirestore.collection(FirebaseFirestoreConstant.detailAddressCollection)
+    private val detailAddressCollection
+        get() = firebaseFirestore.collection(
+            FirebaseFirestoreConstant.detailAddressCollection
+        )
     private val productCollection get() = firebaseFirestore.collection(FirebaseFirestoreConstant.productCollection)
 
     private val storageRef get() = firebaseStorage.reference
@@ -65,28 +69,29 @@ class FirebaseRepositoryImpl(
     }.catch { exception ->
         emit(Error(exception))
     }
-    override fun signInWithGoogle(googleCredential: AuthCredential): Flow<ApiState<SignInWithGoogleResponse>> = flow {
-        emit(ApiState.Loading)
-        val authResult = firebaseAuth.signInWithCredential(googleCredential).await()
-        val isNewUser = authResult.additionalUserInfo?.isNewUser ?: false
 
-        val signInWithGoogleResponse = SignInWithGoogleResponse(isSuccess = true)
+    override fun signInWithGoogle(googleCredential: AuthCredential): Flow<ApiState<SignInWithGoogleResponse>> =
+        flow {
+            emit(ApiState.Loading)
+            val authResult = firebaseAuth.signInWithCredential(googleCredential).await()
+            val isNewUser = authResult.additionalUserInfo?.isNewUser ?: false
 
-        if (isNewUser) {
-            signInWithGoogleResponse.isNewUser = true
-            val email = firebaseAuth.currentUser?.email
-            val baseProfileUser = ProfileSettingForm(
-                email = email.toString()
-            )
-            saveUser(baseProfileUser)
-            emit(ApiState.Success(signInWithGoogleResponse))
-        } else {
-            emit(ApiState.Success(signInWithGoogleResponse))
+            val signInWithGoogleResponse = SignInWithGoogleResponse(isSuccess = true)
+
+            if (isNewUser) {
+                signInWithGoogleResponse.isNewUser = true
+                val email = firebaseAuth.currentUser?.email
+                val baseProfileUser = ProfileSettingForm(
+                    email = email.toString()
+                )
+                saveUser(baseProfileUser)
+                emit(ApiState.Success(signInWithGoogleResponse))
+            } else {
+                emit(ApiState.Success(signInWithGoogleResponse))
+            }
+        }.catch { exception ->
+            emit(Error(exception))
         }
-    }.catch  { exception ->
-        exception.printStackTrace()
-        emit(Error(exception))
-    }
 
     override suspend fun saveUser(profileSettingForm: ProfileSettingForm): Boolean {
         return try {
@@ -130,8 +135,22 @@ class FirebaseRepositoryImpl(
         emit(Error(exception = exception))
     }
 
-    override fun getHomeProduct(): Flow<ApiState<List<Product>>> {
-        TODO("Not yet implemented")
+    override fun getHomeProduct(): Flow<ApiState<List<Product>>> = flow {
+        emit(ApiState.Loading)
+        val products = productCollection.limit(6).get().await()
+            .documents
+            .map {
+                val id: Int = (it.getLong("id") ?: 0).toInt()
+                val type: String = it.getString("type") ?: ""
+                val name: String = it.getString("name") ?: ""
+                val price: String = (it.getLong("price") ?: 0).toString()
+                val photoPath: String = it.getString("photo") ?: ""
+                val photoUrl = storageRef.child(photoPath).downloadUrl.await()
+                Product(id, type, name, price, photoUrl.toString())
+            }
+        emit(ApiState.Success(products))
+    }.catch { exception ->
+        emit(Error(exception))
     }
 
     override fun getMarketProduct(): Flow<ApiState<List<Product>>> {

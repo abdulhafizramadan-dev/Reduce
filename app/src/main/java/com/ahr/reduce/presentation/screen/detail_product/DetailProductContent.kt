@@ -44,13 +44,13 @@ fun DetailProductContent(
                 .weight(1f)
                 .verticalScroll(scrollState)
         ) {
-            Image(
-                painter = painterResource(id = product.photo),
-                contentDescription = product.name,
-                modifier = Modifier
-                    .height(290.dp)
-                    .fillMaxWidth()
-            )
+//            Image(
+//                painter = painterResource(id = product.photo),
+//                contentDescription = product.name,
+//                modifier = Modifier
+//                    .height(290.dp)
+//                    .fillMaxWidth()
+//            )
 
             DetailProductHeader(
                 product = product,

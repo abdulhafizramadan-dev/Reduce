@@ -1,5 +1,6 @@
 package com.ahr.reduce.presentation.screen.home
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
-import com.ahr.reduce.domain.data.products
+import com.ahr.reduce.domain.data.Product
+import com.ahr.reduce.domain.data.UiState
 import com.ahr.reduce.navigation.Navigator
 import com.ahr.reduce.presentation.component.product.ProductItem
 import com.ahr.reduce.ui.theme.ReduceTheme
@@ -34,11 +36,21 @@ fun HomeScreen(
         navigator.navigateToDetailProduct(productId)
     }
 
+    val homeProducts by homeViewModel.homeProductUiState.collectAsState()
 
-//    val homeProducts by homeViewModel.homeProducts.collectAsState()
-
-    LaunchedEffect(key1 = Unit) {
-        homeViewModel.getHomeProduct()
+    LaunchedEffect(key1 = homeProducts) {
+        when (homeProducts) {
+            is UiState.Idle -> {}
+            is UiState.Loading -> {
+                Log.d("TAG", "HomeScreen: Loading...")
+            }
+            is UiState.Success -> {
+                Log.d("TAG", "HomeScreen: Success = ${(homeProducts as UiState.Success<List<Product>>).data}")
+            }
+            is UiState.Error -> {
+                Log.d("TAG", "HomeScreen: Error = ${(homeProducts as UiState.Error).exception.message}")
+            }
+        }
     }
 
     LazyVerticalGrid(
@@ -65,19 +77,22 @@ fun HomeScreen(
             )
         }
 
-        items(
-            items = products,
-            key = { it.id }
-        ) { product ->
-            ProductItem(
-                id = product.id,
-                type = product.type,
-                name = product.name,
-                photo = product.photo,
-                onProductClicked = navigateToDetailProduct,
-                smallItem = false
-            )
+        if (homeProducts is UiState.Success) {
+            items(
+                items = (homeProducts as UiState.Success<List<Product>>).data,
+                key = { it.id }
+            ) { product ->
+                ProductItem(
+                    id = product.id,
+                    type = product.type,
+                    name = product.name,
+                    photo = product.photo,
+                    onProductClicked = navigateToDetailProduct,
+                    smallItem = false
+                )
+            }
         }
+
     }
 }
 
