@@ -16,4 +16,5 @@ interface FirebaseRepository {
     fun getMarketProduct(): Flow<ApiState<List<Product>>>
     fun getProductDetail(documentId: String): Flow<ApiState<Product>>
     fun addToCart(documentId: String): Flow<ApiState<Boolean>>
+    fun checkoutProduct(documentId: String): Flow<ApiState<Boolean>>
 }

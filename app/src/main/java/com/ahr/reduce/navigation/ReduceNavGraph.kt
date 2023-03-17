@@ -34,7 +34,7 @@ fun ReduceNavigation(
 
     NavHost(
         navController = navController,
-        startDestination = Graph.Main.route
+        startDestination = startDestination
     ) {
 
         authNavGraph(navigator = navigator)
@@ -92,8 +92,16 @@ fun ReduceNavigation(
         composable(route = Cart.route) {
             CartScreen(navigator = navigator)
         }
-        composable(route = Checkout.route) {
-            CheckoutScreen(navigator = navigator)
+        composable(
+            route = Checkout.route,
+            arguments = listOf(
+                navArgument(Checkout.DOCUMENT_ID_KEY) {
+                    type = NavType.StringType
+                }
+            )
+        ) { navBackStackEntry ->
+            val documentId = navBackStackEntry.arguments?.getString(DetailProduct.DOCUMENT_ID_KEY) ?: ""
+            CheckoutScreen(navigator = navigator, productDocumentId = documentId)
         }
     }
 }

@@ -31,7 +31,9 @@ fun CartScreen(
             items = emptyList(),
             modifier = Modifier.padding(paddingValues),
             onCartItemClicked = navigator.navigateToDetailProduct,
-            onButtonClicked = navigator.navigateToCheckout
+            onButtonClicked = {
+                navigator.navigateToCheckout("")
+            }
         )
     }
 }

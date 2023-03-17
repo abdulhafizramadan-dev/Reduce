@@ -42,8 +42,11 @@ class Navigator(private val navController: NavHostController) {
         navController.navigate(route)
     }
 
-    val navigateToCheckout: () -> Unit = {
-        navController.navigate(IndependentScreen.Checkout.route)
+    val navigateToCheckout: (
+        documentId: String
+    ) -> Unit = { documentId ->
+        val route = IndependentScreen.Checkout.getRoute(documentId)
+        navController.navigate(route)
     }
 
     val navigateToCart: () -> Unit = {

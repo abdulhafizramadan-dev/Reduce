@@ -23,6 +23,7 @@ class FirebaseRepositoryImpl(
     private val detailAddressCollection get() = firebaseFirestore.collection(FirebaseFirestoreConstant.detailAddressCollection)
     private val productCollection get() = firebaseFirestore.collection(FirebaseFirestoreConstant.productCollection)
     private val cartCollection get() = firebaseFirestore.collection(FirebaseFirestoreConstant.cartCollection)
+    private val checkoutCollection get() = firebaseFirestore.collection(FirebaseFirestoreConstant.cartCollection)
 
     private val storageRef get() = firebaseStorage.reference
 
@@ -193,6 +194,18 @@ class FirebaseRepositoryImpl(
             "productDocumentId" to documentId
         )
         cartCollection.add(cartData).await()
+        emit(ApiState.Success(true))
+    }.catch { exception ->
+        emit(Error(exception))
+    }
+
+    override fun checkoutProduct(documentId: String): Flow<ApiState<Boolean>> = flow {
+        emit(ApiState.Loading)
+        val checkoutData = mapOf(
+            "uid" to userUid,
+            "productDocumentId" to documentId
+        )
+        checkoutCollection.add(checkoutData).await()
         emit(ApiState.Success(true))
     }.catch { exception ->
         emit(Error(exception))

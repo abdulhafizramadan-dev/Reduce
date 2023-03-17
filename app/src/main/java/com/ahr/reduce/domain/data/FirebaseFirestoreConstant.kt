@@ -5,4 +5,5 @@ object FirebaseFirestoreConstant {
     const val detailAddressCollection = "detail_address"
     const val productCollection = "products"
     const val cartCollection = "carts"
+    const val checkoutCollection = "checkouts"
 }

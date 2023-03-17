@@ -41,5 +41,12 @@ sealed class IndependentScreen(val route: String) {
     }
 
     object Cart : IndependentScreen("cart")
-    object Checkout : IndependentScreen("checkout")
+    object Checkout : IndependentScreen("checkout/{document_id}") {
+        const val DOCUMENT_ID_KEY = "document_id"
+        fun getRoute(
+            objectId: String?,
+        ): String {
+            return "checkout/$objectId"
+        }
+    }
 }

@@ -80,7 +80,6 @@ fun DetailProductScreen(
                 )
             }
         }
-
     }
 
     ContentWithMessageBar(messageBarState = messageBarState) {
@@ -107,7 +106,9 @@ fun DetailProductScreen(
             if (detailProductUiState is UiState.Success) {
                 DetailProductContent(
                     product = (detailProductUiState as UiState.Success<Product>).data,
-                    onCartClicked = navigator.navigateToCheckout,
+                    onCartClicked = {
+                        navigator.navigateToCheckout(documentId)
+                    },
                     modifier = Modifier.padding(paddingValues),
                     orderCount = orderCount,
                     onOrderCountChanged = { orderCount = it },
