@@ -12,4 +12,6 @@ interface FirebaseRepository {
     suspend fun saveUserAddress(detailAddressForm: DetailAddressForm): Boolean
     fun getUser(): Flow<ApiState<ProfileSettingForm>>
     fun getUserAddress(): Flow<ApiState<DetailAddressForm>>
+    fun getHomeProduct(): Flow<ApiState<List<Product>>>
+    fun getMarketProduct(): Flow<ApiState<List<Product>>>
 }

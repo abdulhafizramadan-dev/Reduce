@@ -6,6 +6,7 @@ import com.ahr.reduce.domain.repository.FirebaseRepository
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -13,11 +14,16 @@ import kotlinx.coroutines.tasks.await
 
 class FirebaseRepositoryImpl(
     private val firebaseAuth: FirebaseAuth,
-    private val firebaseFirestore: FirebaseFirestore
+    private val firebaseFirestore: FirebaseFirestore,
+    private val firebaseStorage: FirebaseStorage,
 ) : FirebaseRepository {
 
     private val userCollection get() = firebaseFirestore.collection(FirebaseFirestoreConstant.userCollection)
     private val detailAddressCollection get() = firebaseFirestore.collection(FirebaseFirestoreConstant.detailAddressCollection)
+    private val productCollection get() = firebaseFirestore.collection(FirebaseFirestoreConstant.productCollection)
+
+    private val storageRef get() = firebaseStorage.reference
+
     private val userUid get() = firebaseAuth.currentUser?.uid
 
     override fun signUpWithEmailAndPassword(
@@ -78,6 +84,7 @@ class FirebaseRepositoryImpl(
             emit(ApiState.Success(signInWithGoogleResponse))
         }
     }.catch  { exception ->
+        exception.printStackTrace()
         emit(Error(exception))
     }
 
@@ -123,4 +130,11 @@ class FirebaseRepositoryImpl(
         emit(Error(exception = exception))
     }
 
+    override fun getHomeProduct(): Flow<ApiState<List<Product>>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getMarketProduct(): Flow<ApiState<List<Product>>> {
+        TODO("Not yet implemented")
+    }
 }
