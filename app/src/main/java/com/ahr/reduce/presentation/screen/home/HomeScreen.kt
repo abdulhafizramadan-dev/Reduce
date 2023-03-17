@@ -32,8 +32,8 @@ fun HomeScreen(
 
     var searchQuery by remember { mutableStateOf("") }
 
-    val navigateToDetailProduct: (Int) -> Unit = { productId ->
-        navigator.navigateToDetailProduct(productId)
+    val navigateToDetailProduct: (String) -> Unit = { documentId ->
+        navigator.navigateToDetailProduct(documentId)
     }
 
     val homeProducts by homeViewModel.homeProductUiState.collectAsState()
@@ -83,7 +83,7 @@ fun HomeScreen(
                 key = { it.id }
             ) { product ->
                 ProductItem(
-                    id = product.id,
+                    documentId = product.documentId.toString(),
                     type = product.type,
                     name = product.name,
                     photo = product.photo,

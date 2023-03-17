@@ -27,7 +27,7 @@ import com.ahr.reduce.presentation.component.product.ProductItem
 @Composable
 fun CartContent(
     items: List<Product>,
-    onCartItemClicked: (productId: Int) -> Unit,
+    onCartItemClicked: (documentId: String) -> Unit,
     onButtonClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -58,15 +58,15 @@ fun CartContent(
 @Composable
 fun CartItem(
     product: Product,
-    onCartItemClicked: (productId: Int) -> Unit,
+    onCartItemClicked: (documentId: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.clickable { onCartItemClicked(product.id) },
+        modifier = modifier.clickable { onCartItemClicked(product.documentId.toString()) },
         verticalAlignment = Alignment.CenterVertically
     ) {
         ProductItem(
-            id = product.id,
+            documentId = product.documentId.toString(),
             type = product.type,
             name = product.name,
             photo = product.photo,
@@ -101,11 +101,11 @@ fun CartProductTitle(
 
 @Composable
 fun CartProductPrice(
-    price: String,
+    price: Long,
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = price,
+        text = price.toString(),
         color = MaterialTheme.colorScheme.onBackground,
         lineHeight = 20.sp,
         style = TextStyle(

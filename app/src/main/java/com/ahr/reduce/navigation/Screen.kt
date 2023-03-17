@@ -30,12 +30,12 @@ sealed class IndependentScreen(val route: String) {
             return "detail_address?is_register_flow=$isRegisterFlow"
         }
     }
-    object DetailProduct : IndependentScreen("detail_product/{product_id}") {
-        const val PRODUCT_ID_KEY = "product_id"
+    object DetailProduct : IndependentScreen("detail_product/{document_id}") {
+        const val DOCUMENT_ID_KEY = "document_id"
         fun getRoute(
-            productId: Int,
+            objectId: String?,
         ): String {
-            return "detail_product/$productId"
+            return "detail_product/$objectId"
         }
 
     }

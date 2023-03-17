@@ -36,9 +36,9 @@ class Navigator(private val navController: NavHostController) {
     }
 
     val navigateToDetailProduct: (
-        productId: Int
-    ) -> Unit = { productId ->
-        val route = IndependentScreen.DetailProduct.getRoute(productId = productId)
+        documentId: String
+    ) -> Unit = { documentId ->
+        val route = IndependentScreen.DetailProduct.getRoute(documentId)
         navController.navigate(route)
     }
 

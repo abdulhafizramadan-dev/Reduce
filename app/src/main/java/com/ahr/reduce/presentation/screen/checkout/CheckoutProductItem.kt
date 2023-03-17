@@ -7,12 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ahr.reduce.domain.data.Product
 import com.ahr.reduce.presentation.component.product.ProductItem
-import com.ahr.reduce.ui.theme.ReduceTheme
 
 @Composable
 fun CheckoutProductItem(
@@ -24,7 +22,7 @@ fun CheckoutProductItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         ProductItem(
-            id = product.id,
+            documentId = product.documentId.toString(),
             type = product.type,
             name = product.name,
             photo = product.photo,

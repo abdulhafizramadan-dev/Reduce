@@ -14,4 +14,5 @@ interface FirebaseRepository {
     fun getUserAddress(): Flow<ApiState<DetailAddressForm>>
     fun getHomeProduct(): Flow<ApiState<List<Product>>>
     fun getMarketProduct(): Flow<ApiState<List<Product>>>
+    fun getProductDetail(documentId: String): Flow<ApiState<Product>>
 }

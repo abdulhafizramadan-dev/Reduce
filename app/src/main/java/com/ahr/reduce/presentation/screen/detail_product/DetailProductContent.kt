@@ -1,6 +1,5 @@
 package com.ahr.reduce.presentation.screen.detail_product
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -12,17 +11,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.ahr.reduce.R
 import com.ahr.reduce.domain.data.Product
 import com.ahr.reduce.presentation.component.button.ReduceFilledButton
 import com.ahr.reduce.presentation.component.textfield.ReduceOutlinedTextField
+import com.ahr.reduce.util.toRupiah
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -44,13 +44,13 @@ fun DetailProductContent(
                 .weight(1f)
                 .verticalScroll(scrollState)
         ) {
-//            Image(
-//                painter = painterResource(id = product.photo),
-//                contentDescription = product.name,
-//                modifier = Modifier
-//                    .height(290.dp)
-//                    .fillMaxWidth()
-//            )
+            AsyncImage(
+                model = product.photo,
+                contentDescription = product.name,
+                modifier = Modifier
+                    .height(290.dp)
+                    .fillMaxWidth()
+            )
 
             DetailProductHeader(
                 product = product,
@@ -79,7 +79,7 @@ fun DetailProductHeader(
 ) {
     Column(modifier = modifier.padding(all = 16.dp)) {
         Text(
-            text = product.price,
+            text = stringResource(id = R.string.product_price_format, product.price.toRupiah()),
             style = MaterialTheme.typography.titleLarge.copy(
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,

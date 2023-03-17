@@ -1,11 +1,10 @@
 package com.ahr.reduce.domain.data
 
-import com.ahr.reduce.R
-
 data class Product(
-    val id: Int,
-    val type: String,
-    val name: String,
-    val price: String,
-    val photo: String,
+    val id: Int = 0,
+    val type: String = "",
+    val name: String = "",
+    val price: Long = 0,
+    val photo: String = "",
+    var documentId: String? = null,
 )

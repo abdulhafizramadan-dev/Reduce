@@ -1,5 +1,6 @@
 package com.ahr.reduce.data.repository
 
+import android.content.res.Resources.NotFoundException
 import com.ahr.reduce.domain.data.*
 import com.ahr.reduce.domain.data.ApiState.Error
 import com.ahr.reduce.domain.repository.FirebaseRepository
@@ -142,10 +143,10 @@ class FirebaseRepositoryImpl(
                 val id: Int = (it.getLong("id") ?: 0).toInt()
                 val type: String = it.getString("type") ?: ""
                 val name: String = it.getString("name") ?: ""
-                val price: String = (it.getLong("price") ?: 0).toString()
+                val price: Long = it.getLong("price") ?: 0
                 val photoPath: String = it.getString("photo") ?: ""
-                val photoUrl = storageRef.child(photoPath).downloadUrl.await()
-                Product(id, type, name, price, photoUrl.toString())
+                val photoUrl = storageRef.child(photoPath).downloadUrl.await().toString()
+                Product(id, type, name, price, photoUrl, it.id)
             }
         emit(ApiState.Success(products))
     }.catch { exception ->
@@ -160,11 +161,30 @@ class FirebaseRepositoryImpl(
                 val id: Int = (it.getLong("id") ?: 0).toInt()
                 val type: String = it.getString("type") ?: ""
                 val name: String = it.getString("name") ?: ""
-                val price: String = (it.getLong("price") ?: 0).toString()
+                val price: Long = it.getLong("price") ?: 0
                 val photoPath: String = it.getString("photo") ?: ""
-                val photoUrl = storageRef.child(photoPath).downloadUrl.await()
-                Product(id, type, name, price, photoUrl.toString())
+                val photoUrl = storageRef.child(photoPath).downloadUrl.await().toString()
+                Product(id, type, name, price, photoUrl, it.id)
             }
         emit(ApiState.Success(products))
+    }
+
+    override fun getProductDetail(documentId: String): Flow<ApiState<Product>> = flow {
+        emit(ApiState.Loading)
+        var product = productCollection.document(documentId).get().await()
+            .toObject(Product::class.java)
+
+
+        product = product?.copy(
+            photo = storageRef.child(product.photo.toString()).downloadUrl.await().toString()
+        )
+
+        if (product != null) {
+            emit(ApiState.Success(product))
+        } else {
+            emit(Error(NotFoundException("Product not found!")))
+        }
+    }.catch { exception ->
+        emit(Error(exception))
     }
 }

@@ -53,12 +53,12 @@ fun MarketScreen(
                 key = { it.id }
             ) { product ->
                 ProductItem(
-                    id = product.id,
+                    documentId = product.documentId.toString(),
                     type = product.type,
                     name = product.name,
                     photo = product.photo,
                     onProductClicked = {
-                        navigator.navigateToDetailProduct(product.id)
+                        navigator.navigateToDetailProduct(product.documentId.toString())
                     },
                     smallItem = false
                 )

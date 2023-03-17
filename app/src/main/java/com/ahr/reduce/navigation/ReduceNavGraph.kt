@@ -78,16 +78,15 @@ fun ReduceNavigation(
         composable(
             route = DetailProduct.route,
             arguments = listOf(
-                navArgument(DetailProduct.PRODUCT_ID_KEY) {
-                    type = NavType.IntType
+                navArgument(DetailProduct.DOCUMENT_ID_KEY) {
+                    type = NavType.StringType
                 }
             )
         ) { navBackStackEntry ->
-            val productId = navBackStackEntry.arguments?.getInt(DetailProduct.PRODUCT_ID_KEY) ?: 1
+            val documentId = navBackStackEntry.arguments?.getString(DetailProduct.DOCUMENT_ID_KEY) ?: ""
             DetailProductScreen(
-                navController = navController,
                 navigator  = navigator,
-                productId = productId
+                documentId = documentId
             )
         }
         composable(route = Cart.route) {
